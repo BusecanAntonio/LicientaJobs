@@ -5,7 +5,9 @@
 </head>
 <body>
 <h1>Add Student</h1>
+
 <form th:action="@{/students/add}" th:object="${student}" method="post">
+
     <label>Name:</label>
     <input type="text" th:field="*{name}" /><br/>
 
@@ -25,7 +27,7 @@
     <input type="text" th:field="*{address}" /><br/>
 
     <label>Grades (comma separated):</label>
-    <input type="text" th:field="*{grades}" /><br/>
+    <input type="text" name="grades" /><br/>
 
     <label>Group:</label>
     <input type="text" th:field="*{group}" /><br/>
@@ -38,6 +40,8 @@
 
     <button type="submit">Add Student</button>
 </form>
+
 <a href="/"><button>Back</button></a>
+
 </body>
 </html>

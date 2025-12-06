@@ -4,14 +4,15 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Node
 public class Student {
 
     @Id
-    @GeneratedValue // Neo4j generează automat un ID numeric
-    private Long studentId; // schimbăm din String în Long
+    @GeneratedValue
+    private Long studentId;
 
     private String name;
     private String email;
@@ -19,7 +20,7 @@ public class Student {
     private String major;
     private String phoneNumber;
     private String address;
-    private List<Integer> grades;
+    private List<Integer> grades = new ArrayList<>();
     private String group;
     private int year;
     private String notes;
@@ -34,7 +35,7 @@ public class Student {
         this.major = major;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.grades = grades;
+        setGrades(grades);
         this.group = group;
         this.year = year;
         this.notes = notes;
@@ -62,7 +63,17 @@ public class Student {
     public void setAddress(String address) { this.address = address; }
 
     public List<Integer> getGrades() { return grades; }
-    public void setGrades(List<Integer> grades) { this.grades = grades; }
+
+    public void setGrades(List<Integer> grades) {
+        this.grades = new ArrayList<>();
+        if (grades != null) {
+            for (Integer g : grades) {
+                if (g != null) {
+                    this.grades.add(g);
+                }
+            }
+        }
+    }
 
     public String getGroup() { return group; }
     public void setGroup(String group) { this.group = group; }

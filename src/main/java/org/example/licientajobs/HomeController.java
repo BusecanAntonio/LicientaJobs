@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -15,28 +16,40 @@ public class HomeController {
         this.studentRepository = studentRepository;
     }
 
-    // Pagina principală cu butoane
     @GetMapping("/")
     public String home() {
-        return "index"; // index.html
+        return "index";
     }
 
-    // Formular adăugare student
     @GetMapping("/students/add")
     public String showAddStudentForm(Model model) {
         model.addAttribute("student", new Student());
         return "add-student";
     }
 
-    // Salvează studentul
     @PostMapping("/students/add")
-    public String addStudent(@ModelAttribute Student student) {
-        studentRepository.save(student); // ID-ul va fi generat automat
+    public String addStudent(@ModelAttribute Student student,
+                             @RequestParam("grades") String gradesString) {
+
+        List<Integer> parsedGrades = new ArrayList<>();
+
+        if (gradesString != null && !gradesString.isBlank()) {
+            String[] parts = gradesString.split(",");
+
+            for (String p : parts) {
+                try {
+                    parsedGrades.add(Integer.parseInt(p.trim()));
+                } catch (Exception ignored) {
+                }
+            }
+        }
+
+        student.setGrades(parsedGrades);
+
+        studentRepository.save(student);
         return "redirect:/students/all";
     }
 
-
-    // Afișează studenții
     @GetMapping("/students/all")
     public String listStudents(Model model) {
         List<Student> students = studentRepository.findAll();
@@ -47,7 +60,6 @@ public class HomeController {
     @GetMapping("/test")
     @ResponseBody
     public String test() {
-        return "Spring Boot funcționează!";
+        return "Spring Boot functioneaza!";
     }
-
 }
