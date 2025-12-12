@@ -1,47 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Add Student</title>
 </head>
 <body>
-<h1>Add Student</h1>
-
+<h1>Add New Student</h1>
 <form th:action="@{/students/add}" th:object="${student}" method="post">
+    <label for="name">Name:</label>
+    <input id="name" th:field="*{name}" type="text"/><br/>
 
-    <label>Name:</label>
-    <input type="text" th:field="*{name}" /><br/>
+    <label for="email">Email:</label>
+    <input id="email" th:field="*{email}" type="text"/><br/>
 
-    <label>Email:</label>
-    <input type="email" th:field="*{email}" /><br/>
+    <label for="age">Age:</label>
+    <input id="age" th:field="*{age}" type="number"/><br/>
 
-    <label>Age:</label>
-    <input type="number" th:field="*{age}" /><br/>
+    <label for="major">Major:</label>
+    <input id="major" th:field="*{major}" type="text"/><br/>
 
-    <label>Major:</label>
-    <input type="text" th:field="*{major}" /><br/>
+    <label for="phoneNumber">Phone Number:</label>
+    <input id="phoneNumber" th:field="*{phoneNumber}" type="text"/><br/>
 
-    <label>Phone Number:</label>
-    <input type="text" th:field="*{phoneNumber}" /><br/>
+    <label for="address">Address:</label>
+    <input id="address" th:field="*{address}" type="text"/><br/>
 
-    <label>Address:</label>
-    <input type="text" th:field="*{address}" /><br/>
+    <label for="grades">Grades (comma-separated):</label>
+    <input id="grades" name="grades" type="text"/><br/>
 
-    <label>Grades (comma separated):</label>
-    <input type="text" name="grades" /><br/>
+    <label for="group">Group:</label>
+    <input id="group" th:field="*{group}" type="text"/><br/>
 
-    <label>Group:</label>
-    <input type="text" th:field="*{group}" /><br/>
+    <label for="year">Year:</label>
+    <input id="year" th:field="*{year}" type="number"/><br/>
 
-    <label>Year:</label>
-    <input type="number" th:field="*{year}" /><br/>
-
-    <label>Notes:</label>
-    <input type="text" th:field="*{notes}" /><br/>
+    <label for="notes">Notes:</label>
+    <textarea id="notes" th:field="*{notes}"></textarea><br/>
 
     <button type="submit">Add Student</button>
 </form>
-
-<a href="/"><button>Back</button></a>
-
+<a th:href="@{/students}"><button>Back to Students</button></a>
 </body>
 </html>

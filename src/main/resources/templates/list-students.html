@@ -1,38 +1,57 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Students List</title>
+    <title>Students</title>
+    <style>
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+        .student-details { margin-bottom: 20px; }
+        .btn { display: inline-block; padding: 5px 10px; background-color: #efefef; border: 1px solid #767676; text-decoration: none; color: black; font-size: 13.33px; cursor: pointer; }
+        .btn:hover { background-color: #e5e5e5; }
+    </style>
 </head>
 <body>
 <h1>Students</h1>
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Age</th>
-        <th>Major</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>Grades</th>
-        <th>Group</th>
-        <th>Year</th>
-        <th>Notes</th>
-    </tr>
-    <tr th:each="student : ${students}">
-        <td th:text="${student.studentId}"></td>
-        <td th:text="${student.name}"></td>
-        <td th:text="${student.email}"></td>
-        <td th:text="${student.age}"></td>
-        <td th:text="${student.major}"></td>
-        <td th:text="${student.phoneNumber}"></td>
-        <td th:text="${student.address}"></td>
-        <td th:text="${student.grades}"></td>
-        <td th:text="${student.group}"></td>
-        <td th:text="${student.year}"></td>
-        <td th:text="${student.notes}"></td>
-    </tr>
-</table>
-<a href="/"><button>Back</button></a>
+<a th:href="@{/students/add}" class="btn">Add New Student</a>
+<hr/>
+
+<div th:each="student : ${students}" class="student-details">
+    <h2>Student: <span th:text="${student.name}"></span></h2>
+    <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
+    <p><strong>Age:</strong> <span th:text="${student.age}"></span></p>
+    <p><strong>Major:</strong> <span th:text="${student.major}"></span></p>
+    <p><strong>Phone:</strong> <span th:text="${student.phoneNumber}"></span></p>
+    <p><strong>Address:</strong> <span th:text="${student.address}"></span></p>
+    <p><strong>Grades:</strong> <span th:text="${student.grades}"></span></p>
+    <p><strong>Group:</strong> <span th:text="${student.group}"></span></p>
+    <p><strong>Year:</strong> <span th:text="${student.year}"></span></p>
+    <p><strong>Notes:</strong> <span th:text="${student.notes}"></span></p>
+
+    <h3>Job Applications</h3>
+    <a th:href="@{/students/{studentId}/apply(studentId=${student.id})}" class="btn">Apply for New Job</a>
+    <br/><br/>
+    <table>
+        <thead>
+        <tr>
+            <th>Job Title</th>
+            <th>Company</th>
+            <th>Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="app : ${student.jobApplications}">
+            <td th:text="${app.jobTitle}"></td>
+            <td th:text="${app.company}"></td>
+            <td th:text="${app.description}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(student.jobApplications)}">
+            <td colspan="3">No job applications yet.</td>
+        </tr>
+        </tbody>
+    </table>
+    <hr/>
+</div>
+
 </body>
 </html>

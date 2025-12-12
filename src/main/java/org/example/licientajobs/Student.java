@@ -3,6 +3,7 @@ package org.example.licientajobs;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.Relationship;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Student {
 
     @Id
     @GeneratedValue
-    private Long studentId;
+    private Long id;
 
     private String name;
     private String email;
@@ -25,24 +26,13 @@ public class Student {
     private int year;
     private String notes;
 
+    @Relationship(type = "APPLIED_FOR", direction = Relationship.Direction.OUTGOING)
+    private List<JobApplication> jobApplications = new ArrayList<>();
+
     public Student() {}
 
-    public Student(String name, String email, int age, String major, String phoneNumber,
-                   String address, List<Integer> grades, String group, int year, String notes) {
-        this.name = name;
-        this.email = email;
-        this.age = age;
-        this.major = major;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        setGrades(grades);
-        this.group = group;
-        this.year = year;
-        this.notes = notes;
-    }
-
-    public Long getStudentId() { return studentId; }
-    public void setStudentId(Long studentId) { this.studentId = studentId; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
@@ -63,17 +53,7 @@ public class Student {
     public void setAddress(String address) { this.address = address; }
 
     public List<Integer> getGrades() { return grades; }
-
-    public void setGrades(List<Integer> grades) {
-        this.grades = new ArrayList<>();
-        if (grades != null) {
-            for (Integer g : grades) {
-                if (g != null) {
-                    this.grades.add(g);
-                }
-            }
-        }
-    }
+    public void setGrades(List<Integer> grades) { this.grades = grades; }
 
     public String getGroup() { return group; }
     public void setGroup(String group) { this.group = group; }
@@ -83,4 +63,7 @@ public class Student {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
+
+    public List<JobApplication> getJobApplications() { return jobApplications; }
+    public void setJobApplications(List<JobApplication> jobApplications) { this.jobApplications = jobApplications; }
 }
