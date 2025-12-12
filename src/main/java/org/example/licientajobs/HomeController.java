@@ -4,8 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -31,19 +29,7 @@ public class HomeController {
     }
 
     @PostMapping("/students/add")
-    public String addStudent(@ModelAttribute Student student,
-                             @RequestParam(value = "grades", required = false) String gradesString) {
-        List<Integer> parsedGrades = new ArrayList<>();
-        if (gradesString != null && !gradesString.isBlank()) {
-            String[] parts = gradesString.split(",");
-            for (String p : parts) {
-                try {
-                    parsedGrades.add(Integer.parseInt(p.trim()));
-                } catch (Exception ignored) {
-                }
-            }
-        }
-        student.setGrades(parsedGrades);
+    public String addStudent(@ModelAttribute Student student) {
         studentRepository.save(student);
         return "redirect:/students";
     }

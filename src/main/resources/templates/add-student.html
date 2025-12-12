@@ -7,34 +7,31 @@
 <h1>Add New Student</h1>
 <form th:action="@{/students/add}" th:object="${student}" method="post">
     <label for="name">Name:</label>
-    <input id="name" th:field="*{name}" type="text"/><br/>
+    <input id="name" th:field="*{name}" type="text" required/><br/>
 
     <label for="email">Email:</label>
-    <input id="email" th:field="*{email}" type="text"/><br/>
+    <input id="email" th:field="*{email}" type="email" required/><br/>
 
-    <label for="age">Age:</label>
-    <input id="age" th:field="*{age}" type="number"/><br/>
+    <label for="dateOfBirth">Date of Birth:</label>
+    <input id="dateOfBirth" th:field="*{dateOfBirth}" type="date" required/><br/>
 
     <label for="major">Major:</label>
     <input id="major" th:field="*{major}" type="text"/><br/>
 
     <label for="phoneNumber">Phone Number:</label>
-    <input id="phoneNumber" th:field="*{phoneNumber}" type="text"/><br/>
+    <input id="phoneNumber" th:field="*{phoneNumber}" type="tel" maxlength="10"/><br/>
 
     <label for="address">Address:</label>
     <input id="address" th:field="*{address}" type="text"/><br/>
 
-    <label for="grades">Grades (comma-separated):</label>
-    <input id="grades" name="grades" type="text"/><br/>
-
     <label for="group">Group:</label>
     <input id="group" th:field="*{group}" type="text"/><br/>
 
-    <label for="year">Year:</label>
-    <input id="year" th:field="*{year}" type="number"/><br/>
+    <label for="startYear">Start Year:</label>
+    <input id="startYear" th:field="*{startYear}" type="number" min="1900" max="2100"/><br/>
 
-    <label for="notes">Notes:</label>
-    <textarea id="notes" th:field="*{notes}"></textarea><br/>
+    <label for="endYear">End Year:</label>
+    <input id="endYear" th:field="*{endYear}" type="number" min="1900" max="2100"/><br/>
 
     <button type="submit">Add Student</button>
 </form>

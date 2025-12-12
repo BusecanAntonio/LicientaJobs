@@ -14,6 +14,8 @@ public class JobApplication {
     private String jobTitle;
     private String company;
     private String description;
+    private String licentaGrade; // Optional: Nota la licenta
+    private String courseGrades; // Optional: Note la materii (ex: Mate: 10)
 
     public JobApplication() {}
 
@@ -47,5 +49,21 @@ public class JobApplication {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLicentaGrade() {
+        return licentaGrade;
+    }
+
+    public void setLicentaGrade(String licentaGrade) {
+        this.licentaGrade = licentaGrade;
+    }
+
+    public String getCourseGrades() {
+        return courseGrades;
+    }
+
+    public void setCourseGrades(String courseGrades) {
+        this.courseGrades = courseGrades;
     }
 }

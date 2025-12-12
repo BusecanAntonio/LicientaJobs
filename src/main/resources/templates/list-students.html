@@ -6,14 +6,12 @@
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
         tr:nth-child(even) { background-color: #f2f2f2; }
-        .student-details { margin-bottom: 20px; }
-        .btn { display: inline-block; padding: 5px 10px; background-color: #efefef; border: 1px solid #767676; text-decoration: none; color: black; font-size: 13.33px; cursor: pointer; }
-        .btn:hover { background-color: #e5e5e5; }
+        .student-details { margin-bottom: 20px; border: 1px solid #ccc; padding: 15px; border-radius: 5px; }
     </style>
 </head>
 <body>
 <h1>Students</h1>
-<a th:href="@{/students/add}" class="btn">Add New Student</a>
+<a th:href="@{/students/add}"><button>Add New Student</button></a>
 <hr/>
 
 <div th:each="student : ${students}" class="student-details">
@@ -23,13 +21,11 @@
     <p><strong>Major:</strong> <span th:text="${student.major}"></span></p>
     <p><strong>Phone:</strong> <span th:text="${student.phoneNumber}"></span></p>
     <p><strong>Address:</strong> <span th:text="${student.address}"></span></p>
-    <p><strong>Grades:</strong> <span th:text="${student.grades}"></span></p>
     <p><strong>Group:</strong> <span th:text="${student.group}"></span></p>
-    <p><strong>Year:</strong> <span th:text="${student.year}"></span></p>
-    <p><strong>Notes:</strong> <span th:text="${student.notes}"></span></p>
+    <p><strong>Study Years:</strong> <span th:text="${student.startYear} + ' - ' + ${student.endYear}"></span></p>
 
     <h3>Job Applications</h3>
-    <a th:href="@{/students/{studentId}/apply(studentId=${student.id})}" class="btn">Apply for New Job</a>
+    <a th:href="@{/students/{studentId}/apply(studentId=${student.id})}"><button>Apply for New Job</button></a>
     <br/><br/>
     <table>
         <thead>
@@ -37,6 +33,8 @@
             <th>Job Title</th>
             <th>Company</th>
             <th>Description</th>
+            <th>Thesis Grade</th>
+            <th>Course Grades</th>
         </tr>
         </thead>
         <tbody>
@@ -44,9 +42,11 @@
             <td th:text="${app.jobTitle}"></td>
             <td th:text="${app.company}"></td>
             <td th:text="${app.description}"></td>
+            <td th:text="${app.licentaGrade}"></td>
+            <td th:text="${app.courseGrades}"></td>
         </tr>
         <tr th:if="${#lists.isEmpty(student.jobApplications)}">
-            <td colspan="3">No job applications yet.</td>
+            <td colspan="5">No job applications yet.</td>
         </tr>
         </tbody>
     </table>
