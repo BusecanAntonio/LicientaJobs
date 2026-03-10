@@ -30,6 +30,7 @@ public class Student {
     private String group;
     private Integer startYear;
     private Integer endYear;
+    private String quizResult; // To store the dominant trait
 
     @Relationship(type = "APPLIED_FOR", direction = Relationship.Direction.OUTGOING)
     private List<JobApplication> jobApplications = new ArrayList<>();
@@ -48,11 +49,8 @@ public class Student {
     public LocalDate getDateOfBirth() { return dateOfBirth; }
     public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
 
-    // Calcul automat al varstei
     public int getAge() {
-        if (dateOfBirth == null) {
-            return 0;
-        }
+        if (dateOfBirth == null) return 0;
         return Period.between(dateOfBirth, LocalDate.now()).getYears();
     }
 
@@ -73,6 +71,9 @@ public class Student {
 
     public Integer getEndYear() { return endYear; }
     public void setEndYear(Integer endYear) { this.endYear = endYear; }
+
+    public String getQuizResult() { return quizResult; }
+    public void setQuizResult(String quizResult) { this.quizResult = quizResult; }
 
     public List<JobApplication> getJobApplications() { return jobApplications; }
     public void setJobApplications(List<JobApplication> jobApplications) { this.jobApplications = jobApplications; }

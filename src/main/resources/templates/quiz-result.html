@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Quiz Result</title>
+    <style>
+        body { font-family: sans-serif; }
+        .result-container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px auto; text-align: center; }
+        h1 { color: #333; }
+        h2 { color: #0056b3; }
+        p { font-size: 1.1em; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <div class="result-container">
+        <h1>Rezultatul Quiz-ului</h1>
+        <p>Trăsătura ta dominantă este:</p>
+        <h2 th:text="${result}">LEADERSHIP</h2>
+        <p th:text="${description}">Descrierea trăsăturii...</p>
+        <a th:href="@{/students}"><button>Înapoi la Studenți</button></a>
+    </div>
+</body>
+</html>

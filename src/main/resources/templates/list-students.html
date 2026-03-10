@@ -23,6 +23,8 @@
     <p><strong>Address:</strong> <span th:text="${student.address}"></span></p>
     <p><strong>Group:</strong> <span th:text="${student.group}"></span></p>
     <p><strong>Study Years:</strong> <span th:text="${student.startYear} + ' - ' + ${student.endYear}"></span></p>
+    <p><strong>Quiz Result:</strong> <span th:text="${student.quizResult != null ? student.quizResult : 'Not taken yet'}"></span></p>
+    <a th:href="@{/students/{studentId}/quiz(studentId=${student.id})}"><button>Take Quiz</button></a>
 
     <h3>Job Applications</h3>
     <a th:href="@{/students/{studentId}/apply(studentId=${student.id})}"><button>Apply for New Job</button></a>
@@ -58,19 +60,12 @@
 <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 <script type="text/javascript">
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('Connecting to WebSocket...');
         var socket = new SockJS('/ws');
         var stompClient = Stomp.over(socket);
-
         stompClient.connect({}, function (frame) {
-            console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/students', function (message) {
-                console.log('Received update notification: ' + message.body);
-                // Reload the page to show the new data
                 location.reload();
             });
-        }, function(error) {
-            console.error('STOMP error: ' + error);
         });
     });
 </script>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Quiz</title>
+    <style>
+        body { font-family: sans-serif; }
+        .quiz-container { border: 1px solid #ccc; padding: 20px; border-radius: 8px; max-width: 600px; margin: 20px auto; }
+        h1 { color: #333; }
+        p { font-size: 1.1em; line-height: 1.6; }
+        .answer-option { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1 th:text="'Întrebarea ' + ${currentQuestionNumber} + ' din ' + ${totalQuestions}">Question 1 of 10</h1>
+        <p th:text="${question.text}">Question text...</p>
+        <form th:action="@{/students/{studentId}/quiz/answer(studentId=${studentId})}" method="post">
+            <div th:each="answer : ${question.answers}" class="answer-option">
+                <input type="radio" name="answer" th:id="${answer.trait}" th:value="${answer.trait}" required/>
+                <label th:for="${answer.trait}" th:text="${answer.text}"></label><br/>
+            </div>
+            <button type="submit">Următoarea</button>
+        </form>
+    </div>
+</body>
+</html>
