@@ -53,5 +53,27 @@
     <hr/>
 </div>
 
+<!-- WebSocket Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Connecting to WebSocket...');
+        var socket = new SockJS('/ws');
+        var stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/students', function (message) {
+                console.log('Received update notification: ' + message.body);
+                // Reload the page to show the new data
+                location.reload();
+            });
+        }, function(error) {
+            console.error('STOMP error: ' + error);
+        });
+    });
+</script>
+
 </body>
 </html>

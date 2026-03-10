@@ -9,11 +9,11 @@ import java.util.Optional;
 @Controller
 public class HomeController {
 
-    private final StudentRepository studentRepository;
+    private final StudentService studentService;
     private final JobApplicationRepository jobApplicationRepository;
 
-    public HomeController(StudentRepository studentRepository, JobApplicationRepository jobApplicationRepository) {
-        this.studentRepository = studentRepository;
+    public HomeController(StudentService studentService, JobApplicationRepository jobApplicationRepository) {
+        this.studentService = studentService;
         this.jobApplicationRepository = jobApplicationRepository;
     }
 
@@ -30,19 +30,19 @@ public class HomeController {
 
     @PostMapping("/students/add")
     public String addStudent(@ModelAttribute Student student) {
-        studentRepository.save(student);
+        studentService.saveStudent(student);
         return "redirect:/students";
     }
 
     @GetMapping("/students")
     public String listStudents(Model model) {
-        model.addAttribute("students", studentRepository.findAll());
+        model.addAttribute("students", studentService.findAllStudents());
         return "list-students";
     }
 
     @GetMapping("/students/{studentId}/apply")
     public String showJobApplicationForm(@PathVariable Long studentId, Model model) {
-        Optional<Student> student = studentRepository.findById(studentId);
+        Optional<Student> student = studentService.findStudentById(studentId);
         if (student.isPresent()) {
             JobApplication application = new JobApplication();
             model.addAttribute("student", student.get());
@@ -55,12 +55,13 @@ public class HomeController {
     @PostMapping("/students/{studentId}/apply")
     public String submitJobApplication(@PathVariable Long studentId,
                                        @ModelAttribute JobApplication application) {
-        Optional<Student> studentOptional = studentRepository.findById(studentId);
+        Optional<Student> studentOptional = studentService.findStudentById(studentId);
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
-            JobApplication savedApplication = jobApplicationRepository.save(application);
-            student.getJobApplications().add(savedApplication);
-            studentRepository.save(student);
+            // Note: If Memgraph is down, we can't save the job application separately easily
+            // So we add it to the student and save the student again (which handles fallback)
+            student.getJobApplications().add(application);
+            studentService.saveStudent(student);
         }
         return "redirect:/students";
     }
