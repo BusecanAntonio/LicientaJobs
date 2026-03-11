@@ -3,6 +3,9 @@ package org.example.licientajobs;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 @Node
 public class JobApplication {
@@ -16,9 +19,10 @@ public class JobApplication {
     private String description;
     private String licentaGrade;
     private String courseGrades;
-    
-    // Status: PENDING, ACCEPTED, REJECTED
     private String status = "PENDING";
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate applicationDate;
 
     public JobApplication() {}
 
@@ -42,4 +46,7 @@ public class JobApplication {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public LocalDate getApplicationDate() { return applicationDate; }
+    public void setApplicationDate(LocalDate applicationDate) { this.applicationDate = applicationDate; }
 }

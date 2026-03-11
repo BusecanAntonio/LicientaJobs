@@ -1,1 +1,24 @@
-[ ]
+[ {
+  "id" : 2809,
+  "name" : "Andrei Busecan",
+  "email" : "andrei.antonio29@yahoo.com",
+  "dateOfBirth" : [ 2002, 1, 21 ],
+  "major" : "Programator",
+  "phoneNumber" : "0771400490",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "group" : "2",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : "EMPATIE",
+  "jobApplications" : [ {
+    "id" : 2812,
+    "jobTitle" : "Teacher",
+    "company" : "UTCluj",
+    "description" : "asd",
+    "licentaGrade" : "10",
+    "courseGrades" : "",
+    "status" : "ACCEPTED",
+    "applicationDate" : null
+  } ],
+  "age" : 24
+} ]
