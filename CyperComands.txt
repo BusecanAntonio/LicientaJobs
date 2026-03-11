@@ -1,0 +1,14 @@
+//comanda pentru studentii care au fost acceptati la o slujba
+
+MATCH (s:Student)-[r:APPLIED_TO]->(j:JobApplication)
+WHERE j.status = "ACCEPTED"
+RETURN s, r, j
+
+////////////////////////////////////////////////////////////////
+
+// (vizualizare studenti care au aplicat la un job)
+MATCH (s:Student)-[r:APPLIED_TO {status: "ACCEPTED"}]->(j:Job)
+RETURN s, r, j
+
+////////////////////////////////////////////////////////////////
+
