@@ -1,30 +1,52 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apply for Job</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<h1>Job Application for <span th:text="${student.name}"></span></h1>
-<form th:action="@{/students/{studentId}/apply(studentId=${student.id})}"
-      th:object="${application}" method="post">
-
-    <label for="jobTitle">Job Title:</label>
-    <input id="jobTitle" th:field="*{jobTitle}" type="text" required/><br/>
-
-    <label for="company">Company:</label>
-    <input id="company" th:field="*{company}" type="text" required/><br/>
-
-    <label for="description">Description:</label>
-    <textarea id="description" th:field="*{description}"></textarea><br/>
-
-    <label for="licentaGrade">Thesis Grade (Optional):</label>
-    <input id="licentaGrade" th:field="*{licentaGrade}" type="text"/><br/>
-
-    <label for="courseGrades">Course Grades (Optional, e.g., Math: 10, OOP: 9):</label>
-    <input id="courseGrades" th:field="*{courseGrades}" type="text"/><br/>
-
-    <button type="submit">Submit Application</button>
-</form>
-<a th:href="@{/students}"><button>Back to Students</button></a>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h1>Job Application for <span th:text="${student.name}"></span></h1>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/students/{studentId}/apply(studentId=${student.id})}"
+                          th:object="${application}" method="post">
+                        <div class="mb-3">
+                            <label for="jobTitle" class="form-label">Job Title:</label>
+                            <input id="jobTitle" th:field="*{jobTitle}" type="text" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="company" class="form-label">Company:</label>
+                            <input id="company" th:field="*{company}" type="text" class="form-control" required/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description:</label>
+                            <textarea id="description" th:field="*{description}" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="licentaGrade" class="form-label">Thesis Grade (Optional):</label>
+                            <input id="licentaGrade" th:field="*{licentaGrade}" type="text" class="form-control"/>
+                        </div>
+                        <div class="mb-3">
+                            <label for="courseGrades" class="form-label">Course Grades (Optional, e.g., Math: 10, OOP: 9):</label>
+                            <input id="courseGrades" th:field="*{courseGrades}" type="text" class="form-control"/>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Application</button>
+                        <a th:href="@{/students}" class="btn btn-secondary">Back to Students</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

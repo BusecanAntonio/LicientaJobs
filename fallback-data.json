@@ -1,1 +1,23 @@
-[ ]
+[ {
+  "id" : 2807,
+  "name" : "Andrei Busecan",
+  "email" : "andrei.antonio29@yahoo.com",
+  "dateOfBirth" : [ 2002, 1, 21 ],
+  "major" : "Programator",
+  "phoneNumber" : "0771400490",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "group" : "2",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : "CREATIVITATE",
+  "jobApplications" : [ {
+    "id" : 2808,
+    "jobTitle" : "Programator",
+    "company" : "Eaton",
+    "description" : "Team manaher",
+    "licentaGrade" : "9",
+    "courseGrades" : "",
+    "status" : "ACCEPTED"
+  } ],
+  "age" : 24
+} ]

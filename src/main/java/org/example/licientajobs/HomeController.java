@@ -58,11 +58,17 @@ public class HomeController {
         Optional<Student> studentOptional = studentService.findStudentById(studentId);
         if (studentOptional.isPresent()) {
             Student student = studentOptional.get();
-            // Note: If Memgraph is down, we can't save the job application separately easily
-            // So we add it to the student and save the student again (which handles fallback)
             student.getJobApplications().add(application);
             studentService.saveStudent(student);
         }
+        return "redirect:/students";
+    }
+
+    @PostMapping("/students/{studentId}/applications/{applicationId}/update-status")
+    public String updateApplicationStatus(@PathVariable Long studentId,
+                                          @PathVariable Long applicationId,
+                                          @RequestParam String status) {
+        studentService.updateJobApplicationStatus(studentId, applicationId, status);
         return "redirect:/students";
     }
 }

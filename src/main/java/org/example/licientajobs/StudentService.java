@@ -30,9 +30,10 @@ public class StudentService {
         jsonFallbackService.writeAllStudents(allStudentsFromDb);
     }
 
-    private void notifyClients() {
-        logger.info("Notifying clients about the update via WebSocket.");
-        messagingTemplate.convertAndSend("/topic/students", "update");
+    private void notifyClients(String message) {
+        logger.info("Notifying clients about the update via WebSocket: {}", message);
+        // We send a simple object or string. Here, sending a notification message.
+        messagingTemplate.convertAndSend("/topic/students", message);
     }
 
     public Student saveStudent(Student student) {
@@ -41,20 +42,19 @@ public class StudentService {
             Student savedStudent = studentRepository.save(student);
 
             synchronizeDbToJson();
-            notifyClients(); // Notify clients after successful save
+            notifyClients("Data for " + savedStudent.getName() + " has been updated.");
 
             return savedStudent;
         } catch (DataAccessResourceFailureException e) {
             logger.warn("Memgraph connection failed. Saving only to JSON fallback.", e);
             jsonFallbackService.saveStudent(student);
-            notifyClients(); // Also notify clients if fallback is used
+            notifyClients("Data for " + student.getName() + " has been updated (Offline Mode).");
             return student;
         }
     }
 
     public List<Student> findAllStudents() {
         try {
-            logger.info("Attempting to find all students from Memgraph.");
             return studentRepository.findAll();
         } catch (DataAccessResourceFailureException e) {
             logger.warn("Memgraph connection failed. Reading from JSON fallback file.", e);
@@ -64,13 +64,30 @@ public class StudentService {
 
     public Optional<Student> findStudentById(Long id) {
         try {
-            logger.info("Attempting to find student with id {} from Memgraph.", id);
             return studentRepository.findById(id);
         } catch (DataAccessResourceFailureException e) {
             logger.warn("Memgraph connection failed. Reading from JSON fallback file.", e);
             return jsonFallbackService.readAllStudents().stream()
                 .filter(s -> s.getId() != null && s.getId().equals(id))
                 .findFirst();
+        }
+    }
+
+    public void updateJobApplicationStatus(Long studentId, Long applicationId, String status) {
+        Optional<Student> studentOpt = findStudentById(studentId);
+        if (studentOpt.isPresent()) {
+            Student student = studentOpt.get();
+            if (student.getJobApplications() != null) {
+                student.getJobApplications().stream()
+                    .filter(app -> app.getId() != null && app.getId().equals(applicationId))
+                    .findFirst()
+                    .ifPresent(app -> {
+                        app.setStatus(status);
+                        // We save the student, which cascades the update to the job application
+                        saveStudent(student); 
+                        notifyClients("Job application status for " + student.getName() + " changed to " + status);
+                    });
+            }
         }
     }
 }
