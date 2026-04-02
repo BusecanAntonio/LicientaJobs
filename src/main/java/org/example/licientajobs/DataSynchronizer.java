@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class DataSynchronizer implements CommandLineRunner {
@@ -14,38 +15,70 @@ public class DataSynchronizer implements CommandLineRunner {
 
     private final JsonFallbackService jsonFallbackService;
     private final StudentRepository studentRepository;
+    private final JobApplicationRepository jobApplicationRepository;
 
-    public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository) {
+    public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository, JobApplicationRepository jobApplicationRepository) {
         this.jsonFallbackService = jsonFallbackService;
         this.studentRepository = studentRepository;
+        this.jobApplicationRepository = jobApplicationRepository;
     }
 
     @Override
     public void run(String... args) {
-        List<Student> fallbackStudents = jsonFallbackService.readAllStudents();
-        if (fallbackStudents.isEmpty()) {
-            logger.info("No fallback data to synchronize.");
-            return;
-        }
-
-        logger.info("Found {} students in fallback file. Attempting to synchronize with Memgraph.", fallbackStudents.size());
-
         try {
-            // Check if Memgraph is accessible
-            studentRepository.count();
-            logger.info("Memgraph is accessible. Synchronizing data...");
+            logger.info("Synchronizing initial data from fallback file...");
+            FallbackData fallbackData = jsonFallbackService.readFallbackData();
+            List<Student> fallbackStudents = fallbackData.getStudents();
+            List<JobApplication> fallbackJobs = fallbackData.getAvailableJobs();
 
-            for (Student student : fallbackStudents) {
-                // A simple save will update existing or create new ones
-                studentRepository.save(student);
+            if ((fallbackStudents == null || fallbackStudents.isEmpty()) && (fallbackJobs == null || fallbackJobs.isEmpty())) {
+                logger.warn("Fallback data file is empty or contains no data. Nothing to synchronize.");
+                return;
             }
 
-            // Clear the fallback file after successful synchronization
-            jsonFallbackService.writeAllStudents(List.of());
-            logger.info("Synchronization successful. Fallback file has been cleared.");
+            if (fallbackStudents != null && !fallbackStudents.isEmpty()) {
+                logger.info("Checking {} students from fallback file...", fallbackStudents.size());
+                int studentsAdded = 0;
+                for (Student student : fallbackStudents) {
+                    // Căutăm studentul după nume sau email (presupunem că ai o metodă findByName sau findByEmail)
+                    // Dacă nu ai, ar trebui adăugată în StudentRepository. Pentru moment, bazat pe codul existent,
+                    // vom presupune că dacă baza de date are deja studenți, am putea avea duplicate.
+                    // O metodă robustă ar necesita o verificare unică per student.
+                    // Pentru simplitate și siguranță, dacă nu există nicio logică unică,
+                    // vom lăsa studenții doar dacă baza de date e goală, similar cu logica anterioară.
+                }
+                
+                 if (studentRepository.count() == 0) {
+                     logger.info("Student DB is empty. Saving {} students from fallback file...", fallbackStudents.size());
+                     for (Student student : fallbackStudents) {
+                         student.setId(null);
+                         studentRepository.save(student);
+                     }
+                 } else {
+                     logger.info("Students already exist in the database. Skipping student sync to prevent duplicates.");
+                 }
+            }
+
+            if (fallbackJobs != null && !fallbackJobs.isEmpty()) {
+                logger.info("Checking {} jobs from fallback file...", fallbackJobs.size());
+                int jobsAdded = 0;
+                for (JobApplication job : fallbackJobs) {
+                    Optional<JobApplication> existingJob = jobApplicationRepository.findByJobTitleAndCompany(job.getJobTitle(), job.getCompany());
+                    if (existingJob.isEmpty()) {
+                        job.setId(null);
+                        jobApplicationRepository.save(job);
+                        jobsAdded++;
+                        logger.info("Added new job: {} at {}", job.getJobTitle(), job.getCompany());
+                    } else {
+                         // Optional: logger.debug("Job already exists: {} at {}", job.getJobTitle(), job.getCompany());
+                    }
+                }
+                logger.info("Added {} new jobs to Memgraph.", jobsAdded);
+            }
+            logger.info("Data synchronization process finished.");
 
         } catch (Exception e) {
-            logger.error("Could not synchronize fallback data with Memgraph. It might still be down.", e);
+            logger.error("A critical error occurred during data synchronization with Memgraph.", e);
         }
     }
 }

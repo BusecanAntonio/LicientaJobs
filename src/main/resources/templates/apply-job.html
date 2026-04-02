@@ -1,52 +1,52 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply for Job</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Aplica la un Job</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow-sm">
-                <div class="card-header">
-                    <h1>Job Application for <span th:text="${student.name}"></span></h1>
-                </div>
-                <div class="card-body">
-                    <form th:action="@{/students/{studentId}/apply(studentId=${student.id})}"
-                          th:object="${application}" method="post">
-                        <div class="mb-3">
-                            <label for="jobTitle" class="form-label">Job Title:</label>
-                            <input id="jobTitle" th:field="*{jobTitle}" type="text" class="form-control" required/>
-                        </div>
-                        <div class="mb-3">
-                            <label for="company" class="form-label">Company:</label>
-                            <input id="company" th:field="*{company}" type="text" class="form-control" required/>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description:</label>
-                            <textarea id="description" th:field="*{description}" class="form-control"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="licentaGrade" class="form-label">Thesis Grade (Optional):</label>
-                            <input id="licentaGrade" th:field="*{licentaGrade}" type="text" class="form-control"/>
-                        </div>
-                        <div class="mb-3">
-                            <label for="courseGrades" class="form-label">Course Grades (Optional, e.g., Math: 10, OOP: 9):</label>
-                            <input id="courseGrades" th:field="*{courseGrades}" type="text" class="form-control"/>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit Application</button>
-                        <a th:href="@{/students}" class="btn btn-secondary">Back to Students</a>
+<div class="container mt-5">
+    <h1 class="text-center">Joburi Disponibile</h1>
+    <h4 class="text-center text-muted"> Aplicant  <span th:text="${student.name}"></span></h4>
+
+    <div class="table-responsive mt-4">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th>Companie</th>
+                <th>Job</th>
+                <th>Descriere</th>
+                <th>Orar</th>
+                <th>Actiune</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="job : ${availableJobs}">
+                <td th:text="${job.company}"></td>
+                <td th:text="${job.jobTitle}"></td>
+                <td th:text="${job.description}"></td>
+                <td>
+                    <table class="table table-sm">
+                        <tr><td><strong>Tura:</strong></td><td th:text="${job.workSchedule['shift']}"></td></tr>
+                        <tr><td><strong>Program:</strong></td><td th:text="${job.workSchedule['startTime']} + ' - ' + ${job.workSchedule['endTime']}"></td></tr>
+                        <tr><td><strong>Pauza:</strong></td><td th:text="${job.workSchedule['breakTime']}"></td></tr>
+                    </table>
+                </td>
+                <td>
+                    <form th:action="@{/students/{id}/apply(id=${student.id})}" method="post">
+                        <input type="hidden" name="id" th:value="${job.id}" />
+                        <button type="submit" class="btn btn-success">Aplica</button>
                     </form>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/students}" class="btn btn-secondary">Inapoi</a>
     </div>
 </div>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

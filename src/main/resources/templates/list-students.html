@@ -1,183 +1,182 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Students Dashboard</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Lista Studenti</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .notification-btn { position: relative; }
-        .notification-badge { position: absolute; top: 0; right: 0; transform: translate(50%, -50%); display: none; }
-        .admin-controls { display: none; }
-        body.show-admin .admin-controls { display: table-cell; }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .table-responsive {
+            margin-top: 20px;
+        }
+        .schedule-table {
+            width: 100%;
+            font-size: 0.9em;
+        }
+        .schedule-table td {
+            padding: 2px 5px;
+        }
+        .admin-controls {
+            display: none; /* Initially hidden */
+        }
+        /* Notification bar styles */
+        #notification-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #28a745; /* Green for success */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a class="navbar-brand" href="#">LicientaJobs Dashboard</a>
-        <div class="d-flex align-items-center">
-            <!-- Admin Toggle -->
-            <div class="form-check form-switch text-light me-4">
-                <input class="form-check-input" type="checkbox" id="adminModeSwitch">
-                <label class="form-check-label" for="adminModeSwitch">Admin Mode</label>
-            </div>
-
-            <!-- Notifications -->
-            <div class="dropdown">
-                <button class="btn btn-outline-light notification-btn" type="button" id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    🔔 <span class="badge bg-danger rounded-pill notification-badge" id="notificationCount">0</span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" id="notificationList" style="min-width: 300px; max-height: 400px; overflow-y: auto;">
-                    <li class="dropdown-header">Recent Notifications</li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li class="text-center text-muted" id="noNotifications">No new notifications</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</nav>
+<div id="notification-bar"></div>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>All Students</h2>
-        <a th:href="@{/students/add}" class="btn btn-primary">Add New Student</a>
+        <h1 class="text-center">Lista de Studenti</h1>
+        <button id="admin-toggle" class="btn btn-secondary">Admin Mode: OFF</button>
     </div>
 
-    <div th:each="student : ${students}" class="card mb-4 shadow-sm">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0" th:text="${student.name}">Student Name</h5>
-            <span class="badge bg-secondary" th:text="'ID: ' + ${student.id}">ID</span>
-        </div>
+    <div th:each="student : ${students}" class="card">
+        <div class="card-header" th:text="${student.name}"></div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
-                    <p><strong>Age:</strong> <span th:text="${student.age}"></span></p>
-                    <p><strong>Major:</strong> <span th:text="${student.major}"></span></p>
-                    <p><strong>Phone:</strong> <span th:text="${student.phoneNumber}"></span></p>
-                </div>
-                <div class="col-md-6">
-                    <p><strong>Address:</strong> <span th:text="${student.address}"></span></p>
-                    <p><strong>Group:</strong> <span th:text="${student.group}"></span></p>
-                    <p><strong>Study Years:</strong> <span th:text="${student.startYear} + ' - ' + ${student.endYear}"></span></p>
-                    <p><strong>Quiz Result:</strong>
-                        <span th:if="${student.quizResult != null}" class="badge bg-success" th:text="${student.quizResult}"></span>
-                        <span th:if="${student.quizResult == null}" class="badge bg-warning text-dark">Not taken yet</span>
-                    </p>
-                </div>
-            </div>
-            <a th:href="@{/students/{studentId}/quiz(studentId=${student.id})}" class="btn btn-outline-info btn-sm">Take/Retake Quiz</a>
-        </div>
-        <div class="card-footer">
-            <h6>Job Applications</h6>
+            <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
+            <p><strong>Major:</strong> <span th:text="${student.major}"></span></p>
+            <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info mb-3">Completeaza Quiz pentru Recomandari</a>
+
             <div class="table-responsive">
-                <table class="table table-striped table-hover table-bordered align-middle mb-0">
-                    <thead class="table-dark">
+                <h5>Job Applications</h5>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
                     <tr>
-                        <th>Date</th>
-                        <th>Job Title</th>
-                        <th>Company</th>
-                        <th>Description</th>
-                        <th>Thesis Grade</th>
-                        <th>Course Grades</th>
+                        <th>Companie</th>
+                        <th>Job</th>
+                        <th>Descriere</th>
+                        <th>Orar</th>
                         <th>Status</th>
-                        <th class="admin-controls">Actions</th>
+                        <th class="admin-controls">Actiuni</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="app : ${student.jobApplications}">
-                        <td th:text="${app.applicationDate}"></td>
-                        <td th:text="${app.jobTitle}"></td>
+                    <tr th:each="app, iterStat : ${student.jobApplications}">
                         <td th:text="${app.company}"></td>
+                        <td th:text="${app.jobTitle}"></td>
                         <td th:text="${app.description}"></td>
-                        <td th:text="${app.licentaGrade}"></td>
-                        <td th:text="${app.courseGrades}"></td>
                         <td>
-                            <span th:class="'badge ' +
-                                (${app.status == 'ACCEPTED'} ? 'bg-success' :
-                                (${app.status == 'REJECTED'} ? 'bg-danger' : 'bg-warning text-dark'))"
-                                th:text="${app.status}">PENDING</span>
+                            <table class="schedule-table">
+                                <tr><td><strong>Tura:</strong></td><td th:text="${app.workSchedule['shift']}"></td></tr>
+                                <tr><td><strong>Start:</strong></td><td th:text="${app.workSchedule['startTime']}"></td></tr>
+                                <tr><td><strong>Sfarsit:</strong></td><td th:text="${app.workSchedule['endTime']}"></td></tr>
+                                <tr><td><strong>Pauza:</strong></td><td th:text="${app.workSchedule['breakTime']}"></td></tr>
+                            </table>
                         </td>
+                        <td th:text="${app.status}"></td>
                         <td class="admin-controls">
-                            <div class="btn-group" role="group" th:if="${app.status == 'PENDING'}">
-                                <form th:action="@{/students/{studentId}/applications/{appId}/update-status(studentId=${student.id}, appId=${app.id})}" method="post" style="display:inline;">
-                                    <input type="hidden" name="status" value="ACCEPTED"/>
-                                    <button type="submit" class="btn btn-sm btn-success" title="Accept">✓</button>
-                                </form>
-                                <form th:action="@{/students/{studentId}/applications/{appId}/update-status(studentId=${student.id}, appId=${app.id})}" method="post" style="display:inline;">
-                                    <input type="hidden" name="status" value="REJECTED"/>
-                                    <button type="submit" class="btn btn-sm btn-danger ms-1" title="Reject">✗</button>
-                                </form>
-                            </div>
-                            <span th:unless="${app.status == 'PENDING'}" class="text-muted small">Processed</span>
+                            <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display: inline-block;">
+                                <input type="hidden" name="status" value="ACCEPTED">
+                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                            </form>
+                            <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display: inline-block;">
+                                <input type="hidden" name="status" value="REJECTED">
+                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                            </form>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(student.jobApplications)}">
-                        <td colspan="8" class="text-center">No job applications yet.</td>
+                        <td colspan="6" class="text-center">Nici o aplicare deocamdata.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <a th:href="@{/students/{studentId}/apply(studentId=${student.id})}" class="btn btn-success mt-3">Apply for New Job</a>
+            <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">Aplica la un job nou</a>
         </div>
     </div>
 </div>
 
-<!-- WebSocket Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Include SockJS and STOMP.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function() {
-        const adminSwitch = document.getElementById('adminModeSwitch');
-        const body = document.body;
+<script>
+    const adminToggle = document.getElementById('admin-toggle');
+    let adminMode = false;
 
-        if (localStorage.getItem('adminMode') === 'true') {
-            adminSwitch.checked = true;
-            body.classList.add('show-admin');
-        }
-
-        adminSwitch.addEventListener('change', function() {
-            if (this.checked) {
-                body.classList.add('show-admin');
-                localStorage.setItem('adminMode', 'true');
-            } else {
-                body.classList.remove('show-admin');
-                localStorage.setItem('adminMode', 'false');
-            }
-        });
-
-        var socket = new SockJS('/ws');
-        var stompClient = Stomp.over(socket);
-        var notificationCount = 0;
-        var notificationList = document.getElementById('notificationList');
-        var notificationBadge = document.getElementById('notificationCount');
-        var noNotificationsMsg = document.getElementById('noNotifications');
-
-        stompClient.connect({}, function (frame) {
-            stompClient.subscribe('/topic/students', function (message) {
-                if (noNotificationsMsg) {
-                    noNotificationsMsg.style.display = 'none';
-                }
-                var li = document.createElement('li');
-                li.innerHTML = '<a class="dropdown-item" href="#" onclick="location.reload()">' + message.body + '</a>';
-                var divider = notificationList.querySelector('hr.dropdown-divider').parentNode;
-                if (divider && divider.nextSibling) {
-                     notificationList.insertBefore(li, divider.nextSibling);
-                } else {
-                     notificationList.appendChild(li);
-                }
-                notificationCount++;
-                notificationBadge.innerText = notificationCount;
-                notificationBadge.style.display = 'inline-block';
-            });
-        });
+    adminToggle.addEventListener('click', () => {
+        adminMode = !adminMode;
+        updateView();
     });
+
+    function updateView() {
+        const adminControls = document.querySelectorAll('.admin-controls');
+        const applyButtons = document.querySelectorAll('.apply-button');
+
+        if (adminMode) {
+            adminToggle.textContent = 'Admin Mode: ON';
+            adminToggle.classList.remove('btn-secondary');
+            adminToggle.classList.add('btn-danger');
+            adminControls.forEach(c => c.style.display = 'table-cell');
+            applyButtons.forEach(b => b.style.display = 'none');
+        } else {
+            adminToggle.textContent = 'Admin Mode: OFF';
+            adminToggle.classList.remove('btn-danger');
+            adminToggle.classList.add('btn-secondary');
+            adminControls.forEach(c => c.style.display = 'none');
+            applyButtons.forEach(b => b.style.display = 'inline-block');
+        }
+    }
+
+    // Initial view setup
+    updateView();
+
+    // WebSocket Notification Logic
+    const notificationBar = document.getElementById('notification-bar');
+    let stompClient = null;
+
+    function connect() {
+        const socket = new SockJS('/ws'); // '/ws' is the endpoint configured in WebSocketConfig
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, frame => {
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/students', message => {
+                showNotification(message.body);
+            });
+        }, error => {
+            console.error('STOMP error: ' + error);
+            // Optional: Reconnect after a delay
+            setTimeout(connect, 5000);
+        });
+    }
+
+    function showNotification(message) {
+        notificationBar.textContent = message;
+        notificationBar.style.display = 'block';
+        setTimeout(() => {
+            notificationBar.style.display = 'none';
+        }, 5000); // Hide after 5 seconds
+    }
+
+    // Connect to WebSocket when the page loads
+    connect();
 </script>
+
 </body>
 </html>

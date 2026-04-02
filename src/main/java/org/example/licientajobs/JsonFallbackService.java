@@ -24,51 +24,35 @@ public class JsonFallbackService {
     public JsonFallbackService() {
         this.objectMapper = new ObjectMapper();
         this.objectMapper.registerModule(new JavaTimeModule());
-        // Ignore properties in JSON that are not in the Java class (e.g., old fields like "age")
         this.objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }
 
     @PostConstruct
     public void init() {
-        logger.info("Initializing JsonFallbackService. File path: {}", fallbackFile.getAbsolutePath());
+        logger.info("JsonFallbackService initialized. Using file: {}", fallbackFile.getAbsolutePath());
         if (!fallbackFile.exists()) {
-            try {
-                if (fallbackFile.createNewFile()) {
-                    logger.info("Created fallback file: {}", fallbackFile.getAbsolutePath());
-                    writeAllStudents(new ArrayList<>()); // Initialize with empty list
-                }
-            } catch (IOException e) {
-                logger.error("Could not create fallback file: {}", fallbackFile.getAbsolutePath(), e);
-            }
+            logger.warn("Fallback data file not found at: {}. The application may not have initial data.", fallbackFile.getAbsolutePath());
         }
     }
 
-    public List<Student> readAllStudents() {
+    public FallbackData readFallbackData() {
         if (!fallbackFile.exists()) {
-            return new ArrayList<>();
+            return new FallbackData();
         }
         try {
-            return objectMapper.readValue(fallbackFile, new TypeReference<>() {});
+            return objectMapper.readValue(fallbackFile, FallbackData.class);
         } catch (IOException e) {
             logger.error("Error reading from fallback file: {}", fallbackFile.getAbsolutePath(), e);
-            return new ArrayList<>();
+            return new FallbackData();
         }
     }
 
-    public void writeAllStudents(List<Student> students) {
+    public void writeFallbackData(FallbackData data) {
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(fallbackFile, students);
-            logger.info("Successfully wrote {} students to fallback file: {}", students.size(), fallbackFile.getAbsolutePath());
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(fallbackFile, data);
+            logger.info("Successfully wrote data to fallback file: {}", fallbackFile.getAbsolutePath());
         } catch (IOException e) {
             logger.error("Error writing to fallback file: {}", fallbackFile.getAbsolutePath(), e);
         }
-    }
-
-    public void saveStudent(Student student) {
-        List<Student> students = readAllStudents();
-        // Remove if exists (update logic)
-        students.removeIf(s -> s.getId() != null && s.getId().equals(student.getId()));
-        students.add(student);
-        writeAllStudents(students);
     }
 }

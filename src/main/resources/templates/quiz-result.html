@@ -1,30 +1,51 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Result</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Rezultat Quiz</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container mt-5 text-center">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg p-5">
-                <div class="card-body">
-                    <h1 class="display-4 mb-4">Rezultatul Tău</h1>
-                    <p class="lead">Trăsătura ta dominantă este:</p>
-                    <h2 class="text-primary fw-bold" th:text="${result}">LEADERSHIP</h2>
-                    <hr class="my-4">
-                    <p class="text-muted" th:text="${description}">Descrierea trăsăturii...</p>
-                    <a th:href="@{/students}" class="btn btn-lg btn-success mt-4">Înapoi la Dashboard</a>
-                </div>
-            </div>
+<div class="container mt-5">
+    <h1 class="text-center">Jobul Potrivit Pentru Tine</h1>
+
+    <div th:if="${recommendedJob != null}" class="card mt-4">
+        <div class="card-header bg-success text-white">
+            <h3>Recomandarea Noastra</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title" th:text="${recommendedJob.jobTitle}"></h5>
+            <h6 class="card-subtitle mb-2 text-muted" th:text="${recommendedJob.company}"></h6>
+            <p class="card-text" th:text="${recommendedJob.description}"></p>
+            <table class="table table-sm">
+                <tr>
+                    <td><strong>Tura:</strong></td>
+                    <td th:text="${recommendedJob.workSchedule['shift']}"></td>
+                </tr>
+                <tr>
+                    <td><strong>Program:</strong></td>
+                    <td th:text="${recommendedJob.workSchedule['startTime']} + ' - ' + ${recommendedJob.workSchedule['endTime']}"></td>
+                </tr>
+                <tr>
+                    <td><strong>Pauza:</strong></td>
+                    <td th:text="${recommendedJob.workSchedule['breakTime']}"></td>
+                </tr>
+            </table>
+            <form th:action="@{/students/{id}/apply(id=${studentId})}" method="post">
+                <input type="hidden" name="id" th:value="${recommendedJob.id}" />
+                <button type="submit" class="btn btn-success">Aplica Acum</button>
+            </form>
         </div>
     </div>
+
+    <div th:if="${recommendedJob == null}" class="alert alert-warning mt-4">
+        Ne pare rau, nu am gasit un job care sa se potriveasca perfect cu preferintele tale. Incearca din nou!
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/students}" class="btn btn-primary">Inapoi la Lista de Studenti</a>
+    </div>
+
 </div>
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

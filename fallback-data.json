@@ -1,24 +1,919 @@
-[ {
-  "id" : 2809,
-  "name" : "Andrei Busecan",
-  "email" : "andrei.antonio29@yahoo.com",
-  "dateOfBirth" : [ 2002, 1, 21 ],
-  "major" : "Programator",
-  "phoneNumber" : "0771400490",
-  "address" : "mm tamaia strada trandafirilor nr 13",
-  "group" : "2",
-  "startYear" : 2022,
-  "endYear" : 2026,
-  "quizResult" : "EMPATIE",
-  "jobApplications" : [ {
-    "id" : 2812,
-    "jobTitle" : "Teacher",
-    "company" : "UTCluj",
-    "description" : "asd",
+{
+  "students" : [ {
+    "id" : 2939,
+    "name" : "Andrei Busecan",
+    "email" : "andrei.antonio29@yahoo.com",
+    "dateOfBirth" : [ 2002, 1, 21 ],
+    "major" : "Programator",
+    "phoneNumber" : "0771400490",
+    "address" : "mm tamaia strada trandafirilor nr 13",
+    "group" : "2",
+    "startYear" : 2022,
+    "endYear" : 2026,
+    "quizResult" : "Electrica,Noaptea,Remote,Start-up",
+    "notifications" : [ "Your application for QA Tester at Electronic Arts was accepted.", "Your application for Sound Designer at Sony Interactive Entertainment was rejected." ],
+    "jobApplications" : [ {
+      "id" : 2940,
+      "jobTitle" : "QA Tester",
+      "company" : "Electronic Arts",
+      "description" : "Ensuring the quality of our latest titles.",
+      "licentaGrade" : null,
+      "courseGrades" : null,
+      "status" : "ACCEPTED",
+      "workSchedule" : {
+        "startTime" : "14:00",
+        "breakTime" : "18:00 - 18:30",
+        "endTime" : "22:00",
+        "shift" : "După-amiaza"
+      },
+      "applicationDate" : null
+    }, {
+      "id" : 2998,
+      "jobTitle" : "Sound Designer",
+      "company" : "Sony Interactive Entertainment",
+      "description" : "Creating immersive audio experiences for games.",
+      "licentaGrade" : null,
+      "courseGrades" : null,
+      "status" : "REJECTED",
+      "workSchedule" : {
+        "startTime" : "13:00",
+        "breakTime" : "17:00 - 17:30",
+        "endTime" : "21:00",
+        "shift" : "După-amiaza"
+      },
+      "applicationDate" : null
+    } ],
+    "age" : 24
+  } ],
+  "availableJobs" : [ {
+    "id" : 2813,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : "9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2814,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : "8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2815,
+    "jobTitle" : "3D Artist",
+    "company" : "Rockstar Games",
+    "description" : "Creating stunning visuals for our open-world games.",
+    "licentaGrade" : "9.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 15:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2816,
+    "jobTitle" : "Level Designer",
+    "company" : "CD Projekt Red",
+    "description" : "Designing immersive and engaging game levels.",
+    "licentaGrade" : "9.2",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2817,
+    "jobTitle" : "Game Designer",
+    "company" : "Nintendo",
+    "description" : "Creating innovative and fun gameplay mechanics.",
+    "licentaGrade" : "9.8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2818,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : "9.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2819,
+    "jobTitle" : "Frontend Developer",
+    "company" : "Facebook",
+    "description" : "Developing user-facing features for billions of users.",
+    "licentaGrade" : "9.1",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "12:30 - 13:30",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2820,
+    "jobTitle" : "Backend Developer",
+    "company" : "Amazon",
+    "description" : "Working on the backbone of the world's largest e-commerce platform.",
+    "licentaGrade" : "9.3",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "22:00",
+      "breakTime" : "02:00 - 02:30",
+      "endTime" : "06:00",
+      "shift" : "Noaptea"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2821,
+    "jobTitle" : "DevOps Engineer",
+    "company" : "Microsoft",
+    "description" : "Automating and improving development and release processes.",
+    "licentaGrade" : "8.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2822,
+    "jobTitle" : "Data Scientist",
+    "company" : "Netflix",
+    "description" : "Analyzing viewer data to personalize recommendations.",
+    "licentaGrade" : "9.7",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 14:30",
+      "endTime" : "18:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2823,
+    "jobTitle" : "Cybersecurity Analyst",
+    "company" : "Apple",
+    "description" : "Protecting user data and company infrastructure.",
+    "licentaGrade" : "9.4",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "00:00",
+      "breakTime" : "04:00 - 04:30",
+      "endTime" : "08:00",
+      "shift" : "Noaptea"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2824,
+    "jobTitle" : "UI/UX Designer",
+    "company" : "Spotify",
+    "description" : "Designing intuitive and beautiful user interfaces.",
+    "licentaGrade" : "9.6",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2825,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : "9.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2826,
+    "jobTitle" : "Mobile Developer (iOS)",
+    "company" : "Lyft",
+    "description" : "Building the next generation of our iOS application.",
+    "licentaGrade" : "8.8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "12:00",
+      "breakTime" : "16:00 - 16:30",
+      "endTime" : "20:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2827,
+    "jobTitle" : "Mobile Developer (Android)",
+    "company" : "Uber",
+    "description" : "Developing new features for the Uber Android app.",
+    "licentaGrade" : "8.7",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "12:00",
+      "breakTime" : "16:00 - 16:30",
+      "endTime" : "20:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2828,
+    "jobTitle" : "Cloud Architect",
+    "company" : "IBM",
+    "description" : "Designing and implementing cloud solutions for enterprise clients.",
+    "licentaGrade" : "9.1",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2829,
+    "jobTitle" : "Machine Learning Engineer",
+    "company" : "NVIDIA",
+    "description" : "Developing and deploying machine learning models.",
+    "licentaGrade" : "9.8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 15:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2830,
+    "jobTitle" : "Firmware Engineer",
+    "company" : "Intel",
+    "description" : "Writing low-level code for hardware devices.",
+    "licentaGrade" : "8.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 12:30",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2831,
+    "jobTitle" : "Technical Writer",
+    "company" : "Oracle",
+    "description" : "Creating clear and concise documentation for complex software.",
+    "licentaGrade" : "8.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2832,
+    "jobTitle" : "IT Support Specialist",
+    "company" : "Dell",
+    "description" : "Providing technical assistance to customers.",
+    "licentaGrade" : "8.2",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (24/7)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2833,
+    "jobTitle" : "Game Producer",
+    "company" : "Blizzard Entertainment",
+    "description" : "Managing the production pipeline of new games.",
+    "licentaGrade" : "9.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "11:00",
+      "breakTime" : "15:00 - 16:00",
+      "endTime" : "19:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2834,
+    "jobTitle" : "Narrative Designer",
+    "company" : "BioWare",
+    "description" : "Crafting compelling stories and characters.",
+    "licentaGrade" : "9.3",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 15:00",
+      "endTime" : "18:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2835,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : "9.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2836,
+    "jobTitle" : "Animator",
+    "company" : "Pixar",
+    "description" : "Bringing characters to life through animation.",
+    "licentaGrade" : "9.8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2837,
+    "jobTitle" : "Concept Artist",
+    "company" : "Square Enix",
+    "description" : "Visualizing worlds, characters, and creatures.",
+    "licentaGrade" : "9.6",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 15:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2838,
+    "jobTitle" : "Systems Engineer",
+    "company" : "SpaceX",
+    "description" : "Designing and managing complex engineering systems.",
+    "licentaGrade" : "9.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (24/7)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2839,
+    "jobTitle" : "Network Engineer",
+    "company" : "Cisco",
+    "description" : "Building and maintaining network infrastructure.",
+    "licentaGrade" : "8.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "23:00",
+      "breakTime" : "03:00 - 03:30",
+      "endTime" : "07:00",
+      "shift" : "Noaptea"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2840,
+    "jobTitle" : "Database Administrator",
+    "company" : "Oracle",
+    "description" : "Managing and maintaining large-scale databases.",
+    "licentaGrade" : "9.1",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (24/7)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2841,
+    "jobTitle" : "Business Analyst",
+    "company" : "Deloitte",
+    "description" : "Analyzing business processes and recommending improvements.",
+    "licentaGrade" : "9.2",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2842,
+    "jobTitle" : "Marketing Manager",
+    "company" : "Coca-Cola",
+    "description" : "Developing and executing marketing campaigns.",
+    "licentaGrade" : "8.8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2843,
+    "jobTitle" : "HR Specialist",
+    "company" : "Zitec",
+    "description" : "Managing recruitment, onboarding, and employee relations.",
+    "licentaGrade" : "8.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2844,
+    "jobTitle" : "Content Creator (Gaming)",
+    "company" : "YouTube",
+    "description" : "Creating engaging video content for a gaming audience.",
+    "licentaGrade" : "8.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2845,
+    "jobTitle" : "Esports Coach",
+    "company" : "Fnatic",
+    "description" : "Training and mentoring a professional esports team.",
+    "licentaGrade" : "8.7",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "18:00",
+      "breakTime" : "N/A",
+      "endTime" : "22:00",
+      "shift" : "Flexibil (seara și weekend)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2846,
+    "jobTitle" : "Community Manager",
+    "company" : "Discord",
+    "description" : "Building and nurturing online communities.",
+    "licentaGrade" : "8.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "Flexibil (după-amiaza și seara)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2847,
+    "jobTitle" : "VR/AR Developer",
+    "company" : "Oculus",
+    "description" : "Developing immersive virtual and augmented reality experiences.",
+    "licentaGrade" : "9.7",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 15:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2848,
+    "jobTitle" : "Blockchain Developer",
+    "company" : "ConsenSys",
+    "description" : "Building decentralized applications on the Ethereum blockchain.",
+    "licentaGrade" : "9.4",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil (Remote)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2849,
+    "jobTitle" : "AI Research Scientist",
+    "company" : "DeepMind",
+    "description" : "Conducting cutting-edge research in artificial intelligence.",
     "licentaGrade" : "10",
     "courseGrades" : "",
-    "status" : "ACCEPTED",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "N/A",
+      "breakTime" : "N/A",
+      "endTime" : "N/A",
+      "shift" : "Flexibil (cercetare)"
+    },
     "applicationDate" : null
-  } ],
-  "age" : 24
-} ]
+  }, {
+    "id" : 2850,
+    "jobTitle" : "Full-Stack Developer",
+    "company" : "Vinted",
+    "description" : "Working on both the frontend and backend of a web application.",
+    "licentaGrade" : "9.3",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2851,
+    "jobTitle" : "Site Reliability Engineer",
+    "company" : "Dropbox",
+    "description" : "Ensuring the reliability and scalability of our services.",
+    "licentaGrade" : "9.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (24/7)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2852,
+    "jobTitle" : "Growth Hacker",
+    "company" : "Bolt",
+    "description" : "Using creative, low-cost strategies to acquire and retain customers.",
+    "licentaGrade" : "8.8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "N/A",
+      "breakTime" : "N/A",
+      "endTime" : "N/A",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2853,
+    "jobTitle" : "Automation Engineer",
+    "company" : "UiPath",
+    "description" : "Building and maintaining automated testing frameworks.",
+    "licentaGrade" : "9.2",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2854,
+    "jobTitle" : "Embedded Systems Engineer",
+    "company" : "Garmin",
+    "description" : "Developing software for embedded devices.",
+    "licentaGrade" : "9.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "08:30",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2855,
+    "jobTitle" : "Solution Architect",
+    "company" : "Endava",
+    "description" : "Designing technical solutions to meet business needs.",
+    "licentaGrade" : "9.4",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2856,
+    "jobTitle" : "Penetration Tester",
+    "company" : "Bitdefender",
+    "description" : "Conducting ethical hacking to identify security vulnerabilities.",
+    "licentaGrade" : "9.6",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "15:00",
+      "breakTime" : "19:00 - 19:30",
+      "endTime" : "23:00",
+      "shift" : "Flexibil (după-amiaza și seara)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2857,
+    "jobTitle" : "Scrum Master",
+    "company" : "ING",
+    "description" : "Facilitating Agile development processes.",
+    "licentaGrade" : "8.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2858,
+    "jobTitle" : "Data Engineer",
+    "company" : "Zalando",
+    "description" : "Building and maintaining data pipelines.",
+    "licentaGrade" : "9.3",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2859,
+    "jobTitle" : "Cloud Security Engineer",
+    "company" : "Palo Alto Networks",
+    "description" : "Securing cloud environments and services.",
+    "licentaGrade" : "9.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (24/7)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2860,
+    "jobTitle" : "Quantum Computing Researcher",
+    "company" : "IBM Research",
+    "description" : "Exploring the frontiers of quantum computing.",
+    "licentaGrade" : "10",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "N/A",
+      "breakTime" : "N/A",
+      "endTime" : "N/A",
+      "shift" : "Flexibil (cercetare)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2861,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : "9.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2862,
+    "jobTitle" : "Bioinformatics Specialist",
+    "company" : "Roche",
+    "description" : "Analyzing biological data using computational tools.",
+    "licentaGrade" : "9.7",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2863,
+    "jobTitle" : "IT Administrator",
+    "company" : "NTT Data",
+    "description" : "Managing company's IT infrastructure.",
+    "licentaGrade" : "8.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (24/7)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2864,
+    "jobTitle" : "Helpdesk Technician",
+    "company" : "Stefanini",
+    "description" : "Providing first-level technical support.",
+    "licentaGrade" : "8.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "07:00",
+      "breakTime" : "Variabil",
+      "endTime" : "23:00",
+      "shift" : "În ture (dimineața, după-amiaza)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2865,
+    "jobTitle" : "Inginer Constructor",
+    "company" : "Strabag",
+    "description" : "Supervising and managing construction projects.",
+    "licentaGrade" : "9.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "07:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2866,
+    "jobTitle" : "Manager de Proiect Constructii",
+    "company" : "Porr",
+    "description" : "Overseeing all aspects of building projects.",
+    "licentaGrade" : "9.2",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2867,
+    "jobTitle" : "Arhitect",
+    "company" : "Tesseract Architecture",
+    "description" : "Designing buildings and structures.",
+    "licentaGrade" : "9.5",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2868,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : "9.1",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2869,
+    "jobTitle" : "Tehnician Electromecanic",
+    "company" : "Enel",
+    "description" : "Maintaining and repairing electrical and mechanical equipment.",
+    "licentaGrade" : "8.6",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "Variabil",
+      "breakTime" : "Variabil",
+      "endTime" : "Variabil",
+      "shift" : "În ture (zi, noapte)"
+    },
+    "applicationDate" : null
+  }, {
+    "id" : 2870,
+    "jobTitle" : "Automatist",
+    "company" : "Continental",
+    "description" : "Developing and implementing automation systems.",
+    "licentaGrade" : "9.3",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null
+  } ]
+}

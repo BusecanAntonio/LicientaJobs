@@ -1,11 +1,14 @@
 package org.example.licientajobs;
 
+import org.springframework.data.neo4j.core.schema.CompositeProperty;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 @Node
 public class JobApplication {
@@ -20,6 +23,9 @@ public class JobApplication {
     private String licentaGrade;
     private String courseGrades;
     private String status = "PENDING";
+
+    @CompositeProperty
+    private Map<String, String> workSchedule = new HashMap<>(); // Use Map instead of custom class
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate applicationDate;
@@ -46,6 +52,9 @@ public class JobApplication {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public Map<String, String> getWorkSchedule() { return workSchedule; }
+    public void setWorkSchedule(Map<String, String> workSchedule) { this.workSchedule = workSchedule; }
 
     public LocalDate getApplicationDate() { return applicationDate; }
     public void setApplicationDate(LocalDate applicationDate) { this.applicationDate = applicationDate; }

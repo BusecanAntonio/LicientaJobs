@@ -32,6 +32,8 @@ public class Student {
     private Integer endYear;
     private String quizResult; // To store the dominant trait
 
+    private List<String> notifications = new ArrayList<>();
+
     @Relationship(type = "APPLIED_FOR", direction = Relationship.Direction.OUTGOING)
     private List<JobApplication> jobApplications = new ArrayList<>();
 
@@ -74,6 +76,16 @@ public class Student {
 
     public String getQuizResult() { return quizResult; }
     public void setQuizResult(String quizResult) { this.quizResult = quizResult; }
+
+    public List<String> getNotifications() { return notifications; }
+    public void setNotifications(List<String> notifications) { this.notifications = notifications; }
+    
+    public void addNotification(String notification) {
+        if (this.notifications == null) {
+            this.notifications = new ArrayList<>();
+        }
+        this.notifications.add(notification);
+    }
 
     public List<JobApplication> getJobApplications() { return jobApplications; }
     public void setJobApplications(List<JobApplication> jobApplications) { this.jobApplications = jobApplications; }
