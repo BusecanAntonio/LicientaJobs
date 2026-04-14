@@ -10,7 +10,7 @@
     "group" : "2",
     "startYear" : 2022,
     "endYear" : 2026,
-    "quizResult" : "Electrica,Noaptea,Remote,Start-up",
+    "quizResult" : "IT,Dupa-amiaza,Remote,Corporatie",
     "notifications" : [ "Your application for QA Tester at Electronic Arts was accepted.", "Your application for Sound Designer at Sony Interactive Entertainment was rejected." ],
     "jobApplications" : [ {
       "id" : 2940,
@@ -39,6 +39,36 @@
         "startTime" : "13:00",
         "breakTime" : "17:00 - 17:30",
         "endTime" : "21:00",
+        "shift" : "După-amiaza"
+      },
+      "applicationDate" : null
+    }, {
+      "id" : 2999,
+      "jobTitle" : "Product Manager",
+      "company" : "Twitter",
+      "description" : "Defining the product vision and roadmap.",
+      "licentaGrade" : null,
+      "courseGrades" : null,
+      "status" : "PENDING",
+      "workSchedule" : {
+        "startTime" : "09:00",
+        "breakTime" : "13:00 - 14:00",
+        "endTime" : "17:00",
+        "shift" : "Dimineața"
+      },
+      "applicationDate" : null
+    }, {
+      "id" : 3000,
+      "jobTitle" : "QA Tester",
+      "company" : "Electronic Arts",
+      "description" : "Ensuring the quality of our latest titles.",
+      "licentaGrade" : null,
+      "courseGrades" : null,
+      "status" : "PENDING",
+      "workSchedule" : {
+        "startTime" : "14:00",
+        "breakTime" : "18:00 - 18:30",
+        "endTime" : "22:00",
         "shift" : "După-amiaza"
       },
       "applicationDate" : null

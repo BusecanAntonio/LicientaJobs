@@ -6,7 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Optional; // Keep Optional for other potential uses, though not directly used for job existence check anymore
 
 @Component
 public class DataSynchronizer implements CommandLineRunner {
@@ -63,8 +63,8 @@ public class DataSynchronizer implements CommandLineRunner {
                 logger.info("Checking {} jobs from fallback file...", fallbackJobs.size());
                 int jobsAdded = 0;
                 for (JobApplication job : fallbackJobs) {
-                    Optional<JobApplication> existingJob = jobApplicationRepository.findByJobTitleAndCompany(job.getJobTitle(), job.getCompany());
-                    if (existingJob.isEmpty()) {
+                    // Use existsByJobTitleAndCompany for checking existence
+                    if (!jobApplicationRepository.existsByJobTitleAndCompany(job.getJobTitle(), job.getCompany())) {
                         job.setId(null);
                         jobApplicationRepository.save(job);
                         jobsAdded++;
