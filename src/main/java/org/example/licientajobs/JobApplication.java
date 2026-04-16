@@ -23,6 +23,7 @@ public class JobApplication {
     private String licentaGrade;
     private String courseGrades;
     private String status = "PENDING";
+    private boolean interviu;
 
     @CompositeProperty
     private Map<String, String> workSchedule = new HashMap<>(); // Use Map instead of custom class
@@ -52,6 +53,9 @@ public class JobApplication {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+    
+    public boolean isInterviu() { return interviu; }
+    public void setInterviu(boolean interviu) { this.interviu = interviu; }
 
     public Map<String, String> getWorkSchedule() { return workSchedule; }
     public void setWorkSchedule(Map<String, String> workSchedule) { this.workSchedule = workSchedule; }

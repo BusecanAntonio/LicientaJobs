@@ -25,11 +25,22 @@ public class HomeController {
     @GetMapping("/students/add")
     public String showAddStudentForm(Model model) {
         model.addAttribute("student", new Student());
+        model.addAttribute("availableJobs", studentService.findAllAvailableJobs());
         return "add-student";
     }
 
     @PostMapping("/students/add")
-    public String addStudent(@ModelAttribute Student student) {
+    public String addStudent(@ModelAttribute Student student, @RequestParam Map<String, String> allParams) {
+        // Extract dynamically generated answers from allParams
+        // They will have keys like 'applicationAnswers[...]'
+        for (Map.Entry<String, String> entry : allParams.entrySet()) {
+            if (entry.getKey().startsWith("applicationAnswers[")) {
+                String questionText = entry.getKey()
+                        .replace("applicationAnswers[", "")
+                        .replace("]", "");
+                student.getApplicationAnswers().put(questionText, entry.getValue());
+            }
+        }
         studentService.saveStudent(student);
         return "redirect:/students";
     }

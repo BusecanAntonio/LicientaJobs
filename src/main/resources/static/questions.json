@@ -1,0 +1,814 @@
+[
+  {
+    "jobId": 2813,
+    "questions": [
+      {
+        "questionText": "Care este principala provocare pe care ai întâmpinat-o în dezvoltarea unui joc?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce limbaje de programare preferi pentru game development?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["C++", "C#", "Python", "Java", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2814,
+    "questions": [
+      {
+        "questionText": "Descrie un bug critic pe care l-ai descoperit și cum ai procedat.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tip de testare consideri că este cel mai important?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Unit Testing", "Integration Testing", "Functional Testing", "Regression Testing"]
+      }
+    ]
+  },
+  {
+    "jobId": 2815,
+    "questions": [
+      {
+        "questionText": "Ce software folosești predominant pentru modelare 3D?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Blender", "Maya", "3ds Max", "ZBrush", "Altele"]
+      },
+      {
+        "questionText": "Cum abordezi optimizarea modelelor 3D pentru performanță în jocuri?",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "jobId": 2816,
+    "questions": [
+      {
+        "questionText": "Cum asiguri flow-ul și pacing-ul corespunzător într-un nivel de joc?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente preferi pentru level design?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Unreal Engine", "Unity", "In-house Tools", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2817,
+    "questions": [
+      {
+        "questionText": "Descrie procesul tău de creare a unei noi mecanici de joc.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce gen de jocuri preferi să dezvolți?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["RPG", "FPS", "Puzzle", "Platformer", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2818,
+    "questions": [
+      {
+        "questionText": "Cum abordezi scalabilitatea într-o aplicație complexă?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Care este limbajul tău principal de programare?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Java", "Python", "Go", "C++", "JavaScript"]
+      }
+    ]
+  },
+  {
+    "jobId": 2819,
+    "questions": [
+      {
+        "questionText": "Ce framework-uri de frontend folosești cel mai des?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["React", "Vue.js", "Angular", "Svelte", "Niciunul"]
+      },
+      {
+        "questionText": "Cum te asiguri că aplicația ta este accesibilă?",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "jobId": 2820,
+    "questions": [
+      {
+        "questionText": "Descrie o arhitectură backend pe care ai implementat-o.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tip de baze de date preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["RDBMS (SQL)", "NoSQL", "NewSQL", "Graph Databases"]
+      }
+    ]
+  },
+  {
+    "jobId": 2821,
+    "questions": [
+      {
+        "questionText": "Ce instrumente de CI/CD folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Jenkins", "GitLab CI", "GitHub Actions", "CircleCI", "Altele"]
+      },
+      {
+        "questionText": "Cum gestionezi infrastructura ca și cod (IaC)?",
+        "type": "TEXT"
+      }
+    ]
+  },
+  {
+    "jobId": 2822,
+    "questions": [
+      {
+        "questionText": "Cum abordezi curățarea și preprocesarea datelor?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce biblioteci de machine learning preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["TensorFlow", "PyTorch", "Scikit-learn", "Keras", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2823,
+    "questions": [
+      {
+        "questionText": "Care sunt principalele amenințări de securitate pe care le urmărești?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce framework-uri de securitate folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["NIST", "ISO 27001", "CIS Controls", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2824,
+    "questions": [
+      {
+        "questionText": "Care este procesul tău de la wireframe la prototip interactiv?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrument de design folosești cel mai des?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Figma", "Sketch", "Adobe XD", "InVision", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2825,
+    "questions": [
+      {
+        "questionText": "Cum prioritizezi funcționalitățile pe roadmap-ul produsului?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce metodologii de management al produsului preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Agile", "Scrum", "Kanban", "Waterfall"]
+      }
+    ]
+  },
+  {
+    "jobId": 2826,
+    "questions": [
+      {
+        "questionText": "Care este experiența ta cu Swift și Objective-C?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce arhitecturi folosești în dezvoltarea iOS?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["MVC", "MVVM", "VIPER", "TCA", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2827,
+    "questions": [
+      {
+        "questionText": "Descrie experiența ta cu Kotlin Coroutines.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce arhitecturi folosești în dezvoltarea Android?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["MVVM", "MVI", "MVP", "Clean Architecture", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2828,
+    "questions": [
+      {
+        "questionText": "Cum proiectezi o soluție cloud-native rezilientă?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce furnizor de cloud preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["AWS", "Azure", "GCP", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2829,
+    "questions": [
+      {
+        "questionText": "Cum gestionezi model drift și re-training-ul modelelor în producție?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce framework-uri deep learning folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["PyTorch", "TensorFlow", "JAX", "MXNet"]
+      }
+    ]
+  },
+  {
+    "jobId": 2830,
+    "questions": [
+      {
+        "questionText": "Care este cea mai complexă problemă de firmware pe care ai rezolvat-o?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce microcontrolere folosești frecvent?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["ARM Cortex-M", "AVR", "PIC", "ESP32", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2831,
+    "questions": [
+      {
+        "questionText": "Cum transformi informații tehnice complexe într-o documentație clară?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente de scriere tehnică folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Markdown", "MadCap Flare", "Confluence", "LaTeX", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2832,
+    "questions": [
+      {
+        "questionText": "Cum gestionezi un utilizator frustrat care are probleme tehnice?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce sisteme de operare oferi suport cel mai des?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Windows", "macOS", "Linux", "iOS/Android"]
+      }
+    ]
+  },
+  {
+    "jobId": 2833,
+    "questions": [
+      {
+        "questionText": "Cum gestionezi bugetul și termenele limită într-o producție de joc video?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce metodologii de project management folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Agile", "Scrum", "Waterfall", "Kanban"]
+      }
+    ]
+  },
+  {
+    "jobId": 2834,
+    "questions": [
+      {
+        "questionText": "Cum integrezi narațiunea cu gameplay-ul fără a încetini acțiunea?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente folosești pentru scrierea dialogurilor?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Twine", "articy:draft", "Inklewriter", "Word/Docs", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2835,
+    "questions": [
+      {
+        "questionText": "Descrie procesul tău de a crea un peisaj sonor pentru o scenă specifică.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce middleware audio folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Wwise", "FMOD", "Unreal Audio Engine", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2836,
+    "questions": [
+      {
+        "questionText": "Care este abordarea ta pentru a oferi greutate și impact unei animații?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce software folosești pentru animație?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Maya", "Blender", "Spine 2D", "Toon Boom", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2837,
+    "questions": [
+      {
+        "questionText": "Cum interpretezi un brief pentru a crea primele concepte vizuale?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce programe folosești predominant?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Photoshop", "Procreate", "Clip Studio Paint", "Corel Painter"]
+      }
+    ]
+  },
+  {
+    "jobId": 2838,
+    "questions": [
+      {
+        "questionText": "Cum asiguri integrarea corectă între diferite subsisteme complexe?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tip de sisteme ai proiectat anterior?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Sisteme Aerospațiale", "Sisteme Auto", "Telecomunicații", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2839,
+    "questions": [
+      {
+        "questionText": "Cum depanezi o problemă complexă de rețea care afectează mai multe locații?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce protocoale de routing stăpânești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["BGP", "OSPF", "EIGRP", "IS-IS"]
+      }
+    ]
+  },
+  {
+    "jobId": 2840,
+    "questions": [
+      {
+        "questionText": "Cum optimizezi interogările lente într-o bază de date de producție?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce sisteme de gestionare a bazelor de date (SGBD) administrezi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Oracle", "PostgreSQL", "MySQL", "SQL Server"]
+      }
+    ]
+  },
+  {
+    "jobId": 2841,
+    "questions": [
+      {
+        "questionText": "Cum colectezi și documentezi cerințele de la stakeholderi non-tehnici?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente folosești pentru maparea proceselor?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Visio", "Lucidchart", "Miro", "Bizagi"]
+      }
+    ]
+  },
+  {
+    "jobId": 2842,
+    "questions": [
+      {
+        "questionText": "Descrie o campanie de marketing de succes pe care ai condus-o.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce canale de marketing digital preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Social Media", "SEO/SEM", "Email Marketing", "Content Marketing"]
+      }
+    ]
+  },
+  {
+    "jobId": 2843,
+    "questions": [
+      {
+        "questionText": "Cum abordezi retenția angajaților într-o piață competitivă?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce software HRIS folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Workday", "BambooHR", "SAP SuccessFactors", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2844,
+    "questions": [
+      {
+        "questionText": "Cum menții audiența implicată în timpul unui livestream sau videoclip lung?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce platforme preferi pentru conținutul tău?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["YouTube", "Twitch", "TikTok", "Instagram"]
+      }
+    ]
+  },
+  {
+    "jobId": 2845,
+    "questions": [
+      {
+        "questionText": "Cum gestionezi conflictele între jucătorii echipei tale?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "În ce joc ești specializat ca antrenor?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["League of Legends", "CS:GO/CS2", "Valorant", "Dota 2", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2846,
+    "questions": [
+      {
+        "questionText": "Cum gestionezi o situație de criză PR sau feedback negativ în comunitate?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce platforme de comunitate folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Discord", "Reddit", "Forumuri dedicate", "Grupuri de Facebook"]
+      }
+    ]
+  },
+  {
+    "jobId": 2847,
+    "questions": [
+      {
+        "questionText": "Cum rezolvi problema 'motion sickness'-ului în experiențele VR?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce engine folosești pentru dezvoltarea XR?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Unity", "Unreal Engine", "WebXR", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2848,
+    "questions": [
+      {
+        "questionText": "Explică provocările securității în dezvoltarea smart contract-urilor.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce limbaj folosești pentru smart contracts?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Solidity", "Rust", "Vyper", "Altele"]
+      }
+    ]
+  },
+  {
+    "jobId": 2849,
+    "questions": [
+      {
+        "questionText": "Care este direcția de cercetare AI pe care o consideri cea mai promițătoare în prezent?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce domenii ale AI studiezi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Generative AI", "Reinforcement Learning", "Computer Vision", "NLP"]
+      }
+    ]
+  },
+  {
+    "jobId": 2850,
+    "questions": [
+      {
+        "questionText": "Cum asiguri performanța atât pe partea de client cât și pe server într-o aplicație full-stack?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce stack tehnologic preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["MERN/MEAN", "LAMP", "Spring Boot + React/Angular", "Django/Flask + Vue/React"]
+      }
+    ]
+  },
+  {
+    "jobId": 2851,
+    "questions": [
+      {
+        "questionText": "Descrie un incident major pe care l-ai rezolvat ca SRE și cum ai procedat post-mortem.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente de monitorizare folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Prometheus/Grafana", "Datadog", "New Relic", "Splunk"]
+      }
+    ]
+  },
+  {
+    "jobId": 2852,
+    "questions": [
+      {
+        "questionText": "Dă un exemplu de o inițiativă de growth hacking cu impact masiv la un buget redus.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Pe ce metrici te concentrezi în mod primar?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["CAC", "LTV", "Conversion Rate", "Churn Rate"]
+      }
+    ]
+  },
+  {
+    "jobId": 2853,
+    "questions": [
+      {
+        "questionText": "Cum decizi ce scenarii de test trebuie automatizate și ce trebuie testat manual?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente de automatizare preferi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Selenium", "Cypress", "Appium", "Playwright"]
+      }
+    ]
+  },
+  {
+    "jobId": 2854,
+    "questions": [
+      {
+        "questionText": "Cum gestionezi resursele limitate de memorie și procesare în sisteme embedded?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce limbaje folosești predominant pentru embedded?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["C", "C++", "Rust", "Assembly"]
+      }
+    ]
+  },
+  {
+    "jobId": 2855,
+    "questions": [
+      {
+        "questionText": "Cum asiguri alinierea între cerințele tehnice și obiectivele de business într-o propunere de soluție?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce domeniu cunoști cel mai bine pentru arhitectură?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Cloud Architecture", "Microservices", "Enterprise Architecture", "Data Architecture"]
+      }
+    ]
+  },
+  {
+    "jobId": 2856,
+    "questions": [
+      {
+        "questionText": "Care este metoda ta preferată pentru obținerea accesului inițial în timpul unui angajament de pentest?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce instrumente folosești cel mai frecvent?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Burp Suite", "Metasploit", "Nmap", "Wireshark"]
+      }
+    ]
+  },
+  {
+    "jobId": 2857,
+    "questions": [
+      {
+        "questionText": "Cum abordezi o echipă care nu respectă ceremoniile Agile sau este reticentă la schimbare?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce certificări deții?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["CSM", "PSM I/II/III", "PMI-ACP", "SAFe Scrum Master", "Niciuna"]
+      }
+    ]
+  },
+  {
+    "jobId": 2858,
+    "questions": [
+      {
+        "questionText": "Descrie o arhitectură complexă de procesare a datelor (batch sau streaming) pe care ai construit-o.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tehnologii Big Data utilizezi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Apache Spark", "Hadoop", "Kafka", "Airflow"]
+      }
+    ]
+  },
+  {
+    "jobId": 2859,
+    "questions": [
+      {
+        "questionText": "Cum implementezi modelul 'Zero Trust' într-un mediu multi-cloud?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Cu care medii cloud ești cel mai familiarizat în contextul securității?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["AWS", "Azure", "GCP", "Kubernetes/Container Security"]
+      }
+    ]
+  },
+  {
+    "jobId": 2860,
+    "questions": [
+      {
+        "questionText": "Explică un algoritm cuantic sau un concept de mitigare a erorilor la care ai lucrat.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce framework-uri cuantice folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Qiskit", "Cirq", "PennyLane", "Microsoft Quantum Development Kit"]
+      }
+    ]
+  },
+  {
+    "jobId": 2861,
+    "questions": [
+      {
+        "questionText": "Care este abordarea ta în rezolvarea problemelor complexe de cinematică inversă sau control al mișcării?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce medii de dezvoltare pentru robotică folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["ROS/ROS 2", "Gazebo", "MATLAB/Simulink", "Webots"]
+      }
+    ]
+  },
+  {
+    "jobId": 2862,
+    "questions": [
+      {
+        "questionText": "Descrie un pipeline de analiză a datelor genomice pe care l-ai implementat sau optimizat.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce limbaje sunt esențiale pentru munca ta în bioinformatică?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["R", "Python", "Perl", "Bash/Shell"]
+      }
+    ]
+  },
+  {
+    "jobId": 2863,
+    "questions": [
+      {
+        "questionText": "Cum asiguri continuitatea afacerii și recuperarea în caz de dezastru (DRP) pentru infrastructura IT?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce domenii ale infrastructurii administrezi cel mai des?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Windows Server/Active Directory", "Linux Servers", "Virtualizare (VMware/Hyper-V)", "Rețelistică și Securitate"]
+      }
+    ]
+  },
+  {
+    "jobId": 2864,
+    "questions": [
+      {
+        "questionText": "Cum procedezi când întâlnești o problemă tehnică pe care nu știi să o rezolvi imediat?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Care este timpul tău mediu de rezolvare a tichetelor (SLA)?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Sub 1 oră", "1-4 ore", "24 de ore", "Depinde de severitate"]
+      }
+    ]
+  },
+  {
+    "jobId": 2865,
+    "questions": [
+      {
+        "questionText": "Care sunt principalele riscuri pe care le iei în calcul la planificarea unei etape de construcție?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tip de structuri construiești cel mai des?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Rezidențiale", "Comerciale", "Industriale", "Infrastructură civilă"]
+      }
+    ]
+  },
+  {
+    "jobId": 2866,
+    "questions": [
+      {
+        "questionText": "Cum abordezi depășirile de buget și întârzierile într-un proiect major de construcții?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce software folosești pentru managementul de proiect în construcții?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Primavera P6", "MS Project", "Procore", "AutoCAD"]
+      }
+    ]
+  },
+  {
+    "jobId": 2867,
+    "questions": [
+      {
+        "questionText": "Cum echilibrezi estetica arhitecturală cu funcționalitatea practică și normele de siguranță?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce unelte de proiectare și modelare folosești?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["AutoCAD", "Revit", "ArchiCAD", "SketchUp"]
+      }
+    ]
+  },
+  {
+    "jobId": 2868,
+    "questions": [
+      {
+        "questionText": "Ce metode folosești pentru a asigura eficiența energetică a unui sistem electric complex?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tip de instalații electrice proiectezi/execuți?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Curenți Tari", "Curenți Slabi", "Automatizări", "Sisteme de Putere"]
+      }
+    ]
+  },
+  {
+    "jobId": 2869,
+    "questions": [
+      {
+        "questionText": "Care sunt procedurile tale standard pentru mentenanța preventivă a echipamentelor industriale?",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce tip de echipamente întreții cel mai des?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Motoare și generatoare", "Sisteme hidraulice/pneumatice", "Linii de asamblare automate", "Sisteme HVAC"]
+      }
+    ]
+  },
+  {
+    "jobId": 2870,
+    "questions": [
+      {
+        "questionText": "Descrie un sistem de control pe care l-ai optimizat sau implementat de la zero.",
+        "type": "TEXT"
+      },
+      {
+        "questionText": "Ce PLC-uri și sisteme SCADA programezi?",
+        "type": "MULTIPLE_CHOICE",
+        "options": ["Siemens (TIA Portal/Step 7)", "Allen-Bradley (Studio 5000)", "Schneider Electric", "Ignition SCADA / Wonderware"]
+      }
+    ]
+  }
+]

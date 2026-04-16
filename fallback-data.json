@@ -1,6 +1,6 @@
 {
   "students" : [ {
-    "id" : 2939,
+    "id" : 3100,
     "name" : "Andrei Busecan",
     "email" : "andrei.antonio29@yahoo.com",
     "dateOfBirth" : [ 2002, 1, 21 ],
@@ -10,16 +10,19 @@
     "group" : "2",
     "startYear" : 2022,
     "endYear" : 2026,
-    "quizResult" : "IT,Dupa-amiaza,Remote,Corporatie",
-    "notifications" : [ "Your application for QA Tester at Electronic Arts was accepted.", "Your application for Sound Designer at Sony Interactive Entertainment was rejected." ],
+    "quizResult" : "Electrica,Dimineata,Remote,Start-up",
+    "interestedDomainId" : null,
+    "applicationAnswers" : { },
+    "notifications" : [ "Your application for QA Tester at Electronic Arts was accepted.", "Your application for Sound Designer at Sony Interactive Entertainment was rejected.", "Your application for QA Tester at Electronic Arts was accepted." ],
     "jobApplications" : [ {
-      "id" : 2940,
+      "id" : 3101,
       "jobTitle" : "QA Tester",
       "company" : "Electronic Arts",
       "description" : "Ensuring the quality of our latest titles.",
       "licentaGrade" : null,
       "courseGrades" : null,
       "status" : "ACCEPTED",
+      "interviu" : false,
       "workSchedule" : {
         "startTime" : "14:00",
         "breakTime" : "18:00 - 18:30",
@@ -28,13 +31,14 @@
       },
       "applicationDate" : null
     }, {
-      "id" : 2998,
+      "id" : 3102,
       "jobTitle" : "Sound Designer",
       "company" : "Sony Interactive Entertainment",
       "description" : "Creating immersive audio experiences for games.",
       "licentaGrade" : null,
       "courseGrades" : null,
       "status" : "REJECTED",
+      "interviu" : false,
       "workSchedule" : {
         "startTime" : "13:00",
         "breakTime" : "17:00 - 17:30",
@@ -43,13 +47,14 @@
       },
       "applicationDate" : null
     }, {
-      "id" : 2999,
+      "id" : 3103,
       "jobTitle" : "Product Manager",
       "company" : "Twitter",
       "description" : "Defining the product vision and roadmap.",
       "licentaGrade" : null,
       "courseGrades" : null,
       "status" : "PENDING",
+      "interviu" : false,
       "workSchedule" : {
         "startTime" : "09:00",
         "breakTime" : "13:00 - 14:00",
@@ -58,13 +63,14 @@
       },
       "applicationDate" : null
     }, {
-      "id" : 3000,
+      "id" : 3104,
       "jobTitle" : "QA Tester",
       "company" : "Electronic Arts",
       "description" : "Ensuring the quality of our latest titles.",
       "licentaGrade" : null,
       "courseGrades" : null,
       "status" : "PENDING",
+      "interviu" : false,
       "workSchedule" : {
         "startTime" : "14:00",
         "breakTime" : "18:00 - 18:30",
@@ -72,7 +78,94 @@
         "shift" : "După-amiaza"
       },
       "applicationDate" : null
+    }, {
+      "id" : 3164,
+      "jobTitle" : "Inginer Eletrician",
+      "company" : "Siemens",
+      "description" : "Designing and developing electrical systems.",
+      "licentaGrade" : null,
+      "courseGrades" : null,
+      "status" : "PENDING",
+      "interviu" : false,
+      "workSchedule" : {
+        "startTime" : "08:00",
+        "breakTime" : "12:30 - 13:00",
+        "endTime" : "16:30",
+        "shift" : "Dimineața"
+      },
+      "applicationDate" : null
     } ],
+    "age" : 24
+  }, {
+    "id" : 3160,
+    "name" : "Andrei Busecan",
+    "email" : "andrei.antonio29@yahoo.com",
+    "dateOfBirth" : [ 2002, 2, 21 ],
+    "major" : "",
+    "phoneNumber" : "",
+    "address" : "mm tamaia strada trandafirilor nr 13",
+    "group" : "",
+    "startYear" : null,
+    "endYear" : null,
+    "quizResult" : null,
+    "interestedDomainId" : 2829,
+    "applicationAnswers" : { },
+    "notifications" : [ ],
+    "jobApplications" : [ ],
+    "age" : 24
+  }, {
+    "id" : 3161,
+    "name" : "Andrei Busecan",
+    "email" : "xmaxxantono@yahoo.com",
+    "dateOfBirth" : [ 1980, 2, 21 ],
+    "major" : "Electricity",
+    "phoneNumber" : "",
+    "address" : "mm tamaia strada trandafirilor nr 13",
+    "group" : "",
+    "startYear" : null,
+    "endYear" : null,
+    "quizResult" : null,
+    "interestedDomainId" : 2867,
+    "applicationAnswers" : { },
+    "notifications" : [ ],
+    "jobApplications" : [ ],
+    "age" : 46
+  }, {
+    "id" : 3162,
+    "name" : "Andrei Busecan",
+    "email" : "xmaxxantono@yahoo.com",
+    "dateOfBirth" : [ 2003, 2, 21 ],
+    "major" : "Programator",
+    "phoneNumber" : "0771400490",
+    "address" : "mm tamaia strada trandafirilor nr 13",
+    "group" : "",
+    "startYear" : null,
+    "endYear" : null,
+    "quizResult" : null,
+    "interestedDomainId" : 2813,
+    "applicationAnswers" : { },
+    "notifications" : [ ],
+    "jobApplications" : [ ],
+    "age" : 23
+  }, {
+    "id" : 3163,
+    "name" : "Andrei Busecan",
+    "email" : "xmaxxantono@yahoo.com",
+    "dateOfBirth" : [ 2002, 1, 21 ],
+    "major" : "Programator",
+    "phoneNumber" : "0771400490",
+    "address" : "mm tamaia strada trandafirilor nr 13",
+    "group" : "1",
+    "startYear" : 2022,
+    "endYear" : 2026,
+    "quizResult" : null,
+    "interestedDomainId" : 2813,
+    "applicationAnswers" : {
+      "Ce limbaje de programare preferi pentru game development?" : "C#",
+      "Care este principala provocare pe care ai întâmpinat-o în dezvoltarea unui joc?" : "Principala provocare este promovarea jocului si o metoda ca oameni care pot sa faca un crack la joc distrugandu-mi economia "
+    },
+    "notifications" : [ ],
+    "jobApplications" : [ ],
     "age" : 24
   } ],
   "availableJobs" : [ {
@@ -83,6 +176,7 @@
     "licentaGrade" : "9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : true,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -98,6 +192,7 @@
     "licentaGrade" : "8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : true,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -113,6 +208,7 @@
     "licentaGrade" : "9.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -128,6 +224,7 @@
     "licentaGrade" : "9.2",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -143,6 +240,7 @@
     "licentaGrade" : "9.8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : true,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -158,6 +256,7 @@
     "licentaGrade" : "9.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : true,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -173,6 +272,7 @@
     "licentaGrade" : "9.1",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "12:30 - 13:30",
@@ -188,6 +288,7 @@
     "licentaGrade" : "9.3",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "22:00",
       "breakTime" : "02:00 - 02:30",
@@ -203,6 +304,7 @@
     "licentaGrade" : "8.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -218,6 +320,7 @@
     "licentaGrade" : "9.7",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : true,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 14:30",
@@ -233,6 +336,7 @@
     "licentaGrade" : "9.4",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "00:00",
       "breakTime" : "04:00 - 04:30",
@@ -248,6 +352,7 @@
     "licentaGrade" : "9.6",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -263,6 +368,7 @@
     "licentaGrade" : "9.0",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -278,6 +384,7 @@
     "licentaGrade" : "8.8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "12:00",
       "breakTime" : "16:00 - 16:30",
@@ -293,6 +400,7 @@
     "licentaGrade" : "8.7",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "12:00",
       "breakTime" : "16:00 - 16:30",
@@ -308,6 +416,7 @@
     "licentaGrade" : "9.1",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -323,6 +432,7 @@
     "licentaGrade" : "9.8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -338,6 +448,7 @@
     "licentaGrade" : "8.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 12:30",
@@ -353,6 +464,7 @@
     "licentaGrade" : "8.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -368,6 +480,7 @@
     "licentaGrade" : "8.2",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -383,6 +496,7 @@
     "licentaGrade" : "9.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "11:00",
       "breakTime" : "15:00 - 16:00",
@@ -398,6 +512,7 @@
     "licentaGrade" : "9.3",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -413,6 +528,7 @@
     "licentaGrade" : "9.0",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -428,6 +544,7 @@
     "licentaGrade" : "9.8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -443,6 +560,7 @@
     "licentaGrade" : "9.6",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -458,6 +576,7 @@
     "licentaGrade" : "9.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -473,6 +592,7 @@
     "licentaGrade" : "8.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "23:00",
       "breakTime" : "03:00 - 03:30",
@@ -488,6 +608,7 @@
     "licentaGrade" : "9.1",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -503,6 +624,7 @@
     "licentaGrade" : "9.2",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -518,6 +640,7 @@
     "licentaGrade" : "8.8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -533,6 +656,7 @@
     "licentaGrade" : "8.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -548,6 +672,7 @@
     "licentaGrade" : "8.0",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -563,6 +688,7 @@
     "licentaGrade" : "8.7",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "18:00",
       "breakTime" : "N/A",
@@ -578,6 +704,7 @@
     "licentaGrade" : "8.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -593,6 +720,7 @@
     "licentaGrade" : "9.7",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -608,6 +736,7 @@
     "licentaGrade" : "9.4",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -623,6 +752,7 @@
     "licentaGrade" : "10",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -638,6 +768,7 @@
     "licentaGrade" : "9.3",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -653,6 +784,7 @@
     "licentaGrade" : "9.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -668,6 +800,7 @@
     "licentaGrade" : "8.8",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -683,6 +816,7 @@
     "licentaGrade" : "9.2",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -698,6 +832,7 @@
     "licentaGrade" : "9.0",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "08:30",
       "breakTime" : "12:30 - 13:00",
@@ -713,6 +848,7 @@
     "licentaGrade" : "9.4",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -728,6 +864,7 @@
     "licentaGrade" : "9.6",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "15:00",
       "breakTime" : "19:00 - 19:30",
@@ -743,6 +880,7 @@
     "licentaGrade" : "8.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -758,6 +896,7 @@
     "licentaGrade" : "9.3",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -773,6 +912,7 @@
     "licentaGrade" : "9.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -788,6 +928,7 @@
     "licentaGrade" : "10",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -803,6 +944,7 @@
     "licentaGrade" : "9.9",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -818,6 +960,7 @@
     "licentaGrade" : "9.7",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -833,6 +976,7 @@
     "licentaGrade" : "8.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -848,6 +992,7 @@
     "licentaGrade" : "8.0",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "07:00",
       "breakTime" : "Variabil",
@@ -863,6 +1008,7 @@
     "licentaGrade" : "9.0",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "07:00",
       "breakTime" : "12:00 - 13:00",
@@ -878,6 +1024,7 @@
     "licentaGrade" : "9.2",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -893,6 +1040,7 @@
     "licentaGrade" : "9.5",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -908,6 +1056,7 @@
     "licentaGrade" : "9.1",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -923,6 +1072,7 @@
     "licentaGrade" : "8.6",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -938,6 +1088,7 @@
     "licentaGrade" : "9.3",
     "courseGrades" : "",
     "status" : "AVAILABLE",
+    "interviu" : false,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",

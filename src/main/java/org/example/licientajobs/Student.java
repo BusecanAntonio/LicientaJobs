@@ -9,7 +9,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Node
 public class Student {
@@ -31,6 +33,8 @@ public class Student {
     private Integer startYear;
     private Integer endYear;
     private String quizResult; // To store the dominant trait
+    private Long interestedDomainId; // To store the ID of the chosen job/domain
+    private Map<String, String> applicationAnswers = new HashMap<>(); // To store answers for job questions
 
     private List<String> notifications = new ArrayList<>();
 
@@ -76,6 +80,12 @@ public class Student {
 
     public String getQuizResult() { return quizResult; }
     public void setQuizResult(String quizResult) { this.quizResult = quizResult; }
+    
+    public Long getInterestedDomainId() { return interestedDomainId; }
+    public void setInterestedDomainId(Long interestedDomainId) { this.interestedDomainId = interestedDomainId; }
+
+    public Map<String, String> getApplicationAnswers() { return applicationAnswers; }
+    public void setApplicationAnswers(Map<String, String> applicationAnswers) { this.applicationAnswers = applicationAnswers; }
 
     public List<String> getNotifications() { return notifications; }
     public void setNotifications(List<String> notifications) { this.notifications = notifications; }
