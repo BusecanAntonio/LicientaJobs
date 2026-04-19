@@ -2,121 +2,157 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Lista Studenti</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Studenti - Licență Jobs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
-        .container {
-            margin-top: 50px;
-        }
-        .card {
-            margin-bottom: 20px;
-        }
-        .card-header {
-            background-color: #007bff;
-            color: white;
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .schedule-table {
-            width: 100%;
-            font-size: 0.9em;
-        }
-        .schedule-table td {
-            padding: 2px 5px;
-        }
-        .admin-controls {
-            display: none; /* Initially hidden */
-        }
-        /* Notification bar styles */
+        body { background-color: #f8f9fa; }
+        .container { margin-top: 30px; }
+        .card { margin-bottom: 25px; border-radius: 10px; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .card-header { background-color: #0d6efd; color: white; font-weight: bold; border-radius: 10px 10px 0 0 !important; }
+        .schedule-table { width: 100%; font-size: 0.85em; margin-bottom: 0; }
+        .schedule-table td { padding: 2px 5px; border: none; }
+        .admin-controls { display: none; }
+
         #notification-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: #28a745; /* Green for success */
+            background-color: #198754;
             color: white;
             text-align: center;
-            padding: 10px;
-            z-index: 1000;
-            display: none; /* Hidden by default */
+            padding: 12px;
+            z-index: 2000;
+            display: none;
             font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
     </style>
 </head>
 <body>
+
 <div id="notification-bar"></div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container-fluid px-4">
+        <a class="navbar-brand fw-bold" th:href="@{/}">
+            <i class="bi bi-mortarboard-fill me-2"></i>Licență Jobs
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3">
+                    <span class="navbar-text text-white">
+                        Salut, <strong th:text="${session.loggedInUser}">User</strong>!
+                    </span>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm px-4 rounded-pill">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-center">Lista de Studenti</h1>
-        <button id="admin-toggle" class="btn btn-secondary">Admin Mode: OFF</button>
+        <h1 class="fw-bold text-dark">Lista de Studenți</h1>
+        <button id="admin-toggle" class="btn btn-secondary shadow-sm">
+            <i class="bi bi-shield-lock me-1"></i> Admin Mode: OFF
+        </button>
+    </div>
+
+    <div th:if="${#lists.isEmpty(students)}" class="alert alert-info text-center">
+        Nu există studenți adăugați de tine. <a th:href="@{/students/add}" class="alert-link">Adaugă unul acum!</a>
     </div>
 
     <div th:each="student : ${students}" class="card">
-        <div class="card-header" th:text="${student.name}"></div>
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span th:text="${student.name}">Nume Student</span>
+            <span class="badge bg-light text-dark" th:text="${student.major}">Major</span>
+        </div>
         <div class="card-body">
-            <p><strong>Email:</strong> <span th:text="${student.email}"></span></p>
-            <p><strong>Major:</strong> <span th:text="${student.major}"></span></p>
-            <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info mb-3">Completeaza Quiz pentru Recomandari</a>
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted small">Email de contact:</p>
+                    <p class="fw-bold" th:text="${student.email}"></p>
+                </div>
+            </div>
+
+            <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
+                <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări
+            </a>
 
             <div class="table-responsive">
-                <h5>Job Applications</h5>
-                <table class="table table-bordered table-striped">
-                    <thead class="thead-dark">
+                <h5 class="fw-bold mb-3"><i class="bi bi-file-earmark-text me-2"></i>Aplicații Joburi</h5>
+                <table class="table table-hover align-middle border">
+                    <thead class="table-light">
                     <tr>
                         <th>Companie</th>
                         <th>Job</th>
-                        <th>Descriere</th>
-                        <th>Orar</th>
                         <th>Status</th>
-                        <th class="admin-controls">Actiuni</th>
+                        <th>Orar</th>
+                        <th class="admin-controls text-center">Acțiuni Admin</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="app, iterStat : ${student.jobApplications}">
-                        <td th:text="${app.company}"></td>
+                    <tr th:each="app : ${student.jobApplications}">
+                        <td th:text="${app.company}" class="fw-bold"></td>
                         <td th:text="${app.jobTitle}"></td>
-                        <td th:text="${app.description}"></td>
+                        <td>
+                            <span th:classappend="${app.status == 'ACCEPTED' ? 'badge bg-success' : (app.status == 'REJECTED' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
+                                  th:text="${app.status}">
+                            </span>
+                        </td>
                         <td>
                             <table class="schedule-table">
-                                <tr><td><strong>Tura:</strong></td><td th:text="${app.workSchedule['shift']}"></td></tr>
-                                <tr><td><strong>Start:</strong></td><td th:text="${app.workSchedule['startTime']}"></td></tr>
-                                <tr><td><strong>Sfarsit:</strong></td><td th:text="${app.workSchedule['endTime']}"></td></tr>
-                                <tr><td><strong>Pauza:</strong></td><td th:text="${app.workSchedule['breakTime']}"></td></tr>
+                                <tr><td><small>Tura:</small></td><td th:text="${app.workSchedule['shift']}"></td></tr>
+                                <tr><td><small>Program:</small></td><td th:text="${app.workSchedule['startTime']} + '-' + ${app.workSchedule['endTime']}"></td></tr>
                             </table>
                         </td>
-                        <td th:text="${app.status}"></td>
-                        <td class="admin-controls">
-                            <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display: inline-block;">
-                                <input type="hidden" name="status" value="ACCEPTED">
-                                <button type="submit" class="btn btn-success btn-sm">Accept</button>
-                            </form>
-                            <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display: inline-block;">
-                                <input type="hidden" name="status" value="REJECTED">
-                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                            </form>
+                        <td class="admin-controls text-center">
+                            <div class="btn-group">
+                                <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
+                                    <input type="hidden" name="status" value="ACCEPTED">
+                                    <button type="submit" class="btn btn-success btn-sm me-1">Accept</button>
+                                </form>
+                                <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
+                                    <input type="hidden" name="status" value="REJECTED">
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     <tr th:if="${#lists.isEmpty(student.jobApplications)}">
-                        <td colspan="6" class="text-center">Nici o aplicare deocamdata.</td>
+                        <td colspan="5" class="text-center text-muted py-3">Nicio aplicare deocamdată.</td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">Aplica la un job nou</a>
+
+            <div class="mt-3">
+                <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">
+                    <i class="bi bi-plus-circle me-1"></i> Aplică la un job nou
+                </a>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- Include SockJS and STOMP.js -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 <script>
+    // Logică Admin Toggle
     const adminToggle = document.getElementById('admin-toggle');
     let adminMode = false;
 
@@ -130,38 +166,32 @@
         const applyButtons = document.querySelectorAll('.apply-button');
 
         if (adminMode) {
-            adminToggle.textContent = 'Admin Mode: ON';
-            adminToggle.classList.remove('btn-secondary');
-            adminToggle.classList.add('btn-danger');
+            adminToggle.innerHTML = '<i class="bi bi-shield-check me-1"></i> Admin Mode: ON';
+            adminToggle.classList.replace('btn-secondary', 'btn-danger');
             adminControls.forEach(c => c.style.display = 'table-cell');
             applyButtons.forEach(b => b.style.display = 'none');
         } else {
-            adminToggle.textContent = 'Admin Mode: OFF';
-            adminToggle.classList.remove('btn-danger');
-            adminToggle.classList.add('btn-secondary');
+            adminToggle.innerHTML = '<i class="bi bi-shield-lock me-1"></i> Admin Mode: OFF';
+            adminToggle.classList.replace('btn-danger', 'btn-secondary');
             adminControls.forEach(c => c.style.display = 'none');
             applyButtons.forEach(b => b.style.display = 'inline-block');
         }
     }
 
-    // Initial view setup
     updateView();
 
-    // WebSocket Notification Logic
+    // WebSocket Logic
     const notificationBar = document.getElementById('notification-bar');
     let stompClient = null;
 
     function connect() {
-        const socket = new SockJS('/ws'); // '/ws' is the endpoint configured in WebSocketConfig
+        const socket = new SockJS('/ws');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, frame => {
-            console.log('Connected: ' + frame);
             stompClient.subscribe('/topic/students', message => {
                 showNotification(message.body);
             });
         }, error => {
-            console.error('STOMP error: ' + error);
-            // Optional: Reconnect after a delay
             setTimeout(connect, 5000);
         });
     }
@@ -171,10 +201,9 @@
         notificationBar.style.display = 'block';
         setTimeout(() => {
             notificationBar.style.display = 'none';
-        }, 5000); // Hide after 5 seconds
+        }, 5000);
     }
 
-    // Connect to WebSocket when the page loads
     connect();
 </script>
 

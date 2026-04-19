@@ -4,15 +4,11 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/students/{studentId}/quiz")
 public class QuizController {
-
     private final QuizService quizService;
     private final StudentService studentService;
 
@@ -22,71 +18,52 @@ public class QuizController {
     }
 
     @GetMapping
-    public String startQuiz(@PathVariable Long studentId, HttpSession session, Model model) {
-        session.setAttribute("currentQuestionIndex", 0);
-        session.setAttribute("answers", new ArrayList<String>());
+    public String start(@PathVariable Long studentId, HttpSession s) {
+        s.setAttribute("currentQuestionIndex", 0);
+        s.setAttribute("answers", new ArrayList<String>());
         return "redirect:/students/" + studentId + "/quiz/question";
     }
 
     @GetMapping("/question")
-    public String showQuestion(@PathVariable Long studentId, HttpSession session, Model model) {
-        Integer index = (Integer) session.getAttribute("currentQuestionIndex");
-        if (index == null) {
-            return "redirect:/students/" + studentId + "/quiz";
-        }
+    public String ask(@PathVariable Long studentId, HttpSession s, Model m) {
+        Integer idx = (Integer) s.getAttribute("currentQuestionIndex");
+        if (idx == null) return "redirect:/students/" + studentId + "/quiz";
 
-        List<QuizQuestion> questions = quizService.getQuestions();
-        if (index >= questions.size()) {
-            return "redirect:/students/" + studentId + "/quiz/result";
-        }
+        List<QuizQuestion> qs = quizService.getQuestions();
+        if (idx >= qs.size()) return "redirect:/students/" + studentId + "/quiz/result";
 
-        model.addAttribute("question", questions.get(index));
-        model.addAttribute("studentId", studentId);
-        model.addAttribute("currentQuestionNumber", index + 1);
-        model.addAttribute("totalQuestions", questions.size());
+        m.addAttribute("question", qs.get(idx));
+        m.addAttribute("studentId", studentId);
+        m.addAttribute("currentQuestionNumber", idx + 1);
+        m.addAttribute("totalQuestions", qs.size());
         return "quiz";
     }
 
     @PostMapping("/answer")
-    public String submitAnswer(@PathVariable Long studentId, @RequestParam String answer, HttpSession session) {
-        List<String> answers = (List<String>) session.getAttribute("answers");
-        if (answers == null) {
-            answers = new ArrayList<>();
-        }
-        answers.add(answer);
-        session.setAttribute("answers", answers);
-
-        Integer index = (Integer) session.getAttribute("currentQuestionIndex");
-        session.setAttribute("currentQuestionIndex", index + 1);
-
+    public String answer(@PathVariable Long studentId, @RequestParam String answer, HttpSession s) {
+        List<String> ans = (List<String>) s.getAttribute("answers");
+        ans.add(answer);
+        s.setAttribute("currentQuestionIndex", (Integer)s.getAttribute("currentQuestionIndex") + 1);
         return "redirect:/students/" + studentId + "/quiz/question";
     }
 
     @GetMapping("/result")
-    public String showResult(@PathVariable Long studentId, HttpSession session, Model model) {
-        List<String> answers = (List<String>) session.getAttribute("answers");
-        if (answers == null || answers.isEmpty()) {
-            return "redirect:/students/" + studentId + "/quiz";
-        }
+    public String result(@PathVariable Long studentId, HttpSession s, Model m) {
+        String user = (String) s.getAttribute("loggedInUser");
+        if (user == null) return "redirect:/login";
 
-        String result = quizService.calculateResult(answers);
-        String description = quizService.getResultDescription(result);
-        
-        Optional<Student> studentOpt = studentService.findStudentById(studentId);
-        if (studentOpt.isPresent()) {
-            Student student = studentOpt.get();
-            student.setQuizResult(result);
-            studentService.saveStudent(student);
-            model.addAttribute("student", student);
-        }
+        List<String> ans = (List<String>) s.getAttribute("answers");
+        String res = quizService.calculateResult(ans);
 
-        model.addAttribute("result", result);
-        model.addAttribute("description", description);
-        
-        // Clear session
-        session.removeAttribute("currentQuestionIndex");
-        session.removeAttribute("answers");
+        studentService.findStudentById(studentId).ifPresent(student -> {
+            student.setQuizResult(res);
+            studentService.saveStudent(student); // CORECTAT (1 parametru)
+            m.addAttribute("student", student);
+            m.addAttribute("recommendedJob", studentService.findRecommendedJob(res));
+        });
 
+        m.addAttribute("result", res);
+        m.addAttribute("description", quizService.getResultDescription(res));
         return "quiz-result";
     }
 }

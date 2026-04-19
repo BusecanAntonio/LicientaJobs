@@ -19,6 +19,7 @@ public class JsonFallbackService {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonFallbackService.class);
     private final File fallbackFile = new File("fallback-data.json");
+    private final File usersFallbackFile = new File("usersRe.json");
     private final ObjectMapper objectMapper;
 
     public JsonFallbackService() {
@@ -32,6 +33,14 @@ public class JsonFallbackService {
         logger.info("JsonFallbackService initialized. Using file: {}", fallbackFile.getAbsolutePath());
         if (!fallbackFile.exists()) {
             logger.warn("Fallback data file not found at: {}. The application may not have initial data.", fallbackFile.getAbsolutePath());
+        }
+        if (!usersFallbackFile.exists()) {
+            try {
+                usersFallbackFile.createNewFile();
+                writeUsersFallbackData(new ArrayList<>());
+            } catch (IOException e) {
+                logger.error("Error creating users fallback file", e);
+            }
         }
     }
 
@@ -53,6 +62,27 @@ public class JsonFallbackService {
             logger.info("Successfully wrote data to fallback file: {}", fallbackFile.getAbsolutePath());
         } catch (IOException e) {
             logger.error("Error writing to fallback file: {}", fallbackFile.getAbsolutePath(), e);
+        }
+    }
+
+    public List<User> readUsersFallbackData() {
+        if (!usersFallbackFile.exists()) {
+            return new ArrayList<>();
+        }
+        try {
+            return objectMapper.readValue(usersFallbackFile, new TypeReference<List<User>>() {});
+        } catch (IOException e) {
+            logger.error("Error reading from users fallback file", e);
+            return new ArrayList<>();
+        }
+    }
+
+    public void writeUsersFallbackData(List<User> users) {
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(usersFallbackFile, users);
+            logger.info("Successfully wrote users data to fallback file: {}", usersFallbackFile.getAbsolutePath());
+        } catch (IOException e) {
+            logger.error("Error writing to users fallback file", e);
         }
     }
 }

@@ -29,12 +29,13 @@ public class Student {
     private String major;
     private String phoneNumber;
     private String address;
-    private String group;
     private Integer startYear;
     private Integer endYear;
     private String quizResult; // To store the dominant trait
     private Long interestedDomainId; // To store the ID of the chosen job/domain
     private Map<String, String> applicationAnswers = new HashMap<>(); // To store answers for job questions
+    
+    private String addedBy; // Username of the user who added this student
 
     private List<String> notifications = new ArrayList<>();
 
@@ -69,9 +70,6 @@ public class Student {
     public String getAddress() { return address; }
     public void setAddress(String address) { this.address = address; }
 
-    public String getGroup() { return group; }
-    public void setGroup(String group) { this.group = group; }
-
     public Integer getStartYear() { return startYear; }
     public void setStartYear(Integer startYear) { this.startYear = startYear; }
 
@@ -86,6 +84,9 @@ public class Student {
 
     public Map<String, String> getApplicationAnswers() { return applicationAnswers; }
     public void setApplicationAnswers(Map<String, String> applicationAnswers) { this.applicationAnswers = applicationAnswers; }
+
+    public String getAddedBy() { return addedBy; }
+    public void setAddedBy(String addedBy) { this.addedBy = addedBy; }
 
     public List<String> getNotifications() { return notifications; }
     public void setNotifications(List<String> notifications) { this.notifications = notifications; }

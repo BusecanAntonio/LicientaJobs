@@ -41,10 +41,6 @@
                             <label for="address" class="form-label">Address:</label>
                             <input id="address" th:field="*{address}" type="text" class="form-control"/>
                         </div>
-                        <div class="mb-3">
-                            <label for="group" class="form-label">Group:</label>
-                            <input id="group" th:field="*{group}" type="text" class="form-control"/>
-                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="startYear" class="form-label">Start Year:</label>
@@ -59,7 +55,7 @@
                         <!-- New fields for job interest and questions -->
                         <div class="mb-3">
                             <label for="interestedDomain" class="form-label">Interested Domain:</label>
-                            <select id="interestedDomain" th:field="*{interestedDomainId}" class="form-select">
+                            <select id="interestedDomain" th:field="*{interestedDomainId}" class="form-select" required>
                                 <option value="">Select a domain</option>
                                 <option th:each="job : ${availableJobs}" th:value="${job.id}" th:text="${job.jobTitle}" th:attr="data-interviu=${job.interviu}"></option>
                             </select>

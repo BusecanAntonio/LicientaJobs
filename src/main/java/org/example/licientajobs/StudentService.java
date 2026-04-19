@@ -11,7 +11,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -19,11 +18,13 @@ public class StudentService {
     private static final Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private final StudentRepository studentRepository;
+    private final UserRepository userRepository;
     private final JsonFallbackService jsonFallbackService;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public StudentService(StudentRepository studentRepository, JsonFallbackService jsonFallbackService, SimpMessagingTemplate messagingTemplate) {
+    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, SimpMessagingTemplate messagingTemplate) {
         this.studentRepository = studentRepository;
+        this.userRepository = userRepository;
         this.jsonFallbackService = jsonFallbackService;
         this.messagingTemplate = messagingTemplate;
     }
@@ -79,6 +80,23 @@ public class StudentService {
         }
     }
     
+    public void deleteStudent(Long id) {
+        try {
+            logger.info("Attempting to delete student with id {} from Memgraph.", id);
+            studentRepository.deleteById(id);
+            synchronizeDbToJson();
+            notifyClients("Student with ID " + id + " has been deleted.");
+        } catch (DataAccessResourceFailureException e) {
+            logger.warn("Memgraph connection failed. Deleting only from JSON fallback.", e);
+            FallbackData data = jsonFallbackService.readFallbackData();
+            boolean removed = data.getStudents().removeIf(s -> s.getId() != null && s.getId().equals(id));
+            if (removed) {
+                jsonFallbackService.writeFallbackData(data);
+                notifyClients("Student with ID " + id + " has been deleted (Offline Mode).");
+            }
+        }
+    }
+    
     public Optional<JobApplication> findJobById(Long jobId) {
         return findAllAvailableJobs().stream()
                 .filter(j -> j.getId() != null && j.getId().equals(jobId))
@@ -109,6 +127,26 @@ public class StudentService {
                         notifyClients("Job application status for " + student.getName() + " changed to " + status);
                     });
             }
+        }
+    }
+    
+    public void applyForJob(Long studentId, Long jobId, String loggedInUser) {
+        Optional<Student> studentOptional = findStudentById(studentId);
+        Optional<JobApplication> jobOptional = findJobById(jobId);
+
+        if (studentOptional.isPresent() && jobOptional.isPresent() && loggedInUser.equals(studentOptional.get().getAddedBy())) {
+            Student student = studentOptional.get();
+            JobApplication jobToApply = jobOptional.get();
+
+            JobApplication newApplication = new JobApplication();
+            newApplication.setJobTitle(jobToApply.getJobTitle());
+            newApplication.setCompany(jobToApply.getCompany());
+            newApplication.setDescription(jobToApply.getDescription());
+            newApplication.setWorkSchedule(jobToApply.getWorkSchedule());
+            newApplication.setStatus("PENDING");
+
+            student.getJobApplications().add(newApplication);
+            saveStudent(student);
         }
     }
 
@@ -162,5 +200,44 @@ public class StudentService {
         }
 
         return score;
+    }
+
+    public void registerUser(String username, String password, String fullName, String email) {
+        User user = new User();
+        user.setUsername(username);
+        // IN A REAL APP, HASH THE PASSWORD!
+        user.setPassword(password);
+        user.setFullName(fullName);
+        user.setEmail(email);
+        try {
+            userRepository.save(user);
+        } catch (DataAccessResourceFailureException e) {
+            logger.warn("Memgraph connection failed. Saving user to fallback.", e);
+        }
+        
+        List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
+        user.setId(System.currentTimeMillis()); // generate fake id for offline
+        fallbackUsers.add(user);
+        jsonFallbackService.writeUsersFallbackData(fallbackUsers);
+    }
+
+    public boolean authenticateUser(String username, String password) {
+        try {
+            List<User> users = userRepository.findByUsername(username);
+            if(!users.isEmpty()) {
+                return users.get(0).getPassword().equals(password);
+            }
+        } catch (DataAccessResourceFailureException e) {
+            logger.warn("Memgraph connection failed. Authenticating from fallback.", e);
+        }
+        
+        List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
+        for (User user : fallbackUsers) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 }
