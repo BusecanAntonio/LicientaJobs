@@ -50,6 +50,9 @@ public class StudentService {
     // =========================================================
     // METODA 1: Cea principală (folosită de noul HomeController)
     // =========================================================
+    // =========================================================
+    // METODA 1: Cea principală (folosită de noul HomeController)
+    // =========================================================
     public Student saveStudent(Student student, String currentUser) {
         try {
             // SETĂM PROPRIETARUL: Asta face ca studentul să apară în lista ta
@@ -85,6 +88,8 @@ public class StudentService {
         // noi trimitem datele spre metoda de sus, folosind numele deja existent.
         return saveStudent(student, student.getAddedBy());
     }
+
+
 
     public List<Student> findAllStudents() {
         try {

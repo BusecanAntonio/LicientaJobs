@@ -208,6 +208,33 @@ public class HomeController {
         }
     }
 
+    @PostMapping("/students/{id}/documents/delete")
+    public String deleteFile(@PathVariable Long id, @RequestParam("filename") String filename, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) return "redirect:/login";
+
+        studentService.findStudentById(id).ifPresent(student -> {
+            try {
+                // 1. Ștergerea fizică de pe disk
+                Path filePath = Paths.get(filename).normalize();
+                Files.deleteIfExists(filePath);
+
+                // 2. Ștergerea numelui din lista studentului
+                if (student.getDocuments() != null) {
+                    student.getDocuments().remove(filename);
+                }
+
+                // 3. Salvarea modificării în baza de date
+                studentService.saveStudent(student, loggedInUser);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+        return "redirect:/students";
+    }
+
     @GetMapping("/files/{studentId}/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable Long studentId, @PathVariable String filename, HttpSession session) {

@@ -211,14 +211,26 @@
                 <h6 class="fw-bold mb-3 small">Fișiere deja încărcate:</h6>
                 <ul class="list-group list-group-flush">
                     <li th:each="doc : ${student.documents}" class="list-group-item d-flex justify-content-between align-items-center px-0">
-                        <span><i class="bi bi-check-circle-fill text-success me-2"></i> <span th:text="${doc}"></span></span>
-                        <a th:href="@{/students/{id}/documents/{filename}(id=${student.id}, filename=${doc})}"
-                           target="_blank"
-                           class="btn btn-sm btn-light shadow-sm text-primary">
-                            <i class="bi bi-eye"></i>
-                        </a>
+        <span>
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span th:text="${doc}">nume_fisier.pdf</span>
+        </span>
+                        <div class="btn-group">
+                            <a th:href="@{/students/{id}/documents/{filename}(id=${student.id}, filename=${doc})}"
+                               target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+
+                            <form th:action="@{/students/{id}/documents/delete(id=${student.id})}" method="post"
+                                  style="display:inline;" onsubmit="return confirm('Sigur vrei să ștergi acest fișier?');">
+                                <input type="hidden" name="filename" th:value="${doc}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </div>
                     </li>
-                    <li th:if="${#lists.isEmpty(student.documents)}" class="text-center py-3 text-muted italic small">
+                    <li th:if="${#lists.isEmpty(student.documents)}" class="text-center py-3 text-muted small">
                         Niciun document încărcat încă.
                     </li>
                 </ul>
