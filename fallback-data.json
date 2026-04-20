@@ -255,7 +255,7 @@
     "name" : "Busecan Alex",
     "email" : "busecanalex@yahoo.com",
     "dateOfBirth" : [ 1999, 12, 26 ],
-    "documents" : [ ],
+    "documents" : [ "CV_Andrei_Popescu.pdf" ],
     "major" : "Electricity",
     "phoneNumber" : "0771400490",
     "address" : "mm tamaia strada trandafirilor nr 13",
@@ -266,7 +266,7 @@
     "applicationAnswers" : { },
     "addedBy" : "Busecan Alex",
     "notifications" : [ "Your application for UI/UX Designer at Spotify was accepted." ],
-    "uploadedFiles" : [ "CV_Andrei_Popescu.pdf" ],
+    "uploadedFiles" : [ "CV_Andrei_Popescu.pdf", "CV_Andrei_Popescu.pdf" ],
     "jobApplications" : [ {
       "id" : 3238,
       "jobTitle" : "UI/UX Designer",

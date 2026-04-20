@@ -212,7 +212,11 @@
                 <ul class="list-group list-group-flush">
                     <li th:each="doc : ${student.documents}" class="list-group-item d-flex justify-content-between align-items-center px-0">
                         <span><i class="bi bi-check-circle-fill text-success me-2"></i> <span th:text="${doc}"></span></span>
-                        <button class="btn btn-sm btn-light"><i class="bi bi-eye"></i></button>
+                        <a th:href="@{/students/{id}/documents/{filename}(id=${student.id}, filename=${doc})}"
+                           target="_blank"
+                           class="btn btn-sm btn-light shadow-sm text-primary">
+                            <i class="bi bi-eye"></i>
+                        </a>
                     </li>
                     <li th:if="${#lists.isEmpty(student.documents)}" class="text-center py-3 text-muted italic small">
                         Niciun document încărcat încă.

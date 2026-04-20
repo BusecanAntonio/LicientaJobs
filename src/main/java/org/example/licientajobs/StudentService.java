@@ -33,6 +33,8 @@ public class StudentService {
         this.messagingTemplate = messagingTemplate;
     }
 
+
+
     private void synchronizeDbToJson() {
         logger.info("Synchronizing all data from Memgraph to JSON file.");
         FallbackData data = jsonFallbackService.readFallbackData();
@@ -45,22 +47,43 @@ public class StudentService {
         messagingTemplate.convertAndSend("/topic/students", message);
     }
 
-    public Student saveStudent(Student student) {
+    // =========================================================
+    // METODA 1: Cea principală (folosită de noul HomeController)
+    // =========================================================
+    public Student saveStudent(Student student, String currentUser) {
         try {
+            // SETĂM PROPRIETARUL: Asta face ca studentul să apară în lista ta
+            student.setAddedBy(currentUser);
+
             logger.info("Attempting to save student {} to Memgraph.", student.getName());
             Student savedStudent = studentRepository.save(student);
             synchronizeDbToJson();
             notifyClients("Data for " + savedStudent.getName() + " has been updated.");
             return savedStudent;
-        } catch (DataAccessResourceFailureException e) {
+
+        } catch (Exception e) { // Exception prinde orice problemă de bază de date
             logger.warn("Memgraph connection failed. Saving only to JSON fallback.", e);
             FallbackData data = jsonFallbackService.readFallbackData();
-            data.getStudents().removeIf(s -> s.getId().equals(student.getId()));
+
+            // PROTECȚIE ID: Ștergem din listă doar dacă studentul are deja un ID
+            if (student.getId() != null) {
+                data.getStudents().removeIf(s -> s.getId() != null && s.getId().equals(student.getId()));
+            }
+
             data.getStudents().add(student);
             jsonFallbackService.writeFallbackData(data);
             notifyClients("Data for " + student.getName() + " has been updated (Offline Mode).");
             return student;
         }
+    }
+
+    // =========================================================
+    // METODA 2: "Puntea" pentru codul vechi (QuizController, etc)
+    // =========================================================
+    public Student saveStudent(Student student) {
+        // Când codul vechi apelează salvarea cu un singur parametru,
+        // noi trimitem datele spre metoda de sus, folosind numele deja existent.
+        return saveStudent(student, student.getAddedBy());
     }
 
     public List<Student> findAllStudents() {
