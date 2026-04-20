@@ -5,12 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -20,12 +22,14 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final UserRepository userRepository;
     private final JsonFallbackService jsonFallbackService;
+    private final StorageService storageService;
     private final SimpMessagingTemplate messagingTemplate;
 
-    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, SimpMessagingTemplate messagingTemplate) {
+    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.jsonFallbackService = jsonFallbackService;
+        this.storageService = storageService;
         this.messagingTemplate = messagingTemplate;
     }
 
@@ -68,6 +72,12 @@ public class StudentService {
             return data.getStudents() != null ? data.getStudents() : new ArrayList<>();
         }
     }
+    
+    public List<Student> findAllStudentsByOwner(String username) {
+        return findAllStudents().stream()
+                .filter(s -> username.equals(s.getAddedBy()))
+                .collect(Collectors.toList());
+    }
 
     public Optional<Student> findStudentById(Long id) {
         try {
@@ -80,21 +90,25 @@ public class StudentService {
         }
     }
     
-    public void deleteStudent(Long id) {
-        try {
-            logger.info("Attempting to delete student with id {} from Memgraph.", id);
-            studentRepository.deleteById(id);
-            synchronizeDbToJson();
-            notifyClients("Student with ID " + id + " has been deleted.");
-        } catch (DataAccessResourceFailureException e) {
-            logger.warn("Memgraph connection failed. Deleting only from JSON fallback.", e);
-            FallbackData data = jsonFallbackService.readFallbackData();
-            boolean removed = data.getStudents().removeIf(s -> s.getId() != null && s.getId().equals(id));
-            if (removed) {
-                jsonFallbackService.writeFallbackData(data);
-                notifyClients("Student with ID " + id + " has been deleted (Offline Mode).");
+    public void deleteStudent(Long id, String loggedInUser) {
+        findStudentById(id).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy())) {
+                try {
+                    logger.info("Attempting to delete student with id {} from Memgraph.", id);
+                    studentRepository.deleteById(id);
+                    synchronizeDbToJson();
+                    notifyClients("Student with ID " + id + " has been deleted.");
+                } catch (DataAccessResourceFailureException e) {
+                    logger.warn("Memgraph connection failed. Deleting only from JSON fallback.", e);
+                    FallbackData data = jsonFallbackService.readFallbackData();
+                    boolean removed = data.getStudents().removeIf(s -> s.getId() != null && s.getId().equals(id));
+                    if (removed) {
+                        jsonFallbackService.writeFallbackData(data);
+                        notifyClients("Student with ID " + id + " has been deleted (Offline Mode).");
+                    }
+                }
             }
-        }
+        });
     }
     
     public Optional<JobApplication> findJobById(Long jobId) {
@@ -239,5 +253,15 @@ public class StudentService {
         }
         
         return false;
+    }
+    
+    public void storeFile(Long studentId, MultipartFile file, String loggedInUser) {
+        findStudentById(studentId).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy())) {
+                String filename = storageService.store(file, studentId);
+                student.addUploadedFile(filename);
+                saveStudent(student);
+            }
+        });
     }
 }

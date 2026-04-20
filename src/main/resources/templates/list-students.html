@@ -9,25 +9,55 @@
     <style>
         body { background-color: #f8f9fa; }
         .container { margin-top: 30px; }
-        .card { margin-bottom: 25px; border-radius: 10px; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        .card-header { background-color: #0d6efd; color: white; font-weight: bold; border-radius: 10px 10px 0 0 !important; }
+
+        /* Cardul a fost modificat pentru a permite sidebar-ul în stânga */
+        .card {
+            margin-bottom: 25px;
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            display: flex;
+            flex-direction: row; /* Aliniere orizontală pentru sidebar */
+            overflow: hidden;
+        }
+
+        /* Sidebar-ul vertical din interiorul cardului (stil AI) */
+        .card-sidebar {
+            width: 60px;
+            background-color: #f1f3f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            border-right: 1px solid #dee2e6;
+            transition: all 0.3s;
+        }
+        .card-sidebar:hover { background-color: #e8eaed; }
+
+        .upload-trigger {
+            color: #5f6368;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .upload-trigger:hover { color: #0d6efd; }
+
+        .card-content { flex: 1; } /* Restul conținutului ocupă spațiul rămas */
+
+        .card-header { background-color: #0d6efd; color: white; font-weight: bold; border-radius: 0 !important; }
         .schedule-table { width: 100%; font-size: 0.85em; margin-bottom: 0; }
         .schedule-table td { padding: 2px 5px; border: none; }
         .admin-controls { display: none; }
 
+        /* Stil Offcanvas (Slider Dreapta) */
+        .offcanvas { border-radius: 20px 0 0 20px; border: none; box-shadow: -5px 0 25px rgba(0,0,0,0.1); }
+        .upload-section { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+
         #notification-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background-color: #198754;
-            color: white;
-            text-align: center;
-            padding: 12px;
-            z-index: 2000;
-            display: none;
-            font-weight: bold;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            position: fixed; top: 0; left: 0; width: 100%;
+            background-color: #198754; color: white;
+            text-align: center; padding: 12px; z-index: 2000;
+            display: none; font-weight: bold; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
     </style>
 </head>
@@ -40,11 +70,9 @@
         <a class="navbar-brand fw-bold" th:href="@{/}">
             <i class="bi bi-mortarboard-fill me-2"></i>Licență Jobs
         </a>
-
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item me-3">
@@ -75,73 +103,121 @@
     </div>
 
     <div th:each="student : ${students}" class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span th:text="${student.name}">Nume Student</span>
-            <span class="badge bg-light text-dark" th:text="${student.major}">Major</span>
+
+        <div class="card-sidebar">
+            <div class="upload-trigger" data-bs-toggle="offcanvas" th:data-bs-target="'#docs' + ${student.id}" title="Încarcă Documente">
+                <i class="bi bi-file-earmark-plus"></i>
+                <div style="font-size: 0.6rem; font-weight: bold;">DOCS</div>
+            </div>
         </div>
-        <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <p class="mb-1 text-muted small">Email de contact:</p>
-                    <p class="fw-bold" th:text="${student.email}"></p>
+
+        <div class="card-content">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <span th:text="${student.name}">Nume Student</span>
+                <span class="badge bg-light text-dark" th:text="${student.major}">Major</span>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <p class="mb-1 text-muted small">Email de contact:</p>
+                        <p class="fw-bold" th:text="${student.email}"></p>
+                    </div>
+                </div>
+
+                <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
+                    <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări
+                </a>
+
+                <div class="table-responsive">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-file-earmark-text me-2"></i>Aplicații Joburi</h5>
+                    <table class="table table-hover align-middle border">
+                        <thead class="table-light">
+                        <tr>
+                            <th>Companie</th>
+                            <th>Job</th>
+                            <th>Status</th>
+                            <th>Orar</th>
+                            <th class="admin-controls text-center">Acțiuni Admin</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="app : ${student.jobApplications}">
+                            <td th:text="${app.company}" class="fw-bold"></td>
+                            <td th:text="${app.jobTitle}"></td>
+                            <td>
+                                <span th:classappend="${app.status == 'ACCEPTED' ? 'badge bg-success' : (app.status == 'REJECTED' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
+                                      th:text="${app.status}">
+                                </span>
+                            </td>
+                            <td>
+                                <table class="schedule-table">
+                                    <tr><td><small>Tura:</small></td><td th:text="${app.workSchedule['shift']}"></td></tr>
+                                    <tr><td><small>Program:</small></td><td th:text="${app.workSchedule['startTime']} + '-' + ${app.workSchedule['endTime']}"></td></tr>
+                                </table>
+                            </td>
+                            <td class="admin-controls text-center">
+                                <div class="btn-group">
+                                    <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
+                                        <input type="hidden" name="status" value="ACCEPTED">
+                                        <button type="submit" class="btn btn-success btn-sm me-1">Accept</button>
+                                    </form>
+                                    <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
+                                        <input type="hidden" name="status" value="REJECTED">
+                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(student.jobApplications)}">
+                            <td colspan="5" class="text-center text-muted py-3">Nicio aplicare deocamdată.</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-3">
+                    <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">
+                        <i class="bi bi-plus-circle me-1"></i> Aplică la un job nou
+                    </a>
                 </div>
             </div>
+        </div>
 
-            <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
-                <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări
-            </a>
-
-            <div class="table-responsive">
-                <h5 class="fw-bold mb-3"><i class="bi bi-file-earmark-text me-2"></i>Aplicații Joburi</h5>
-                <table class="table table-hover align-middle border">
-                    <thead class="table-light">
-                    <tr>
-                        <th>Companie</th>
-                        <th>Job</th>
-                        <th>Status</th>
-                        <th>Orar</th>
-                        <th class="admin-controls text-center">Acțiuni Admin</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="app : ${student.jobApplications}">
-                        <td th:text="${app.company}" class="fw-bold"></td>
-                        <td th:text="${app.jobTitle}"></td>
-                        <td>
-                            <span th:classappend="${app.status == 'ACCEPTED' ? 'badge bg-success' : (app.status == 'REJECTED' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
-                                  th:text="${app.status}">
-                            </span>
-                        </td>
-                        <td>
-                            <table class="schedule-table">
-                                <tr><td><small>Tura:</small></td><td th:text="${app.workSchedule['shift']}"></td></tr>
-                                <tr><td><small>Program:</small></td><td th:text="${app.workSchedule['startTime']} + '-' + ${app.workSchedule['endTime']}"></td></tr>
-                            </table>
-                        </td>
-                        <td class="admin-controls text-center">
-                            <div class="btn-group">
-                                <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
-                                    <input type="hidden" name="status" value="ACCEPTED">
-                                    <button type="submit" class="btn btn-success btn-sm me-1">Accept</button>
-                                </form>
-                                <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
-                                    <input type="hidden" name="status" value="REJECTED">
-                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr th:if="${#lists.isEmpty(student.jobApplications)}">
-                        <td colspan="5" class="text-center text-muted py-3">Nicio aplicare deocamdată.</td>
-                    </tr>
-                    </tbody>
-                </table>
+        <div class="offcanvas offcanvas-end" tabindex="-1" th:id="'docs' + ${student.id}" style="width: 400px;">
+            <div class="offcanvas-header bg-dark text-white">
+                <h5 class="offcanvas-title fw-bold"><i class="bi bi-folder2-open me-2"></i>Documente: <span th:text="${student.name}"></span></h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
             </div>
+            <div class="offcanvas-body">
+                <p class="text-muted small mb-4">Încarcă documentele necesare pentru validarea competențelor tale.</p>
 
-            <div class="mt-3">
-                <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">
-                    <i class="bi bi-plus-circle me-1"></i> Aplică la un job nou
-                </a>
+                <form th:action="@{/students/{id}/upload(id=${student.id})}" method="post" enctype="multipart/form-data">
+                    <div class="upload-section">
+                        <label class="form-label fw-bold"><i class="bi bi-file-pdf me-1"></i> Tip Document</label>
+                        <select name="type" class="form-select mb-3">
+                            <option value="CV">Curriculum Vitae (CV)</option>
+                            <option value="DIPLOMA">Diplomă de Studii</option>
+                            <option value="RECOMMENDATION">Scrisoare de Recomandare</option>
+                        </select>
+
+                        <label class="form-label fw-bold">Selectează fișierul</label>
+                        <input type="file" name="file" class="form-control mb-3" required>
+
+                        <button type="submit" class="btn btn-primary w-100 fw-bold">Încarcă Document</button>
+                    </div>
+                </form>
+
+                <hr>
+                <h6 class="fw-bold mb-3 small">Fișiere deja încărcate:</h6>
+                <ul class="list-group list-group-flush">
+                    <li th:each="doc : ${student.documents}" class="list-group-item d-flex justify-content-between align-items-center px-0">
+                        <span><i class="bi bi-check-circle-fill text-success me-2"></i> <span th:text="${doc}"></span></span>
+                        <button class="btn btn-sm btn-light"><i class="bi bi-eye"></i></button>
+                    </li>
+                    <li th:if="${#lists.isEmpty(student.documents)}" class="text-center py-3 text-muted italic small">
+                        Niciun document încărcat încă.
+                    </li>
+                </ul>
             </div>
         </div>
     </div>

@@ -1,9 +1,14 @@
 package org.example.licientajobs;
 
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Map;
@@ -14,9 +19,11 @@ import java.util.stream.Collectors;
 public class HomeController {
 
     private final StudentService studentService;
+    private final StorageService storageService;
 
-    public HomeController(StudentService studentService) {
+    public HomeController(StudentService studentService, StorageService storageService) {
         this.studentService = studentService;
+        this.storageService = storageService;
     }
 
     @GetMapping("/")
@@ -24,7 +31,7 @@ public class HomeController {
         if (session.getAttribute("loggedInUser") != null) {
             return "redirect:/students";
         }
-        return "redirect:/login"; // Acum redirecționează către login direct
+        return "redirect:/login";
     }
 
     // --- Registration ---
@@ -40,9 +47,7 @@ public class HomeController {
     public String registerUser(@RequestParam String username, @RequestParam String password,
                                @RequestParam String fullName, @RequestParam String email, HttpSession session) {
         studentService.registerUser(username, password, fullName, email);
-        // Log in the user directly after registration
         session.setAttribute("loggedInUser", username);
-        // Redirect to add personal data (student form)
         return "redirect:/students/add";
     }
 
@@ -81,10 +86,7 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        List<Student> userStudents = studentService.findAllStudents().stream()
-                .filter(s -> loggedInUser.equals(s.getAddedBy()))
-                .collect(Collectors.toList());
-
+        List<Student> userStudents = studentService.findAllStudentsByOwner(loggedInUser);
         model.addAttribute("students", userStudents);
         model.addAttribute("username", loggedInUser);
         return "list-students";
@@ -126,12 +128,45 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        Optional<Student> studentOpt = studentService.findStudentById(id);
-        if (studentOpt.isPresent() && loggedInUser.equals(studentOpt.get().getAddedBy())) {
-            studentService.deleteStudent(id);
-        }
+        studentService.deleteStudent(id, loggedInUser);
         return "redirect:/students";
     }
+
+    // --- File Upload ---
+    @PostMapping("/students/{id}/upload")
+    public String handleFileUpload(@PathVariable Long id, @RequestParam("file") MultipartFile file,
+                                   HttpSession session, RedirectAttributes redirectAttributes) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        studentService.storeFile(id, file, loggedInUser);
+        redirectAttributes.addFlashAttribute("message",
+                "You successfully uploaded " + file.getOriginalFilename() + "!");
+
+        return "redirect:/students";
+    }
+
+    @GetMapping("/files/{studentId}/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable Long studentId, @PathVariable String filename, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(403).build();
+        }
+        
+        // Security check moved to controller
+        Optional<Student> studentOpt = studentService.findStudentById(studentId);
+        if (studentOpt.isEmpty() || !loggedInUser.equals(studentOpt.get().getAddedBy())) {
+            return ResponseEntity.status(403).build();
+        }
+
+        Resource file = storageService.loadAsResource(studentId, filename);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
+                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
 
     // --- Job Applications ---
     @GetMapping("/students/{id}/apply")

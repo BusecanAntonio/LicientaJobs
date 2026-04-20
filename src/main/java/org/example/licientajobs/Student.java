@@ -25,7 +25,18 @@ public class Student {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
+    // 1. Variabila trebuie să existe
+    private List<String> documents = new ArrayList<>();
 
+    // 2. Trebuie obligatoriu să ai Getter-ul (fără el, Thymeleaf nu poate citi datele)
+    public List<String> getDocuments() {
+        return documents;
+    }
+
+    // 3. Trebuie obligatoriu să ai Setter-ul
+    public void setDocuments(List<String> documents) {
+        this.documents = documents;
+    }
     private String major;
     private String phoneNumber;
     private String address;
@@ -38,6 +49,8 @@ public class Student {
     private String addedBy; // Username of the user who added this student
 
     private List<String> notifications = new ArrayList<>();
+    private List<String> uploadedFiles = new ArrayList<>();
+
 
     @Relationship(type = "APPLIED_FOR", direction = Relationship.Direction.OUTGOING)
     private List<JobApplication> jobApplications = new ArrayList<>();
@@ -96,6 +109,15 @@ public class Student {
             this.notifications = new ArrayList<>();
         }
         this.notifications.add(notification);
+    }
+
+    public List<String> getUploadedFiles() { return uploadedFiles; }
+    public void setUploadedFiles(List<String> uploadedFiles) { this.uploadedFiles = uploadedFiles; }
+    public void addUploadedFile(String filename) {
+        if (this.uploadedFiles == null) {
+            this.uploadedFiles = new ArrayList<>();
+        }
+        this.uploadedFiles.add(filename);
     }
 
     public List<JobApplication> getJobApplications() { return jobApplications; }

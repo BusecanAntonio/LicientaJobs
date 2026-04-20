@@ -47,6 +47,7 @@ public class QuizController {
         return "redirect:/students/" + studentId + "/quiz/question";
     }
 
+
     @GetMapping("/result")
     public String result(@PathVariable Long studentId, HttpSession s, Model m) {
         String user = (String) s.getAttribute("loggedInUser");
@@ -57,7 +58,10 @@ public class QuizController {
 
         studentService.findStudentById(studentId).ifPresent(student -> {
             student.setQuizResult(res);
-            studentService.saveStudent(student); // CORECTAT (1 parametru)
+
+            // Corecția: Apelul metodei cu un singur parametru
+            studentService.saveStudent(student);
+
             m.addAttribute("student", student);
             m.addAttribute("recommendedJob", studentService.findRecommendedJob(res));
         });
