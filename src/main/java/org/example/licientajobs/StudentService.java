@@ -37,9 +37,8 @@ public class StudentService {
 
     private void synchronizeDbToJson() {
         logger.info("Synchronizing all data from Memgraph to JSON file.");
-        FallbackData data = jsonFallbackService.readFallbackData();
-        data.setStudents(studentRepository.findAll());
-        jsonFallbackService.writeFallbackData(data);
+        List<Student> students = studentRepository.findAll();
+        jsonFallbackService.writeStudentsFallbackData(students);
     }
 
     private void notifyClients(String message) {
@@ -66,15 +65,15 @@ public class StudentService {
 
         } catch (Exception e) { // Exception prinde orice problemă de bază de date
             logger.warn("Memgraph connection failed. Saving only to JSON fallback.", e);
-            FallbackData data = jsonFallbackService.readFallbackData();
+            List<Student> students = jsonFallbackService.readStudentsFallbackData();
 
             // PROTECȚIE ID: Ștergem din listă doar dacă studentul are deja un ID
             if (student.getId() != null) {
-                data.getStudents().removeIf(s -> s.getId() != null && s.getId().equals(student.getId()));
+                students.removeIf(s -> s.getId() != null && s.getId().equals(student.getId()));
             }
 
-            data.getStudents().add(student);
-            jsonFallbackService.writeFallbackData(data);
+            students.add(student);
+            jsonFallbackService.writeStudentsFallbackData(students);
             notifyClients("Data for " + student.getName() + " has been updated (Offline Mode).");
             return student;
         }
@@ -96,8 +95,8 @@ public class StudentService {
             return studentRepository.findAll();
         } catch (DataAccessResourceFailureException e) {
             logger.warn("Memgraph connection failed. Reading from JSON fallback file.", e);
-            FallbackData data = jsonFallbackService.readFallbackData();
-            return data.getStudents() != null ? data.getStudents() : new ArrayList<>();
+            List<Student> students = jsonFallbackService.readStudentsFallbackData();
+            return students != null ? students : new ArrayList<>();
         }
     }
     
@@ -112,7 +111,7 @@ public class StudentService {
             return studentRepository.findById(id);
         } catch (DataAccessResourceFailureException e) {
             logger.warn("Memgraph connection failed. Reading from JSON fallback file.", e);
-            return jsonFallbackService.readFallbackData().getStudents().stream()
+            return jsonFallbackService.readStudentsFallbackData().stream()
                 .filter(s -> s.getId() != null && s.getId().equals(id))
                 .findFirst();
         }
@@ -128,10 +127,10 @@ public class StudentService {
                     notifyClients("Student with ID " + id + " has been deleted.");
                 } catch (DataAccessResourceFailureException e) {
                     logger.warn("Memgraph connection failed. Deleting only from JSON fallback.", e);
-                    FallbackData data = jsonFallbackService.readFallbackData();
-                    boolean removed = data.getStudents().removeIf(s -> s.getId() != null && s.getId().equals(id));
+                    List<Student> students = jsonFallbackService.readStudentsFallbackData();
+                    boolean removed = students.removeIf(s -> s.getId() != null && s.getId().equals(id));
                     if (removed) {
-                        jsonFallbackService.writeFallbackData(data);
+                        jsonFallbackService.writeStudentsFallbackData(students);
                         notifyClients("Student with ID " + id + " has been deleted (Offline Mode).");
                     }
                 }

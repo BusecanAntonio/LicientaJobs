@@ -18,8 +18,9 @@ import java.util.List;
 public class JsonFallbackService {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonFallbackService.class);
-    private final File fallbackFile = new File("fallback-data.json");
+    private final File fallbackFile = new File("Jobs.json");
     private final File usersFallbackFile = new File("usersRe.json");
+    private final File studentsFallbackFile = new File("src/main/resources/Students.json");
     private final ObjectMapper objectMapper;
 
     public JsonFallbackService() {
@@ -42,6 +43,9 @@ public class JsonFallbackService {
                 logger.error("Error creating users fallback file", e);
             }
         }
+        if (!studentsFallbackFile.exists()) {
+            logger.warn("Students fallback file not found at: {}.", studentsFallbackFile.getAbsolutePath());
+        }
     }
 
     public FallbackData readFallbackData() {
@@ -62,6 +66,27 @@ public class JsonFallbackService {
             logger.info("Successfully wrote data to fallback file: {}", fallbackFile.getAbsolutePath());
         } catch (IOException e) {
             logger.error("Error writing to fallback file: {}", fallbackFile.getAbsolutePath(), e);
+        }
+    }
+    
+    public List<Student> readStudentsFallbackData() {
+        if (!studentsFallbackFile.exists()) {
+            return new ArrayList<>();
+        }
+        try {
+            return objectMapper.readValue(studentsFallbackFile, new TypeReference<List<Student>>() {});
+        } catch (IOException e) {
+            logger.error("Error reading from students fallback file: {}", studentsFallbackFile.getAbsolutePath(), e);
+            return new ArrayList<>();
+        }
+    }
+
+    public void writeStudentsFallbackData(List<Student> students) {
+        try {
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(studentsFallbackFile, students);
+            logger.info("Successfully wrote data to students fallback file: {}", studentsFallbackFile.getAbsolutePath());
+        } catch (IOException e) {
+            logger.error("Error writing to students fallback file: {}", studentsFallbackFile.getAbsolutePath(), e);
         }
     }
 

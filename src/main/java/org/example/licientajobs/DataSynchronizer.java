@@ -28,7 +28,9 @@ public class DataSynchronizer implements CommandLineRunner {
         try {
             logger.info("Synchronizing initial data from fallback file...");
             FallbackData fallbackData = jsonFallbackService.readFallbackData();
-            List<Student> fallbackStudents = fallbackData.getStudents();
+            
+            // Read from new files
+            List<Student> fallbackStudents = jsonFallbackService.readStudentsFallbackData();
             List<JobApplication> fallbackJobs = fallbackData.getAvailableJobs();
 
             if ((fallbackStudents == null || fallbackStudents.isEmpty()) && (fallbackJobs == null || fallbackJobs.isEmpty())) {
