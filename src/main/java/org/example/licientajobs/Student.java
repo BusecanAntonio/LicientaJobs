@@ -1,5 +1,6 @@
 package org.example.licientajobs;
 
+import org.springframework.data.neo4j.core.schema.CompositeProperty;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
@@ -44,12 +45,17 @@ public class Student {
     private Integer endYear;
     private String quizResult; // To store the dominant trait
     private Long interestedDomainId; // To store the ID of the chosen job/domain
+    
+    @CompositeProperty
     private Map<String, String> applicationAnswers = new HashMap<>(); // To store answers for job questions
     
     private String addedBy; // Username of the user who added this student
 
     private List<String> notifications = new ArrayList<>();
     private List<String> uploadedFiles = new ArrayList<>();
+
+    // NEW FIELD FOR SKILLS
+    private List<String> skills = new ArrayList<>();
 
 
     @Relationship(type = "APPLIED_FOR", direction = Relationship.Direction.OUTGOING)
@@ -119,6 +125,9 @@ public class Student {
         }
         this.uploadedFiles.add(filename);
     }
+
+    public List<String> getSkills() { return skills; }
+    public void setSkills(List<String> skills) { this.skills = skills; }
 
     public List<JobApplication> getJobApplications() { return jobApplications; }
     public void setJobApplications(List<JobApplication> jobApplications) { this.jobApplications = jobApplications; }

@@ -15,6 +15,7 @@
   "addedBy" : null,
   "notifications" : [ "Your application for QA Tester at Electronic Arts was accepted.", "Your application for Sound Designer at Sony Interactive Entertainment was rejected.", "Your application for QA Tester at Electronic Arts was accepted." ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ {
     "id" : 3240,
     "jobTitle" : "QA Tester",
@@ -114,6 +115,7 @@
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 24
 }, {
@@ -133,6 +135,7 @@
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 46
 }, {
@@ -152,6 +155,7 @@
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 23
 }, {
@@ -167,13 +171,11 @@
   "endYear" : 2026,
   "quizResult" : null,
   "interestedDomainId" : 2813,
-  "applicationAnswers" : {
-    "Ce limbaje de programare preferi pentru game development?" : "C#",
-    "Care este principala provocare pe care ai întâmpinat-o în dezvoltarea unui joc?" : "Principala provocare este promovarea jocului si o metoda ca oameni care pot sa faca un crack la joc distrugandu-mi economia "
-  },
+  "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 24
 }, {
@@ -193,6 +195,7 @@
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 23
 }, {
@@ -212,6 +215,7 @@
   "addedBy" : "Busecan Antonio",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ ],
   "jobApplications" : [ {
     "id" : 3251,
     "jobTitle" : "Robotics Engineer",
@@ -247,6 +251,7 @@
   "addedBy" : "Busecan Antonio",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
+  "skills" : [ "JavaScript" ],
   "jobApplications" : [ {
     "id" : 3307,
     "jobTitle" : "Software Engineer",
@@ -282,6 +287,7 @@
   "addedBy" : "Busecan Alex",
   "notifications" : [ "Your application for UI/UX Designer at Spotify was accepted." ],
   "uploadedFiles" : [ "CV_Andrei_Popescu.pdf", "CV_Andrei_Popescu.pdf" ],
+  "skills" : [ ],
   "jobApplications" : [ {
     "id" : 3254,
     "jobTitle" : "UI/UX Designer",

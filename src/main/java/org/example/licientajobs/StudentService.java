@@ -6,12 +6,17 @@ import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,13 +29,15 @@ public class StudentService {
     private final JsonFallbackService jsonFallbackService;
     private final StorageService storageService;
     private final SimpMessagingTemplate messagingTemplate;
+    private final OllamaService ollamaService;
 
-    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate) {
+    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.jsonFallbackService = jsonFallbackService;
         this.storageService = storageService;
         this.messagingTemplate = messagingTemplate;
+        this.ollamaService = ollamaService;
     }
 
 
@@ -290,5 +297,81 @@ public class StudentService {
                 saveStudent(student);
             }
         });
+    }
+
+    /**
+     * Extracts skills from an uploaded file using Ollama LLM and adds them to the student.
+     */
+    public void extractAndSaveSkills(Student student, MultipartFile file) {
+        try {
+            // For now, we only extract from TXT files for simplicity in reading text
+            // In a real app, you would use a library like Apache PDFBox to read text from PDFs
+            String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
+            
+            // Do not send huge files entirely to LLM to prevent context overflow, just the first 3000 chars
+            String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
+
+            String prompt = "Extract the skills from the following recommendation letter or CV.\n\n" +
+                    "Return ONLY a JSON array of strings containing the skills using these rules:\n" +
+                    "- Use standard skill names (e.g., \"JavaScript\", \"Teamwork\", \"Excel\")\n" +
+                    "- Do not invent new skills\n" +
+                    "- Avoid duplicates\n" +
+                    "- DO NOT return any text outside of the JSON array (no markdown code blocks, just the raw json array).\n\n" +
+                    "Text:\n\"\"\"\n" + contentToSend + "\n\"\"\"";
+
+            logger.info("Trimitere text către Ollama pentru extragere de skill-uri...");
+            String jsonResponse = ollamaService.generateResponse(prompt);
+
+            logger.info("Răspuns brut Ollama: {}", jsonResponse);
+
+            // Parsing the JSON array returned by Ollama
+            ObjectMapper mapper = new ObjectMapper();
+            
+            // Clean up the response just in case the LLM returned markdown blocks like ```json ... ```
+            String cleanJson = jsonResponse.trim();
+
+            // Extract just the array or object if the LLM output includes other text
+            Matcher arrayMatcher = Pattern.compile("\\[.*?\\]", Pattern.DOTALL).matcher(cleanJson);
+            Matcher objectMatcher = Pattern.compile("\\{.*?\\}", Pattern.DOTALL).matcher(cleanJson);
+
+            if (arrayMatcher.find()) {
+                cleanJson = arrayMatcher.group(0);
+            } else if (objectMatcher.find()) {
+                cleanJson = objectMatcher.group(0);
+            }
+            
+            try {
+                List<String> extractedSkills = new ArrayList<>();
+                if (cleanJson.startsWith("{")) {
+                    // Try to map it to an object with String keys
+                    Map<String, Object> skillsMap = mapper.readValue(cleanJson, new TypeReference<Map<String, Object>>() {});
+                    extractedSkills.addAll(skillsMap.keySet());
+                } else if (cleanJson.startsWith("[")) {
+                    // Try to map it to an array of Strings
+                    extractedSkills = mapper.readValue(cleanJson, new TypeReference<List<String>>() {});
+                } else {
+                     throw new RuntimeException("Format invalid. Ollama nu a intors nici array nici obiect parsabil: " + cleanJson);
+                }
+                
+                // Add new skills to existing ones, avoiding duplicates
+                if (student.getSkills() == null) {
+                    student.setSkills(new ArrayList<>());
+                }
+                
+                for (String skill : extractedSkills) {
+                    if (!student.getSkills().contains(skill)) {
+                        student.getSkills().add(skill);
+                    }
+                }
+                
+                logger.info("Skill-uri adăugate cu succes: {}", extractedSkills);
+
+            } catch (Exception parseEx) {
+                logger.error("Nu s-a putut parsa răspunsul de la Ollama: " + cleanJson, parseEx);
+            }
+
+        } catch (Exception e) {
+            logger.error("Eroare la procesarea fișierului pentru extragerea de skill-uri.", e);
+        }
     }
 }

@@ -57,6 +57,8 @@ public class OllamaService {
             Map<String, Object> requestBody = new HashMap<>();
             requestBody.put("model", model);
             requestBody.put("prompt", prompt);
+            // Instrucțiune importantă: Setăm formatul de răspuns așeptat să fie JSON pentru extragerea de skill-uri
+            requestBody.put("format", "json");
             requestBody.put("stream", false); // Setat pe false pentru a primi tot răspunsul deodată
 
             HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);

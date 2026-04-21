@@ -150,21 +150,19 @@ public class HomeController {
         studentService.findStudentById(id).ifPresent(student -> {
             if (!file.isEmpty()) {
                 try {
-                    // 1. Partea pe care o ai deja (Salvarea fizică pe disc)
-                    // Aici poți lăsa codul tău care salvează fișierul real în folder...
-                    // (Dacă nu o aveai, adaug-o aici)
+                    // 1. Salvarea fizică pe disc prin StorageService
+                    String fileName = storageService.store(file, id);
 
-                    // Numele pe care vrem să-l afișăm (ex: "CV_fisierulmeu.pdf")
-                    String fileName = file.getOriginalFilename();
-
-                    // 2. CHEIA PROBLEMEI: Salvarea în lista studentului
-                    // Verificăm să nu fie lista null, apoi adăugăm numele fișierului
+                    // 2. Salvarea în lista studentului
                     if (student.getDocuments() == null) {
                         student.setDocuments(new ArrayList<>());
                     }
-                    student.getDocuments().add(fileName); // Adăugăm în memorie
+                    student.getDocuments().add(fileName);
 
-                    // 3. Salvăm studentul în baza de date ca să "țină minte" fișierul
+                    // 3. Apelăm LLM-ul pentru a extrage skill-uri dacă este scrisoare de recomandare sau CV
+                    studentService.extractAndSaveSkills(student, file);
+
+                    // 4. Salvăm studentul în baza de date
                     studentService.saveStudent(student, loggedInUser);
 
                 } catch (Exception e) {
@@ -175,16 +173,12 @@ public class HomeController {
 
         return "redirect:/students";
     }
+    
     @GetMapping("/students/{id}/documents/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable Long id, @PathVariable String filename) {
         try {
-            // ⚠️ ATENȚIE AICI: Modifică calea în funcție de cum ai salvat fișierul.
-            // Dacă le-ai salvat într-un folder "uploads" (ex: uploads/CV_Andrei.pdf), lasă așa:
-            // Path filePath = Paths.get("uploads").resolve(filename).normalize();
-
-            // Dacă le-ai salvat direct în folderul principal al proiectului (root), folosește:
-            Path filePath = Paths.get(filename).normalize();
-
+            // Folosim StorageService pentru a găsi calea corectă a fișierului salvat
+            Path filePath = storageService.load(id, filename);
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() || resource.isReadable()) {
@@ -216,7 +210,7 @@ public class HomeController {
         studentService.findStudentById(id).ifPresent(student -> {
             try {
                 // 1. Ștergerea fizică de pe disk
-                Path filePath = Paths.get(filename).normalize();
+                Path filePath = storageService.load(id, filename);
                 Files.deleteIfExists(filePath);
 
                 // 2. Ștergerea numelui din lista studentului
@@ -233,25 +227,6 @@ public class HomeController {
         });
 
         return "redirect:/students";
-    }
-
-    @GetMapping("/files/{studentId}/{filename:.+}")
-    @ResponseBody
-    public ResponseEntity<Resource> serveFile(@PathVariable Long studentId, @PathVariable String filename, HttpSession session) {
-        String loggedInUser = (String) session.getAttribute("loggedInUser");
-        if (loggedInUser == null) {
-            return ResponseEntity.status(403).build();
-        }
-        
-        // Security check moved to controller
-        Optional<Student> studentOpt = studentService.findStudentById(studentId);
-        if (studentOpt.isEmpty() || !loggedInUser.equals(studentOpt.get().getAddedBy())) {
-            return ResponseEntity.status(403).build();
-        }
-
-        Resource file = storageService.loadAsResource(studentId, filename);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
-                "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
 
