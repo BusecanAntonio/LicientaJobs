@@ -34,13 +34,14 @@
         }
         .card-sidebar:hover { background-color: #e8eaed; }
 
-        .upload-trigger {
+        .upload-trigger, .edit-trigger {
             color: #5f6368;
             font-size: 1.5rem;
             cursor: pointer;
             transition: color 0.2s;
+            margin-bottom: 20px;
         }
-        .upload-trigger:hover { color: #0d6efd; }
+        .upload-trigger:hover, .edit-trigger:hover { color: #0d6efd; }
 
         .card-content { flex: 1; } /* Restul conținutului ocupă spațiul rămas */
 
@@ -109,6 +110,11 @@
                 <i class="bi bi-file-earmark-plus"></i>
                 <div style="font-size: 0.6rem; font-weight: bold;">DOCS</div>
             </div>
+
+            <div class="edit-trigger" data-bs-toggle="modal" th:data-bs-target="'#editStudentModal' + ${student.id}" title="Vizualizare / Editare Date">
+                <i class="bi bi-person-gear"></i>
+                <div style="font-size: 0.6rem; font-weight: bold;">EDIT</div>
+            </div>
         </div>
 
         <div class="card-content">
@@ -127,6 +133,14 @@
                 <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
                     <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări
                 </a>
+
+                <!-- Afișarea skill-urilor extrase -->
+                <div th:if="${student.skills != null and !student.skills.isEmpty()}" class="mb-4">
+                    <h6 class="fw-bold text-muted mb-2"><i class="bi bi-stars me-1"></i>Skill-uri Extrase (AI):</h6>
+                    <div>
+                        <span th:each="skill : ${student.skills}" class="badge bg-primary me-1 mb-1" th:text="${skill}">Skill</span>
+                    </div>
+                </div>
 
                 <div class="table-responsive">
                     <h5 class="fw-bold mb-3"><i class="bi bi-file-earmark-text me-2"></i>Aplicații Joburi</h5>
@@ -236,6 +250,63 @@
                 </ul>
             </div>
         </div>
+
+        <!-- Modal pentru Vizualizare / Editare Date -->
+        <div class="modal fade" th:id="'editStudentModal' + ${student.id}" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                        <h5 class="modal-title fw-bold" id="editStudentModalLabel">
+                            <i class="bi bi-person-lines-fill me-2"></i>Date Personale: <span th:text="${student.name}"></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form th:action="@{/students/edit/{id}(id=${student.id})}" method="post">
+                        <div class="modal-body">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Nume Complet</label>
+                                    <input type="text" class="form-control" name="name" th:value="${student.name}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input type="email" class="form-control" name="email" th:value="${student.email}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Număr de Telefon</label>
+                                    <input type="text" class="form-control" name="phoneNumber" th:value="${student.phoneNumber}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Specializare (Major)</label>
+                                    <input type="text" class="form-control" name="major" th:value="${student.major}">
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Adresă</label>
+                                    <input type="text" class="form-control" name="address" th:value="${student.address}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">An Începere Studii</label>
+                                    <input type="number" class="form-control" name="startYear" th:value="${student.startYear}">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">An Finalizare Studii</label>
+                                    <input type="number" class="form-control" name="endYear" th:value="${student.endYear}">
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fw-bold">Data Nașterii</label>
+                                    <input type="date" class="form-control" name="dateOfBirth" th:value="${student.dateOfBirth}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer bg-light d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Salvează Modificările</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

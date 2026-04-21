@@ -138,6 +138,32 @@ public class HomeController {
         return "redirect:/students";
     }
 
+    @PostMapping("/students/edit/{id}")
+    public String editStudent(@PathVariable Long id, @ModelAttribute Student updatedStudent, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        studentService.findStudentById(id).ifPresent(existingStudent -> {
+            if (loggedInUser.equals(existingStudent.getAddedBy())) {
+                existingStudent.setName(updatedStudent.getName());
+                existingStudent.setEmail(updatedStudent.getEmail());
+                existingStudent.setPhoneNumber(updatedStudent.getPhoneNumber());
+                existingStudent.setMajor(updatedStudent.getMajor());
+                existingStudent.setAddress(updatedStudent.getAddress());
+                existingStudent.setStartYear(updatedStudent.getStartYear());
+                existingStudent.setEndYear(updatedStudent.getEndYear());
+                existingStudent.setDateOfBirth(updatedStudent.getDateOfBirth());
+                
+                studentService.saveStudent(existingStudent, loggedInUser);
+            }
+        });
+
+        return "redirect:/students";
+    }
+
+
     @PostMapping("/students/{id}/upload")
     public String handleFileUpload(@PathVariable Long id,
                                    @RequestParam("type") String type,
