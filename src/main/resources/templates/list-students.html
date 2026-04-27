@@ -230,10 +230,11 @@
             <span th:text="${doc}">nume_fisier.pdf</span>
         </span>
                         <div class="btn-group">
-                            <a th:href="@{/students/{id}/documents/{filename}(id=${student.id}, filename=${doc})}"
-                               target="_blank" class="btn btn-sm btn-outline-primary">
+                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                    th:onclick="viewDocument([[${student.id}]], [[${doc}]])"
+                                    title="Vizualizează Documentul">
                                 <i class="bi bi-eye"></i>
-                            </a>
+                            </button>
 
                             <form th:action="@{/students/{id}/documents/delete(id=${student.id})}" method="post"
                                   style="display:inline;" onsubmit="return confirm('Sigur vrei să ștergi acest fișier?');">
@@ -242,6 +243,14 @@
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </form>
+
+                            <!-- Adăugăm butonul de Download -->
+                            <a th:href="@{/students/{id}/documents/{filename}(id=${student.id}, filename=${doc})}"
+                               download
+                               class="btn btn-sm btn-outline-success ms-1"
+                               title="Descarcă Documentul">
+                                <i class="bi bi-download"></i>
+                            </a>
                         </div>
                     </li>
                     <li th:if="${#lists.isEmpty(student.documents)}" class="text-center py-3 text-muted small">
@@ -310,11 +319,82 @@
     </div>
 </div>
 
+<!-- Modal global pentru vizualizarea PDF-urilor -->
+<div class="modal fade" id="pdfViewerModal" tabindex="-1" aria-labelledby="pdfViewerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" style="height: 90vh;">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="pdfViewerModalLabel"><i class="bi bi-file-earmark-pdf me-2"></i>Vizualizare Document</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <!-- Aici vom încărca PDF-ul dinamic -->
+                <iframe id="pdf-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
+                <div id="pdf-loading" class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Se încarcă...</span>
+                    </div>
+                </div>
+                <div id="pdf-error" class="text-center text-danger p-4" style="display: none;">
+                    <i class="bi bi-exclamation-triangle fs-1"></i>
+                    <p class="mt-2">Eroare la încărcarea documentului. Posibil să nu ai permisiunea sau fișierul nu mai există.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
 <script>
+    // Logică pentru vizualizare PDF
+    function viewDocument(studentId, filename) {
+        const modal = new bootstrap.Modal(document.getElementById('pdfViewerModal'));
+        const iframe = document.getElementById('pdf-iframe');
+        const loading = document.getElementById('pdf-loading');
+        const errorDiv = document.getElementById('pdf-error');
+
+        // Resetăm starea
+        iframe.style.display = 'none';
+        iframe.src = '';
+        errorDiv.style.display = 'none';
+        loading.style.display = 'flex';
+
+        modal.show();
+
+        // Facem fetch pentru a evita problemele de CORS la încărcarea directă în iframe
+        fetch(`/students/${studentId}/documents/${filename}`)
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.blob();
+            })
+            .then(blob => {
+                // Creăm un URL local sigur pentru blob-ul primit
+                const fileURL = URL.createObjectURL(new Blob([blob], { type: blob.type || 'application/pdf' }));
+                iframe.src = fileURL;
+
+                loading.style.display = 'none';
+                iframe.style.display = 'block';
+            })
+            .catch(error => {
+                console.error("Eroare la obținerea documentului:", error);
+                loading.style.display = 'none';
+                errorDiv.style.display = 'block';
+            });
+    }
+
+    // Curățăm memoria la închiderea modalului pentru a evita memory leaks cu blob URLs
+    document.getElementById('pdfViewerModal').addEventListener('hidden.bs.modal', function () {
+        const iframe = document.getElementById('pdf-iframe');
+        if (iframe.src.startsWith('blob:')) {
+            URL.revokeObjectURL(iframe.src);
+        }
+        iframe.src = '';
+    });
+
+
     // Logică Admin Toggle
     const adminToggle = document.getElementById('admin-toggle');
     let adminMode = false;
