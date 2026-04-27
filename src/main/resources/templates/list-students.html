@@ -75,6 +75,14 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                 <li class="nav-item">
+                    <!-- Link către trigger-ul de import ESCO -->
+                    <a class="nav-link text-warning fw-bold" th:href="@{/admin/import-esco}" onclick="return confirm('Durează câteva minute. Baza de date Neo4j/Memgraph trebuie să fie pornită. Continui?')">
+                        <i class="bi bi-database-down"></i> Importă Date ESCO
+                    </a>
+                </li>
+            </ul>
             <ul class="navbar-nav ms-auto align-items-center">
                 <li class="nav-item me-3">
                     <span class="navbar-text text-white">

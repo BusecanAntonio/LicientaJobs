@@ -16,11 +16,14 @@ public class DataSynchronizer implements CommandLineRunner {
     private final JsonFallbackService jsonFallbackService;
     private final StudentRepository studentRepository;
     private final JobApplicationRepository jobApplicationRepository;
+    private final EscoImportService escoImportService;
 
-    public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository, JobApplicationRepository jobApplicationRepository) {
+    public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository, 
+                            JobApplicationRepository jobApplicationRepository, EscoImportService escoImportService) {
         this.jsonFallbackService = jsonFallbackService;
         this.studentRepository = studentRepository;
         this.jobApplicationRepository = jobApplicationRepository;
+        this.escoImportService = escoImportService;
     }
 
     @Override
@@ -29,6 +32,10 @@ public class DataSynchronizer implements CommandLineRunner {
             logger.info("Synchronizing initial data from fallback file...");
             FallbackData fallbackData = jsonFallbackService.readFallbackData();
             
+            // Poți decomenta linia de mai jos dacă vrei ca la pornire să randeze importul ESCO
+            // Atenție: Importul ESCO pe fișiere mari durează și suprascrie datele!
+            // escoImportService.importEscoData();
+
             // Read from new files
             List<Student> fallbackStudents = jsonFallbackService.readStudentsFallbackData();
             List<JobApplication> fallbackJobs = fallbackData.getAvailableJobs();

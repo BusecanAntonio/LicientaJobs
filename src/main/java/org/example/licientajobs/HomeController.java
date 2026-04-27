@@ -26,10 +26,12 @@ public class HomeController {
 
     private final StudentService studentService;
     private final StorageService storageService;
+    private final EscoImportService escoImportService;
 
-    public HomeController(StudentService studentService, StorageService storageService) {
+    public HomeController(StudentService studentService, StorageService storageService, EscoImportService escoImportService) {
         this.studentService = studentService;
         this.storageService = storageService;
+        this.escoImportService = escoImportService;
     }
 
     @GetMapping("/")
@@ -82,6 +84,25 @@ public class HomeController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
+    }
+
+    // --- Admin Endpoints ---
+    @GetMapping("/admin/import-esco")
+    @ResponseBody
+    public String triggerEscoImport(HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "Neautorizat. Loghează-te mai întâi.";
+        }
+        // Ideal ar fi să verifici și dacă userul e "admin"
+        
+        try {
+            // Executăm importul (Durează un pic)
+            escoImportService.importEscoData();
+            return "Importul ESCO a fost pornit/finalizat cu succes! Verifică consola (log-urile) pentru detalii.";
+        } catch (Exception e) {
+            return "A apărut o eroare la import: " + e.getMessage();
+        }
     }
 
     // --- Student Management ---
