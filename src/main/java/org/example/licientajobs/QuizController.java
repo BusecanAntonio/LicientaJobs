@@ -1,73 +1,106 @@
 package org.example.licientajobs;
 
-import jakarta.servlet.http.HttpSession;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import java.util.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/students/{studentId}/quiz")
 public class QuizController {
-    private final QuizService quizService;
-    private final StudentService studentService;
 
-    public QuizController(QuizService quizService, StudentService studentService) {
-        this.quizService = quizService;
-        this.studentService = studentService;
+    @Autowired
+    private StudentRepository studentRepository;
+
+    private List<Question> allQuestions;
+
+    public QuizController() {
+        // Load questions from JSON
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            allQuestions = objectMapper.readValue(new File("questions.json"), new TypeReference<List<Question>>() {});
+        } catch (IOException e) {
+            e.printStackTrace();
+            // In a real app, handle this more gracefully
+            allQuestions = List.of();
+        }
     }
 
-    @GetMapping
-    public String start(@PathVariable Long studentId, HttpSession s) {
-        s.setAttribute("currentQuestionIndex", 0);
-        s.setAttribute("answers", new ArrayList<String>());
-        return "redirect:/students/" + studentId + "/quiz/question";
-    }
+    @GetMapping("/quiz")
+    public String showQuiz(@RequestParam("studentId") Long studentId, Model model) {
+        Optional<Student> student = studentRepository.findById(studentId);
+        if (student.isEmpty()) {
+            return "redirect:/"; // Or an error page
+        }
 
-    @GetMapping("/question")
-    public String ask(@PathVariable Long studentId, HttpSession s, Model m) {
-        Integer idx = (Integer) s.getAttribute("currentQuestionIndex");
-        if (idx == null) return "redirect:/students/" + studentId + "/quiz";
+        // Make a copy of the questions to shuffle them
+        List<Question> randomQuestions = new ArrayList<>(allQuestions);
+        Collections.shuffle(randomQuestions);
 
-        List<QuizQuestion> qs = quizService.getQuestions();
-        if (idx >= qs.size()) return "redirect:/students/" + studentId + "/quiz/result";
+        // Pick the first 5 questions (or less if there aren't enough)
+        int numberOfQuestionsToShow = Math.min(5, randomQuestions.size());
+        List<Question> selectedQuestions = randomQuestions.subList(0, numberOfQuestionsToShow);
 
-        m.addAttribute("question", qs.get(idx));
-        m.addAttribute("studentId", studentId);
-        m.addAttribute("currentQuestionNumber", idx + 1);
-        m.addAttribute("totalQuestions", qs.size());
+        // Shuffle the options within each selected question
+        for (Question q : selectedQuestions) {
+            List<Option> shuffledOptions = new ArrayList<>(q.getOptions());
+            Collections.shuffle(shuffledOptions);
+            q.setOptions(shuffledOptions);
+        }
+
+        model.addAttribute("student", student.get());
+        model.addAttribute("questions", selectedQuestions);
         return "quiz";
     }
 
-    @PostMapping("/answer")
-    public String answer(@PathVariable Long studentId, @RequestParam String answer, HttpSession s) {
-        List<String> ans = (List<String>) s.getAttribute("answers");
-        ans.add(answer);
-        s.setAttribute("currentQuestionIndex", (Integer)s.getAttribute("currentQuestionIndex") + 1);
-        return "redirect:/students/" + studentId + "/quiz/question";
-    }
+    @PostMapping("/quiz/submit")
+    public String submitQuiz(@RequestParam("studentId") Long studentId, @RequestParam Map<String, String> answers) {
+        Optional<Student> optionalStudent = studentRepository.findById(studentId);
+        if (optionalStudent.isEmpty()) {
+            return "redirect:/"; // Or an error page
+        }
 
+        Map<String, Integer> domainScores = new HashMap<>();
 
-    @GetMapping("/result")
-    public String result(@PathVariable Long studentId, HttpSession s, Model m) {
-        String user = (String) s.getAttribute("loggedInUser");
-        if (user == null) return "redirect:/login";
+        for (Map.Entry<String, String> entry : answers.entrySet()) {
+            if (entry.getKey().startsWith("question_")) {
+                int questionId = Integer.parseInt(entry.getKey().replace("question_", ""));
+                
+                // Opțiunea e salvată ca string-ul opțiunii, dar noi am trimis index-ul în value în HTML.
+                // În versiunea cu opțiuni amestecate, indexul din HTML corespunde cu ordinea AMECSTECATĂ, 
+                // dar noi trebuie să citim opțiunea efectivă, așa că cel mai bine modificăm HTML-ul 
+                // să trimită numele domeniului sau să o gestionăm diferit. 
+                // Pentru a păstra logica simplă, HTML-ul va trebui să trimită domeniul ca valoare (vezi modificarea din quiz.html).
+                
+                String selectedDomain = entry.getValue(); // Aici value va fi direct domeniul
+                domainScores.merge(selectedDomain, 2, Integer::sum); // Acordăm 2 puncte direct
+            }
+        }
 
-        List<String> ans = (List<String>) s.getAttribute("answers");
-        String res = quizService.calculateResult(ans);
+        // Find the domain with the highest score
+        String bestDomain = domainScores.entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse("Generalist");
 
-        studentService.findStudentById(studentId).ifPresent(student -> {
-            student.setQuizResult(res);
+        Student student = optionalStudent.get();
+        student.setQuizResult(bestDomain);
+        studentRepository.save(student);
 
-            // Corecția: Apelul metodei cu un singur parametru
-            studentService.saveStudent(student);
-
-            m.addAttribute("student", student);
-            m.addAttribute("recommendedJob", studentService.findRecommendedJob(res));
-        });
-
-        m.addAttribute("result", res);
-        m.addAttribute("description", quizService.getResultDescription(res));
-        return "quiz-result";
+        // Redirect back to the main list of students instead of a profile page
+        return "redirect:/";
     }
 }

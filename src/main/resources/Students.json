@@ -203,7 +203,7 @@
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2002, 2, 21 ],
-  "documents" : [ ],
+  "documents" : [ "CV.pdf", "Scrisoare de Recomandare.txt" ],
   "major" : "Programator",
   "phoneNumber" : "",
   "address" : "mm tamaia strada trandafirilor nr 13",
@@ -215,7 +215,7 @@
   "addedBy" : "Busecan Antonio",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
-  "skills" : [ ],
+  "skills" : [ "JavaScript", "Teamwork", "Excel" ],
   "jobApplications" : [ {
     "id" : 3251,
     "jobTitle" : "Robotics Engineer",
@@ -239,7 +239,7 @@
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2002, 1, 21 ],
-  "documents" : [ "CV_Andrei_Popescu.pdf", "Scrisoare de Recomandare.txt" ],
+  "documents" : [ "CV.pdf" ],
   "major" : "Programator",
   "phoneNumber" : "0771400490",
   "address" : "mm tamaia strada trandafirilor nr 13",
@@ -251,7 +251,7 @@
   "addedBy" : "Busecan Antonio",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
-  "skills" : [ "JavaScript" ],
+  "skills" : [ "JavaScript", "Microsoft Office", "Comunicare", "Lucru în echipa", "Organizare" ],
   "jobApplications" : [ {
     "id" : 3307,
     "jobTitle" : "Software Engineer",
@@ -306,4 +306,24 @@
     "applicationDate" : null
   } ],
   "age" : 26
+}, {
+  "id" : 3310,
+  "name" : "Andrei Busecan",
+  "email" : "busecancristian@gmai.com",
+  "dateOfBirth" : [ 1980, 6, 21 ],
+  "documents" : [ ],
+  "major" : "Electricity",
+  "phoneNumber" : "2312312444",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2019,
+  "endYear" : 2025,
+  "quizResult" : null,
+  "interestedDomainId" : 2868,
+  "applicationAnswers" : { },
+  "addedBy" : "Busecan Cristian",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ ],
+  "jobApplications" : [ ],
+  "age" : 45
 } ]

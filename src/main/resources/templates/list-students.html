@@ -128,10 +128,17 @@
                         <p class="mb-1 text-muted small">Email de contact:</p>
                         <p class="fw-bold" th:text="${student.email}"></p>
                     </div>
+                    <!-- REZULTATUL QUIZ-ULUI -->
+                    <div class="col-md-6 text-end">
+                         <span th:if="${student.quizResult != null}" class="badge bg-success fs-6">
+                             <i class="bi bi-award me-1"></i>Domeniu Recomandat: <span th:text="${student.quizResult}"></span>
+                         </span>
+                    </div>
                 </div>
 
-                <a th:href="@{/quiz/{id}(id=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
-                    <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări
+                <!-- BUTONUL PENTRU QUIZ ADAUGAT AICI -->
+                <a th:href="@{/quiz(studentId=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
+                    <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări IT
                 </a>
 
                 <!-- Afișarea skill-urilor extrase -->
@@ -308,7 +315,7 @@
                             </div>
                         </div>
                         <div class="modal-footer bg-light d-flex justify-content-between">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                            <button type="button" class="btn secondary" data-bs-dismiss="modal">Închide</button>
                             <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Salvează Modificările</button>
                         </div>
                     </form>
