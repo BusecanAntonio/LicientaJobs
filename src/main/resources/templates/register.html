@@ -46,15 +46,32 @@
 </head>
 <body>
     <div class="register-container">
+        <h2>Register</h2>
         <form th:action="@{/register}" method="post">
-            <input type="text" name="username" required>
-            <input type="password" name="password" required>
-            <input type="text" name="fullName" required>
-            <input type="email" name="email" required>
-            <button type="submit">Register</button>
+            <div class="mb-3">
+                <label for="username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Alege un username" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Parolă</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Alege o parolă" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="fullName" class="form-label">Nume Complet</label>
+                <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Numele tău complet" required>
+            </div>
+
+            <div class="mb-4">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="Adresa ta de email" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Înregistrează-te</button>
         </form>
         <div class="text-center">
-            Already have an account? <a th:href="@{/login}">Login here</a>
+            Ai deja un cont? <a th:href="@{/login}">Login aici</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

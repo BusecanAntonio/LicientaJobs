@@ -348,4 +348,26 @@
   "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 2023
+}, {
+  "id" : 11705,
+  "name" : "Alex Mitius",
+  "email" : "busecanandrei@yahoo.com",
+  "dateOfBirth" : [ 2003, 2, 21 ],
+  "documents" : [ ],
+  "major" : "software ingineer",
+  "phoneNumber" : "0714893214",
+  "address" : "baia mare ghioceilor nr 15 etaj 2 ",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : null,
+  "interestedDomainId" : null,
+  "applicationAnswers" : {
+    "UserInterests" : "Game Developer, Unity Developer, Graphics Programmer, Embedded Engineer, Robotics Engineer, Frontend Developer"
+  },
+  "addedBy" : "Alex Stefan Mitrius",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ ],
+  "jobApplications" : [ ],
+  "age" : 23
 } ]

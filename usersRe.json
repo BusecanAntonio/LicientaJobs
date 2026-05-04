@@ -22,4 +22,10 @@
   "password" : "airflow",
   "fullName" : "asdasd",
   "email" : "busecanandrei@yahoo.com"
+}, {
+  "id" : 1777879907020,
+  "username" : "Alex Stefan Mitrius",
+  "password" : "123456",
+  "fullName" : "Busecan Antonio Andrei",
+  "email" : "busecan.cr.antonio@student.utcluj.ro"
 } ]
