@@ -40,6 +40,7 @@ public class Student {
     // New fields for recommendation logic
     private String preferredSeniority; // e.g., "Internship", "Junior", "Mid", "Senior"
     private boolean prefersRemote;
+    private List<String> preferredLocations = new ArrayList<>(); // e.g., "Germany", "Romania"
 
     @CompositeProperty
     private Map<String, String> applicationAnswers = new HashMap<>(); // To store answers for job questions
@@ -136,4 +137,7 @@ public class Student {
 
     public boolean isPrefersRemote() { return prefersRemote; }
     public void setPrefersRemote(boolean prefersRemote) { this.prefersRemote = prefersRemote; }
+    
+    public List<String> getPreferredLocations() { return preferredLocations; }
+    public void setPreferredLocations(List<String> preferredLocations) { this.preferredLocations = preferredLocations; }
 }

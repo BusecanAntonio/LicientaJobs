@@ -31,6 +31,7 @@ public class JobApplication {
     private String seniority; // e.g., "Internship", "Junior", "Mid", "Senior"
     private boolean isRemote;
     private List<String> requiredSkills = new ArrayList<>();
+    private String location; // e.g., "Germany", "Romania", "Netherlands"
 
     @CompositeProperty
     private Map<String, String> workSchedule = new HashMap<>(); // Use Map instead of custom class
@@ -79,4 +80,7 @@ public class JobApplication {
 
     public List<String> getRequiredSkills() { return requiredSkills; }
     public void setRequiredSkills(List<String> requiredSkills) { this.requiredSkills = requiredSkills; }
+    
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 }
