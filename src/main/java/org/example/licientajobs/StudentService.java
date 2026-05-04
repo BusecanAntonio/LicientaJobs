@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +54,6 @@ public class StudentService {
         messagingTemplate.convertAndSend("/topic/students", message);
     }
 
-    // =========================================================
-    // METODA 1: Cea principală (folosită de noul HomeController)
-    // =========================================================
     // =========================================================
     // METODA 1: Cea principală (folosită de noul HomeController)
     // =========================================================
@@ -208,43 +206,101 @@ public class StudentService {
         }
     }
 
-    public JobApplication findRecommendedJob(String quizResult) {
-        String[] answers = quizResult.split(",");
-        String domain = answers[0];
-        String schedule = answers[1];
-
+    /**
+     * Noul sistem de recomandare (Matching Engine 2026)
+     * scor job:
+     * 40% category match (UserInterests vs Job Title/Description)
+     * 30% skills match (Student Skills vs Job Required Skills)
+     * 20% seniority (Student Preferred Seniority vs Job Seniority)
+     * 10% location / remote (Student Prefers Remote vs Job isRemote)
+     */
+    public List<JobApplication> getJobRecommendations(Student student) {
         List<JobApplication> allJobs = findAllAvailableJobs();
 
+        // Convert the comma-separated interests string back to a list
+        String interestsStr = student.getApplicationAnswers().getOrDefault("UserInterests", "");
+        List<String> studentInterests = Arrays.asList(interestsStr.split("\\s*,\\s*"));
+
+        // Get student skills (convert to lower case for case-insensitive matching)
+        List<String> studentSkills = student.getSkills() != null 
+            ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
+            : new ArrayList<>();
+
+        String preferredSeniority = student.getPreferredSeniority() != null ? student.getPreferredSeniority().toLowerCase() : "";
+        boolean prefersRemote = student.isPrefersRemote();
+
+        // Calculate score for each job and sort by score descending
         return allJobs.stream()
-                .max(Comparator.comparingInt(job -> calculateMatchScore(job, domain, schedule)))
-                .orElse(null);
+                .sorted((job1, job2) -> {
+                    int score1 = calculateAdvancedMatchScore(job1, studentInterests, studentSkills, preferredSeniority, prefersRemote);
+                    int score2 = calculateAdvancedMatchScore(job2, studentInterests, studentSkills, preferredSeniority, prefersRemote);
+                    return Integer.compare(score2, score1); // Descending order
+                })
+                .collect(Collectors.toList());
     }
 
-    private int calculateMatchScore(JobApplication job, String preferredDomain, String preferredSchedule) {
+    public JobApplication findRecommendedJob(String quizResult) {
+        // Fallback pentru codul vechi (Daca se mai apeleaza din QuizController in formatul vechi)
+        // Ideal, recomandarile ar trebui calculate mereu pe baza profilului complet al studentului.
+        
+        List<JobApplication> allJobs = findAllAvailableJobs();
+        if(allJobs.isEmpty()) return null;
+        
+        return allJobs.get(0); // Ptr moment returnam primul, dar codul principal ar trebui sa foloseasca getJobRecommendations()
+    }
+
+    private int calculateAdvancedMatchScore(JobApplication job, List<String> studentInterests, List<String> studentSkills, String preferredSeniority, boolean prefersRemote) {
         int score = 0;
+        
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
         String jobDescription = job.getDescription() != null ? job.getDescription().toLowerCase() : "";
 
-        // Domain matching
-        if (jobTitle.contains(preferredDomain.toLowerCase()) || jobDescription.contains(preferredDomain.toLowerCase())) {
+        // 1. Category Match (40% - Max 40 points)
+        int categoryPoints = 0;
+        for (String interest : studentInterests) {
+            if (interest.isEmpty()) continue;
+            String lowerInterest = interest.toLowerCase();
+            // A simple substring match. In a real app, this should map to ESCO occupations.
+            if (jobTitle.contains(lowerInterest) || jobDescription.contains(lowerInterest)) {
+                categoryPoints += 20; // 20 points per matching interest
+            }
+        }
+        score += Math.min(categoryPoints, 40); // Cap at 40 points
+
+        // 2. Skills Match (30% - Max 30 points)
+        int skillPoints = 0;
+        List<String> jobSkills = job.getRequiredSkills() != null ? job.getRequiredSkills() : new ArrayList<>();
+        if (!jobSkills.isEmpty() && !studentSkills.isEmpty()) {
+            for (String requiredSkill : jobSkills) {
+                if (studentSkills.contains(requiredSkill.toLowerCase())) {
+                    skillPoints += (30 / jobSkills.size()); // Distribute 30 points across all required skills
+                }
+            }
+        }
+        score += Math.min(skillPoints, 30);
+
+        // 3. Seniority Match (20% - Max 20 points)
+        String jobSeniority = job.getSeniority() != null ? job.getSeniority().toLowerCase() : "";
+        if (!preferredSeniority.isEmpty() && !jobSeniority.isEmpty()) {
+            if (preferredSeniority.equals(jobSeniority)) {
+                score += 20;
+            } else if (
+                (preferredSeniority.equals("junior") && jobSeniority.equals("internship")) ||
+                (preferredSeniority.equals("internship") && jobSeniority.equals("junior")) ||
+                (preferredSeniority.equals("mid") && jobSeniority.equals("junior")) ||
+                (preferredSeniority.equals("senior") && jobSeniority.equals("mid"))
+            ) {
+                 // Partial match for adjacent seniority levels
+                 score += 10;
+            }
+        } else if (preferredSeniority.isEmpty() && jobSeniority.isEmpty()){
+            // Daca nici studentul nici jobul nu cer ceva anume, dam jumate din punctaj (neutru)
             score += 10;
-        } else if (preferredDomain.equalsIgnoreCase("IT") && (jobTitle.contains("developer") || jobTitle.contains("engineer"))) {
-            score += 5;
-        } else if (preferredDomain.equalsIgnoreCase("Constructii") && (jobTitle.contains("constructor") || jobTitle.contains("arhitect"))) {
-            score += 5;
-        } else if (preferredDomain.equalsIgnoreCase("Electrica") && (jobTitle.contains("electrician") || jobTitle.contains("automatist"))) {
-            score += 5;
-        } else if (preferredDomain.equalsIgnoreCase("Gaming") && (jobTitle.contains("game") || jobTitle.contains("artist"))) {
-            score += 5;
         }
 
-        // Schedule matching (with null check)
-        Map<String, String> scheduleMap = job.getWorkSchedule();
-        if (scheduleMap != null && scheduleMap.get("shift") != null) {
-            String workSchedule = scheduleMap.get("shift").toLowerCase();
-            if (workSchedule.contains(preferredSchedule.toLowerCase())) {
-                score += 5;
-            }
+        // 4. Location / Remote Match (10% - Max 10 points)
+        if (prefersRemote == job.isRemote()) {
+            score += 10;
         }
 
         return score;

@@ -297,7 +297,11 @@ public class HomeController {
         Optional<Student> student = studentService.findStudentById(id);
         if (student.isPresent() && loggedInUser.equals(student.get().getAddedBy())) {
             model.addAttribute("student", student.get());
-            model.addAttribute("availableJobs", studentService.findAllAvailableJobs());
+            
+            // Folosim noua logica de matching!
+            List<JobApplication> recommendedJobs = studentService.getJobRecommendations(student.get());
+            model.addAttribute("availableJobs", recommendedJobs);
+
             return "apply-job";
         }
         return "redirect:/students";
