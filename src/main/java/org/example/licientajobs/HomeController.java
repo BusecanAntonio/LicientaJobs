@@ -138,12 +138,19 @@ public class HomeController {
         
         student.setAddedBy(loggedInUser);
 
+        // Mapăm interesele în applicationAnswers
         for (Map.Entry<String, String> entry : allParams.entrySet()) {
             if (entry.getKey().startsWith("applicationAnswers[")) {
                 String questionText = entry.getKey().replace("applicationAnswers[", "").replace("]", "");
                 student.getApplicationAnswers().put(questionText, entry.getValue());
             }
         }
+        
+        // În caz că nu era bifat niciun interest, punem un string gol pentru a nu crăpa la afișare
+        if (!student.getApplicationAnswers().containsKey("UserInterests")) {
+            student.getApplicationAnswers().put("UserInterests", "");
+        }
+
         studentService.saveStudent(student);
         return "redirect:/students";
     }

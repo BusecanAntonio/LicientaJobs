@@ -209,7 +209,7 @@
   "address" : "mm tamaia strada trandafirilor nr 13",
   "startYear" : 2022,
   "endYear" : 2026,
-  "quizResult" : null,
+  "quizResult" : "Cloud & DevOps",
   "interestedDomainId" : 2830,
   "applicationAnswers" : { },
   "addedBy" : "Busecan Antonio",
@@ -317,7 +317,7 @@
   "address" : "mm tamaia strada trandafirilor nr 13",
   "startYear" : 2019,
   "endYear" : 2025,
-  "quizResult" : null,
+  "quizResult" : "Frontend Development",
   "interestedDomainId" : 2868,
   "applicationAnswers" : { },
   "addedBy" : "Busecan Cristian",
@@ -326,4 +326,26 @@
   "skills" : [ ],
   "jobApplications" : [ ],
   "age" : 45
+}, {
+  "id" : 11703,
+  "name" : "Andrei Busecan",
+  "email" : "andrei.antonio29@yahoo.com",
+  "dateOfBirth" : [ 3, 2, 21 ],
+  "documents" : [ ],
+  "major" : "Programator",
+  "phoneNumber" : "0771400490",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2022,
+  "endYear" : 2025,
+  "quizResult" : null,
+  "interestedDomainId" : null,
+  "applicationAnswers" : {
+    "UserInterests" : "Game Developer, Unity Developer, Graphics Programmer, Frontend Developer, Mobile Developer, Embedded Engineer, Firmware Engineer"
+  },
+  "addedBy" : "airflow",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ ],
+  "jobApplications" : [ ],
+  "age" : 2023
 } ]
