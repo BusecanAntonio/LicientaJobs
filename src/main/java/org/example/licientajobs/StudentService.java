@@ -212,7 +212,7 @@ public class StudentService {
      * 40% category match (UserInterests vs Job Title/Description)
      * 30% skills match (Student Skills vs Job Required Skills)
      * 20% seniority (Student Preferred Seniority vs Job Seniority)
-     * 10% location / remote (Student Prefers Remote vs Job isRemote)
+     * 10% location / remote (Student Prefers Remote vs Job isRemote OR Student Location vs Job Location)
      */
     public List<JobApplication> getJobRecommendations(Student student) {
         List<JobApplication> allJobs = findAllAvailableJobs();
@@ -228,12 +228,13 @@ public class StudentService {
 
         String preferredSeniority = student.getPreferredSeniority() != null ? student.getPreferredSeniority().toLowerCase() : "";
         boolean prefersRemote = student.isPrefersRemote();
+        List<String> preferredLocations = student.getPreferredLocations() != null ? student.getPreferredLocations() : new ArrayList<>();
 
         // Calculate score for each job and sort by score descending
         return allJobs.stream()
                 .sorted((job1, job2) -> {
-                    int score1 = calculateAdvancedMatchScore(job1, studentInterests, studentSkills, preferredSeniority, prefersRemote);
-                    int score2 = calculateAdvancedMatchScore(job2, studentInterests, studentSkills, preferredSeniority, prefersRemote);
+                    int score1 = calculateAdvancedMatchScore(job1, studentInterests, studentSkills, preferredSeniority, prefersRemote, preferredLocations);
+                    int score2 = calculateAdvancedMatchScore(job2, studentInterests, studentSkills, preferredSeniority, prefersRemote, preferredLocations);
                     return Integer.compare(score2, score1); // Descending order
                 })
                 .collect(Collectors.toList());
@@ -249,7 +250,7 @@ public class StudentService {
         return allJobs.get(0); // Ptr moment returnam primul, dar codul principal ar trebui sa foloseasca getJobRecommendations()
     }
 
-    private int calculateAdvancedMatchScore(JobApplication job, List<String> studentInterests, List<String> studentSkills, String preferredSeniority, boolean prefersRemote) {
+    private int calculateAdvancedMatchScore(JobApplication job, List<String> studentInterests, List<String> studentSkills, String preferredSeniority, boolean prefersRemote, List<String> preferredLocations) {
         int score = 0;
         
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
@@ -299,9 +300,17 @@ public class StudentService {
         }
 
         // 4. Location / Remote Match (10% - Max 10 points)
-        if (prefersRemote == job.isRemote()) {
-            score += 10;
+        int locationScore = 0;
+        if (prefersRemote && job.isRemote()) {
+            locationScore += 10; // Max points if remote is preferred and offered
+        } else if (!prefersRemote && !job.isRemote()) {
+            // Not strictly remote, check location match
+            String jobLocation = job.getLocation() != null ? job.getLocation() : "";
+            if (!preferredLocations.isEmpty() && !jobLocation.isEmpty() && preferredLocations.contains(jobLocation)) {
+                locationScore += 10;
+            }
         }
+        score += Math.min(locationScore, 10);
 
         return score;
     }
