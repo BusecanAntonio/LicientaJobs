@@ -183,6 +183,8 @@ public class HomeController {
                 existingStudent.setStartYear(updatedStudent.getStartYear());
                 existingStudent.setEndYear(updatedStudent.getEndYear());
                 existingStudent.setDateOfBirth(updatedStudent.getDateOfBirth());
+                existingStudent.setPreferredSeniority(updatedStudent.getPreferredSeniority());
+                existingStudent.setPrefersRemote(updatedStudent.isPrefersRemote());
                 
                 studentService.saveStudent(existingStudent, loggedInUser);
             }

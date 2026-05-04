@@ -84,7 +84,31 @@
                             </div>
                         </div>
 
-                        <h4 class="mb-3 mt-4 text-secondary border-bottom pb-2">3. Interese în Carieră (Taxonomie IT)</h4>
+                        <!-- New fields for Seniority and Remote Preference -->
+                        <h4 class="mb-3 mt-4 text-secondary border-bottom pb-2">3. Preferințe Carieră</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="preferredSeniority" class="form-label fw-bold">Nivel de Senioritate Dorit:</label>
+                                <select id="preferredSeniority" th:field="*{preferredSeniority}" class="form-select">
+                                    <option value="">Alege nivelul</option>
+                                    <option value="Internship">Internship</option>
+                                    <option value="Junior">Junior</option>
+                                    <option value="Mid">Mid</option>
+                                    <option value="Senior">Senior</option>
+                                    <option value="Lead">Lead</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3 d-flex align-items-end">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="prefersRemote" th:field="*{prefersRemote}">
+                                    <label class="form-check-label fw-bold" for="prefersRemote">
+                                        Preferă Remote
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h4 class="mb-3 mt-4 text-secondary border-bottom pb-2">4. Interese în Carieră (Taxonomie IT)</h4>
                         <p class="text-muted small">Selectează domeniile mari care te atrag. Pe baza acestora, îți vom recomanda subcategorii specifice.</p>
 
                         <div class="mb-4">
@@ -133,8 +157,6 @@
                             </div>
 
                             <!-- Aici vom păstra ca String subcategoriile alese pentru a le trimite spre Backend -->
-                            <!-- Pentru moment refolosim câmpul interestedDomainId sau un camp custom,
-                                 ideea e să salvăm intențiile -->
                             <input type="hidden" id="selectedSubcategories" name="applicationAnswers[UserInterests]">
                         </div>
 
@@ -173,6 +195,10 @@
 
         let selectedDomains = new Set();
         let selectedSubcats = new Set();
+
+        // Initialize selected domains/subcategories if editing an existing student
+        // This part would need to be enhanced if you implement editing functionality
+        // For now, it assumes a new student or clears previous selections.
 
         domainCheckboxes.forEach(cb => {
             cb.addEventListener('change', function() {
@@ -254,6 +280,7 @@
                 });
             });
         }
+        renderSubcategories(); // Initial render in case of pre-selected domains (for edit)
     });
 </script>
 </body>

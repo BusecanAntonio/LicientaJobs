@@ -7,7 +7,9 @@ import org.springframework.data.neo4j.core.schema.Node;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Node
@@ -24,6 +26,11 @@ public class JobApplication {
     private String courseGrades;
     private String status = "PENDING";
     private boolean interviu;
+
+    // New fields for recommendation logic
+    private String seniority; // e.g., "Internship", "Junior", "Mid", "Senior"
+    private boolean isRemote;
+    private List<String> requiredSkills = new ArrayList<>();
 
     @CompositeProperty
     private Map<String, String> workSchedule = new HashMap<>(); // Use Map instead of custom class
@@ -62,4 +69,14 @@ public class JobApplication {
 
     public LocalDate getApplicationDate() { return applicationDate; }
     public void setApplicationDate(LocalDate applicationDate) { this.applicationDate = applicationDate; }
+
+    // Getters and setters for new fields
+    public String getSeniority() { return seniority; }
+    public void setSeniority(String seniority) { this.seniority = seniority; }
+
+    public boolean isRemote() { return isRemote; }
+    public void setRemote(boolean remote) { isRemote = remote; }
+
+    public List<String> getRequiredSkills() { return requiredSkills; }
+    public void setRequiredSkills(List<String> requiredSkills) { this.requiredSkills = requiredSkills; }
 }

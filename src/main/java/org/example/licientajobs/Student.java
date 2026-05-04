@@ -26,18 +26,9 @@ public class Student {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
-    // 1. Variabila trebuie să existe
+    
     private List<String> documents = new ArrayList<>();
-
-    // 2. Trebuie obligatoriu să ai Getter-ul (fără el, Thymeleaf nu poate citi datele)
-    public List<String> getDocuments() {
-        return documents;
-    }
-
-    // 3. Trebuie obligatoriu să ai Setter-ul
-    public void setDocuments(List<String> documents) {
-        this.documents = documents;
-    }
+    
     private String major;
     private String phoneNumber;
     private String address;
@@ -46,6 +37,10 @@ public class Student {
     private String quizResult; // To store the dominant trait
     private Long interestedDomainId; // To store the ID of the chosen job/domain
     
+    // New fields for recommendation logic
+    private String preferredSeniority; // e.g., "Internship", "Junior", "Mid", "Senior"
+    private boolean prefersRemote;
+
     @CompositeProperty
     private Map<String, String> applicationAnswers = new HashMap<>(); // To store answers for job questions
     
@@ -131,4 +126,14 @@ public class Student {
 
     public List<JobApplication> getJobApplications() { return jobApplications; }
     public void setJobApplications(List<JobApplication> jobApplications) { this.jobApplications = jobApplications; }
+    
+    public List<String> getDocuments() { return documents; }
+    public void setDocuments(List<String> documents) { this.documents = documents; }
+
+    // Getters and setters for new fields
+    public String getPreferredSeniority() { return preferredSeniority; }
+    public void setPreferredSeniority(String preferredSeniority) { this.preferredSeniority = preferredSeniority; }
+
+    public boolean isPrefersRemote() { return prefersRemote; }
+    public void setPrefersRemote(boolean prefersRemote) { this.prefersRemote = prefersRemote; }
 }
