@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -362,6 +365,77 @@ public class StudentService {
                 saveStudent(student);
             }
         });
+    }
+
+    /**
+     * Preluam un link de github si folosim LLM pentru a genera un rezumat al repozitorului.
+     */
+    public void processGithubLink(Student student, String githubLink) {
+        try {
+            if (student.getGithubProjects() == null) {
+                student.setGithubProjects(new HashMap<>());
+            }
+
+            // Extract owner and repo from URL (e.g. https://github.com/facebook/react)
+            String regex = "github\\.com/([^/]+)/([^/]+)";
+            Matcher matcher = Pattern.compile(regex).matcher(githubLink);
+            
+            String readmeContent = "";
+            String repoName = githubLink;
+            
+            if (matcher.find()) {
+                String owner = matcher.group(1);
+                String repo = matcher.group(2).replace(".git", "");
+                repoName = owner + "/" + repo;
+                
+                try {
+                    // Try to fetch README from GitHub API
+                    RestTemplate restTemplate = new RestTemplate();
+                    String apiUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/readme";
+                    
+                    // The API returns JSON with a base64 encoded "content" field
+                    Map<String, Object> response = restTemplate.getForObject(apiUrl, Map.class);
+                    if (response != null && response.containsKey("content")) {
+                        String base64Content = ((String) response.get("content")).replaceAll("\\n", "");
+                        byte[] decodedBytes = Base64.getDecoder().decode(base64Content);
+                        readmeContent = new String(decodedBytes, StandardCharsets.UTF_8);
+                        
+                        // Truncate to prevent context overflow
+                        if (readmeContent.length() > 4000) {
+                            readmeContent = readmeContent.substring(0, 4000);
+                        }
+                    }
+                } catch (Exception apiEx) {
+                    logger.warn("Nu s-a putut accesa API-ul Github pentru {}. Motiv: {}", githubLink, apiEx.getMessage());
+                }
+            }
+
+            String prompt;
+            if (!readmeContent.isEmpty()) {
+                prompt = "I have the following README content from a GitHub repository called " + repoName + ".\n" +
+                         "Please summarize in 2-3 sentences what this application or project does.\n\n" +
+                         "README Content:\n" + readmeContent;
+            } else {
+                prompt = "I have a GitHub repository link: " + githubLink + ".\n" +
+                         "Can you guess or briefly summarize in 2 sentences what a project with this name might do, based on its URL?";
+            }
+
+            logger.info("Trimitere prompt Github către Ollama pentru {}", githubLink);
+            String llmSummary = ollamaService.generateResponse(prompt);
+            
+            // Cleanup the response a bit
+            String cleanSummary = llmSummary.trim();
+            if (cleanSummary.isEmpty()) {
+                cleanSummary = "Proiect adăugat. Nu s-a putut genera automat o descriere.";
+            }
+
+            student.getGithubProjects().put(githubLink, cleanSummary);
+            logger.info("Proiect Github procesat: {}", cleanSummary);
+
+        } catch (Exception e) {
+            logger.error("Eroare la procesarea linkului de GitHub.", e);
+            student.getGithubProjects().put(githubLink, "Eroare la generarea rezumatului.");
+        }
     }
 
     /**

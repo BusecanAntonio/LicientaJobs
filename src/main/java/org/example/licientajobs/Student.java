@@ -45,6 +45,9 @@ public class Student {
     @CompositeProperty
     private Map<String, String> applicationAnswers = new HashMap<>(); // To store answers for job questions
     
+    @CompositeProperty
+    private Map<String, String> githubProjects = new HashMap<>(); // URL -> Summary
+    
     private String addedBy; // Username of the user who added this student
 
     private List<String> notifications = new ArrayList<>();
@@ -99,6 +102,9 @@ public class Student {
 
     public Map<String, String> getApplicationAnswers() { return applicationAnswers; }
     public void setApplicationAnswers(Map<String, String> applicationAnswers) { this.applicationAnswers = applicationAnswers; }
+
+    public Map<String, String> getGithubProjects() { return githubProjects; }
+    public void setGithubProjects(Map<String, String> githubProjects) { this.githubProjects = githubProjects; }
 
     public String getAddedBy() { return addedBy; }
     public void setAddedBy(String addedBy) { this.addedBy = addedBy; }

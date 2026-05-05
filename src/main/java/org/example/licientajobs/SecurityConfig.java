@@ -13,27 +13,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            // Dezactivăm CSRF momentan pentru ca form-urile tale vechi să meargă fără erori ascunse
+            // Dezactivăm CSRF momentan pentru ca formularul tău vechi de register să funcționeze
             .csrf(csrf -> csrf.disable())
             
-            // Permitem accesul la paginile tale custom (fără să ne blocheze Spring Security)
+            // Lăsăm totul deschis, securitatea este gestionată manual prin HttpSession 
+            // în HomeController-ul tău! Nu vrem ca Spring Security să intercepteze login-ul tău.
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
-                // Orice alt request trebuie autentificat (dar momentan tu folosești HttpSession în Controller
-                // așa că putem lăsa totul deschis și te bazezi pe logica ta din Controller)
                 .anyRequest().permitAll()
-            )
-            
-            // Suprascriem pagina de login default a Spring Security cu pagina ta custom
-            .formLogin(form -> form
-                .loginPage("/login") // Ne asigurăm că folosește login.html al tău!
-                .permitAll()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .permitAll()
             );
+            
+            // AM ȘTERS .formLogin() și .logout() ! 
+            // Motivul: Când sunt activate, ele "fură" request-ul de POST /login dinspre
+            // HomeController-ul tău și încearcă să valideze cu logica default de Spring, dând eroare.
 
         return http.build();
     }

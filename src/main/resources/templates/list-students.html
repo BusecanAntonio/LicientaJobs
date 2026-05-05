@@ -40,6 +40,7 @@
             cursor: pointer;
             transition: color 0.2s;
             margin-bottom: 20px;
+            text-align: center;
         }
         .upload-trigger:hover, .edit-trigger:hover { color: #0d6efd; }
 
@@ -51,7 +52,7 @@
         .admin-controls { display: none; }
 
         /* Stil Offcanvas (Slider Dreapta) */
-        .offcanvas { border-radius: 20px 0 0 20px; border: none; box-shadow: -5px 0 25px rgba(0,0,0,0.1); }
+        .offcanvas { border-radius: 20px 0 0 20px; border: none; box-shadow: -5px 0 25px rgba(0,0,0,0.1); width: 450px !important; }
         .upload-section { background: #f8f9fa; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
         #notification-bar {
@@ -114,9 +115,9 @@
     <div th:each="student : ${students}" class="card">
 
         <div class="card-sidebar">
-            <div class="upload-trigger" data-bs-toggle="offcanvas" th:data-bs-target="'#docs' + ${student.id}" title="Încarcă Documente">
+            <div class="upload-trigger" data-bs-toggle="offcanvas" th:data-bs-target="'#docs' + ${student.id}" title="Încarcă Documente și Linkuri">
                 <i class="bi bi-file-earmark-plus"></i>
-                <div style="font-size: 0.6rem; font-weight: bold;">DOCS</div>
+                <div style="font-size: 0.6rem; font-weight: bold;">DOCS & GITHUB</div>
             </div>
 
             <div class="edit-trigger" data-bs-toggle="modal" th:data-bs-target="'#editStudentModal' + ${student.id}" title="Vizualizare / Editare Date">
@@ -154,6 +155,23 @@
                     <h6 class="fw-bold text-muted mb-2"><i class="bi bi-stars me-1"></i>Skill-uri Extrase (AI):</h6>
                     <div>
                         <span th:each="skill : ${student.skills}" class="badge bg-primary me-1 mb-1" th:text="${skill}">Skill</span>
+                    </div>
+                </div>
+
+                <!-- Afișarea GitHub Projects -->
+                <div th:if="${student.githubProjects != null and !student.githubProjects.isEmpty()}" class="mb-4">
+                    <h6 class="fw-bold text-muted mb-2"><i class="bi bi-github me-1"></i>Proiecte GitHub:</h6>
+                    <div class="list-group">
+                        <div th:each="entry : ${student.githubProjects}" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <a th:href="${entry.key}" target="_blank" class="fw-bold text-decoration-none"><i class="bi bi-link-45deg"></i> <span th:text="${entry.key}"></span></a>
+                                <form th:action="@{/students/{id}/github/delete(id=${student.id})}" method="post" onsubmit="return confirm('Ștergi acest proiect?');">
+                                    <input type="hidden" name="githubLink" th:value="${entry.key}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </div>
+                            <p class="mb-0 small text-muted mt-2"><i class="bi bi-robot"></i> <strong>AI Summary:</strong> <span th:text="${entry.value}"></span></p>
+                        </div>
                     </div>
                 </div>
 
@@ -212,14 +230,30 @@
             </div>
         </div>
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" th:id="'docs' + ${student.id}" style="width: 400px;">
+        <div class="offcanvas offcanvas-end" tabindex="-1" th:id="'docs' + ${student.id}">
             <div class="offcanvas-header bg-dark text-white">
-                <h5 class="offcanvas-title fw-bold"><i class="bi bi-folder2-open me-2"></i>Documente: <span th:text="${student.name}"></span></h5>
+                <h5 class="offcanvas-title fw-bold"><i class="bi bi-folder2-open me-2"></i>Portofoliu: <span th:text="${student.name}"></span></h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
             </div>
             <div class="offcanvas-body">
-                <p class="text-muted small mb-4">Încarcă documentele necesare pentru validarea competențelor tale.</p>
 
+                <!-- Secțiune Github -->
+                <h6 class="fw-bold mb-2"><i class="bi bi-github"></i> Adaugă Proiect GitHub</h6>
+                <p class="text-muted small mb-3">Introduceți link-ul repository-ului. Inteligența artificială va citi fișierul README și va genera automat un scurt rezumat al aplicației!</p>
+                <form th:action="@{/students/{id}/github/add(id=${student.id})}" method="post" class="mb-4">
+                    <div class="upload-section">
+                        <div class="input-group">
+                            <input type="url" name="githubLink" class="form-control" placeholder="https://github.com/user/repo" required>
+                            <button class="btn btn-dark" type="submit">Adaugă</button>
+                        </div>
+                    </div>
+                </form>
+
+                <hr>
+
+                <!-- Secțiune Fisiere -->
+                <h6 class="fw-bold mb-2 mt-4"><i class="bi bi-cloud-arrow-up"></i> Încărcare Documente</h6>
+                <p class="text-muted small mb-3">Încarcă CV-ul sau o scrisoare de recomandare. Inteligența artificială va analiza fișierul și îți va extrage automat skill-urile!</p>
                 <form th:action="@{/students/{id}/upload(id=${student.id})}" method="post" enctype="multipart/form-data">
                     <div class="upload-section">
                         <label class="form-label fw-bold"><i class="bi bi-file-pdf me-1"></i> Tip Document</label>

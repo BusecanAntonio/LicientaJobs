@@ -8,13 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -224,6 +220,37 @@ public class HomeController {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        return "redirect:/students";
+    }
+    
+    @PostMapping("/students/{id}/github/add")
+    public String addGithubProject(@PathVariable Long id, @RequestParam("githubLink") String githubLink, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) return "redirect:/login";
+
+        studentService.findStudentById(id).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy())) {
+                // LLM-ul nostru va incerca sa aduca README.md-ul folosind API-ul public Github si sa dea rezumatul
+                studentService.processGithubLink(student, githubLink);
+                studentService.saveStudent(student, loggedInUser);
+            }
+        });
+
+        return "redirect:/students";
+    }
+
+    @PostMapping("/students/{id}/github/delete")
+    public String deleteGithubProject(@PathVariable Long id, @RequestParam("githubLink") String githubLink, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) return "redirect:/login";
+
+        studentService.findStudentById(id).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy()) && student.getGithubProjects() != null) {
+                student.getGithubProjects().remove(githubLink);
+                studentService.saveStudent(student, loggedInUser);
             }
         });
 
