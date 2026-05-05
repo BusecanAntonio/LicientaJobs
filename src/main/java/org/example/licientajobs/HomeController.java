@@ -12,6 +12,7 @@ import org.springframework.core.io.UrlResource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -90,10 +91,8 @@ public class HomeController {
         if (loggedInUser == null) {
             return "Neautorizat. Loghează-te mai întâi.";
         }
-        // Ideal ar fi să verifici și dacă userul e "admin"
         
         try {
-            // Executăm importul (Durează un pic)
             escoImportService.importEscoData();
             return "Importul ESCO a fost pornit/finalizat cu succes! Verifică consola (log-urile) pentru detalii.";
         } catch (Exception e) {
@@ -134,7 +133,6 @@ public class HomeController {
         
         student.setAddedBy(loggedInUser);
 
-        // Mapăm interesele în applicationAnswers
         for (Map.Entry<String, String> entry : allParams.entrySet()) {
             if (entry.getKey().startsWith("applicationAnswers[")) {
                 String questionText = entry.getKey().replace("applicationAnswers[", "").replace("]", "");
@@ -142,7 +140,6 @@ public class HomeController {
             }
         }
         
-        // În caz că nu era bifat niciun interest, punem un string gol pentru a nu crăpa la afișare
         if (!student.getApplicationAnswers().containsKey("UserInterests")) {
             student.getApplicationAnswers().put("UserInterests", "");
         }
@@ -189,7 +186,6 @@ public class HomeController {
         return "redirect:/students";
     }
 
-
     @PostMapping("/students/{id}/upload")
     public String handleFileUpload(@PathVariable Long id,
                                    @RequestParam("type") String type,
@@ -202,21 +198,13 @@ public class HomeController {
         studentService.findStudentById(id).ifPresent(student -> {
             if (!file.isEmpty()) {
                 try {
-                    // 1. Salvarea fizică pe disc prin StorageService
                     String fileName = storageService.store(file, id);
-
-                    // 2. Salvarea în lista studentului
                     if (student.getDocuments() == null) {
                         student.setDocuments(new ArrayList<>());
                     }
                     student.getDocuments().add(fileName);
-
-                    // 3. Apelăm LLM-ul pentru a extrage skill-uri dacă este scrisoare de recomandare sau CV
                     studentService.extractAndSaveSkills(student, file);
-
-                    // 4. Salvăm studentul în baza de date
                     studentService.saveStudent(student, loggedInUser);
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -233,7 +221,6 @@ public class HomeController {
 
         studentService.findStudentById(id).ifPresent(student -> {
             if (loggedInUser.equals(student.getAddedBy())) {
-                // LLM-ul nostru va incerca sa aduca README.md-ul folosind API-ul public Github si sa dea rezumatul
                 studentService.processGithubLink(student, githubLink);
                 studentService.saveStudent(student, loggedInUser);
             }
@@ -249,8 +236,23 @@ public class HomeController {
 
         studentService.findStudentById(id).ifPresent(student -> {
             if (loggedInUser.equals(student.getAddedBy()) && student.getGithubProjects() != null) {
-                student.getGithubProjects().remove(githubLink);
+                // 1. Facem o copie a proiectelor curente
+                Map<String, String> remainingProjects = new HashMap<>(student.getGithubProjects());
+                
+                // 2. Ștergem proiectul din copie
+                remainingProjects.remove(githubLink);
+                remainingProjects.keySet().removeIf(key -> key.trim().equalsIgnoreCase(githubLink.trim()));
+                
+                // 3. TRICK PENTRU SPRING DATA NEO4J: 
+                // Goliți complet mapa originală și salvați pentru a forța ștergerea tuturor proprietăților @CompositeProperty din DB
+                student.setGithubProjects(new HashMap<>());
                 studentService.saveStudent(student, loggedInUser);
+                
+                // 4. Punem la loc doar proiectele rămase (dacă mai există) și salvăm din nou
+                if (!remainingProjects.isEmpty()) {
+                    student.setGithubProjects(remainingProjects);
+                    studentService.saveStudent(student, loggedInUser);
+                }
             }
         });
 
@@ -260,21 +262,16 @@ public class HomeController {
     @GetMapping("/students/{id}/documents/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable Long id, @PathVariable String filename) {
         try {
-            // Folosim StorageService pentru a găsi calea corectă a fișierului salvat
             Path filePath = storageService.load(id, filename);
             Resource resource = new UrlResource(filePath.toUri());
 
             if (resource.exists() || resource.isReadable()) {
-                // Determinăm tipul fișierului (pentru ca browserul să știe dacă e PDF, imagine, etc.)
                 String contentType = Files.probeContentType(filePath);
                 if (contentType == null) {
                     contentType = "application/octet-stream";
                 }
-
                 return ResponseEntity.ok()
                         .header(HttpHeaders.CONTENT_TYPE, contentType)
-                        // "inline" îi spune browserului să DESCHIDĂ fișierul (dacă e PDF/imagine),
-                        // nu să îl descarce automat
                         .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
                         .body(resource);
             } else {
@@ -292,18 +289,15 @@ public class HomeController {
 
         studentService.findStudentById(id).ifPresent(student -> {
             try {
-                // 1. Ștergerea fizică de pe disk
                 Path filePath = storageService.load(id, filename);
                 Files.deleteIfExists(filePath);
 
-                // 2. Ștergerea numelui din lista studentului
                 if (student.getDocuments() != null) {
-                    student.getDocuments().remove(filename);
+                    List<String> updatedDocs = new ArrayList<>(student.getDocuments());
+                    updatedDocs.remove(filename);
+                    student.setDocuments(updatedDocs);
                 }
-
-                // 3. Salvarea modificării în baza de date
                 studentService.saveStudent(student, loggedInUser);
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -311,7 +305,6 @@ public class HomeController {
 
         return "redirect:/students";
     }
-
 
     // --- Job Applications ---
     @GetMapping("/students/{id}/apply")
@@ -324,11 +317,8 @@ public class HomeController {
         Optional<Student> student = studentService.findStudentById(id);
         if (student.isPresent() && loggedInUser.equals(student.get().getAddedBy())) {
             model.addAttribute("student", student.get());
-            
-            // Folosim noua logica de matching!
             List<JobApplication> recommendedJobs = studentService.getJobRecommendations(student.get());
             model.addAttribute("availableJobs", recommendedJobs);
-
             return "apply-job";
         }
         return "redirect:/students";

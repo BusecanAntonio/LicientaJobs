@@ -8,6 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -209,22 +213,12 @@ public class StudentService {
         }
     }
 
-    /**
-     * Noul sistem de recomandare (Matching Engine 2026)
-     * scor job:
-     * 40% category match (UserInterests vs Job Title/Description)
-     * 30% skills match (Student Skills vs Job Required Skills)
-     * 20% seniority (Student Preferred Seniority vs Job Seniority)
-     * 10% location / remote (Student Prefers Remote vs Job isRemote OR Student Location vs Job Location)
-     */
     public List<JobApplication> getJobRecommendations(Student student) {
         List<JobApplication> allJobs = findAllAvailableJobs();
 
-        // Convert the comma-separated interests string back to a list
         String interestsStr = student.getApplicationAnswers().getOrDefault("UserInterests", "");
         List<String> studentInterests = Arrays.asList(interestsStr.split("\\s*,\\s*"));
 
-        // Get student skills (convert to lower case for case-insensitive matching)
         List<String> studentSkills = student.getSkills() != null 
             ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
             : new ArrayList<>();
@@ -233,24 +227,20 @@ public class StudentService {
         boolean prefersRemote = student.isPrefersRemote();
         List<String> preferredLocations = student.getPreferredLocations() != null ? student.getPreferredLocations() : new ArrayList<>();
 
-        // Calculate score for each job and sort by score descending
         return allJobs.stream()
                 .sorted((job1, job2) -> {
                     int score1 = calculateAdvancedMatchScore(job1, studentInterests, studentSkills, preferredSeniority, prefersRemote, preferredLocations);
                     int score2 = calculateAdvancedMatchScore(job2, studentInterests, studentSkills, preferredSeniority, prefersRemote, preferredLocations);
-                    return Integer.compare(score2, score1); // Descending order
+                    return Integer.compare(score2, score1); 
                 })
                 .collect(Collectors.toList());
     }
 
     public JobApplication findRecommendedJob(String quizResult) {
-        // Fallback pentru codul vechi (Daca se mai apeleaza din QuizController in formatul vechi)
-        // Ideal, recomandarile ar trebui calculate mereu pe baza profilului complet al studentului.
-        
         List<JobApplication> allJobs = findAllAvailableJobs();
         if(allJobs.isEmpty()) return null;
         
-        return allJobs.get(0); // Ptr moment returnam primul, dar codul principal ar trebui sa foloseasca getJobRecommendations()
+        return allJobs.get(0); 
     }
 
     private int calculateAdvancedMatchScore(JobApplication job, List<String> studentInterests, List<String> studentSkills, String preferredSeniority, boolean prefersRemote, List<String> preferredLocations) {
@@ -259,31 +249,27 @@ public class StudentService {
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
         String jobDescription = job.getDescription() != null ? job.getDescription().toLowerCase() : "";
 
-        // 1. Category Match (40% - Max 40 points)
         int categoryPoints = 0;
         for (String interest : studentInterests) {
             if (interest.isEmpty()) continue;
             String lowerInterest = interest.toLowerCase();
-            // A simple substring match. In a real app, this should map to ESCO occupations.
             if (jobTitle.contains(lowerInterest) || jobDescription.contains(lowerInterest)) {
-                categoryPoints += 20; // 20 points per matching interest
+                categoryPoints += 20;
             }
         }
-        score += Math.min(categoryPoints, 40); // Cap at 40 points
+        score += Math.min(categoryPoints, 40);
 
-        // 2. Skills Match (30% - Max 30 points)
         int skillPoints = 0;
         List<String> jobSkills = job.getRequiredSkills() != null ? job.getRequiredSkills() : new ArrayList<>();
         if (!jobSkills.isEmpty() && !studentSkills.isEmpty()) {
             for (String requiredSkill : jobSkills) {
                 if (studentSkills.contains(requiredSkill.toLowerCase())) {
-                    skillPoints += (30 / jobSkills.size()); // Distribute 30 points across all required skills
+                    skillPoints += (30 / jobSkills.size());
                 }
             }
         }
         score += Math.min(skillPoints, 30);
 
-        // 3. Seniority Match (20% - Max 20 points)
         String jobSeniority = job.getSeniority() != null ? job.getSeniority().toLowerCase() : "";
         if (!preferredSeniority.isEmpty() && !jobSeniority.isEmpty()) {
             if (preferredSeniority.equals(jobSeniority)) {
@@ -294,20 +280,16 @@ public class StudentService {
                 (preferredSeniority.equals("mid") && jobSeniority.equals("junior")) ||
                 (preferredSeniority.equals("senior") && jobSeniority.equals("mid"))
             ) {
-                 // Partial match for adjacent seniority levels
                  score += 10;
             }
         } else if (preferredSeniority.isEmpty() && jobSeniority.isEmpty()){
-            // Daca nici studentul nici jobul nu cer ceva anume, dam jumate din punctaj (neutru)
             score += 10;
         }
 
-        // 4. Location / Remote Match (10% - Max 10 points)
         int locationScore = 0;
         if (prefersRemote && job.isRemote()) {
-            locationScore += 10; // Max points if remote is preferred and offered
+            locationScore += 10;
         } else if (!prefersRemote && !job.isRemote()) {
-            // Not strictly remote, check location match
             String jobLocation = job.getLocation() != null ? job.getLocation() : "";
             if (!preferredLocations.isEmpty() && !jobLocation.isEmpty() && preferredLocations.contains(jobLocation)) {
                 locationScore += 10;
@@ -321,7 +303,6 @@ public class StudentService {
     public void registerUser(String username, String password, String fullName, String email) {
         User user = new User();
         user.setUsername(username);
-        // IN A REAL APP, HASH THE PASSWORD!
         user.setPassword(password);
         user.setFullName(fullName);
         user.setEmail(email);
@@ -332,7 +313,7 @@ public class StudentService {
         }
         
         List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
-        user.setId(System.currentTimeMillis()); // generate fake id for offline
+        user.setId(System.currentTimeMillis()); 
         fallbackUsers.add(user);
         jsonFallbackService.writeUsersFallbackData(fallbackUsers);
     }
@@ -368,7 +349,7 @@ public class StudentService {
     }
 
     /**
-     * Preluam un link de github si folosim LLM pentru a genera un rezumat al repozitorului.
+     * Fetch Github Repo Data + Contributors and ask LLM to summarize
      */
     public void processGithubLink(Student student, String githubLink) {
         try {
@@ -376,11 +357,11 @@ public class StudentService {
                 student.setGithubProjects(new HashMap<>());
             }
 
-            // Extract owner and repo from URL (e.g. https://github.com/facebook/react)
             String regex = "github\\.com/([^/]+)/([^/]+)";
             Matcher matcher = Pattern.compile(regex).matcher(githubLink);
             
             String readmeContent = "";
+            String extraMetadata = "";
             String repoName = githubLink;
             
             if (matcher.find()) {
@@ -388,42 +369,75 @@ public class StudentService {
                 String repo = matcher.group(2).replace(".git", "");
                 repoName = owner + "/" + repo;
                 
+                RestTemplate restTemplate = new RestTemplate();
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("User-Agent", "Spring-Boot-App");
+                HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+                
                 try {
-                    // Try to fetch README from GitHub API
-                    RestTemplate restTemplate = new RestTemplate();
+                    // 1. Fetch README
                     String apiUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/readme";
-                    
-                    // The API returns JSON with a base64 encoded "content" field
-                    Map<String, Object> response = restTemplate.getForObject(apiUrl, Map.class);
-                    if (response != null && response.containsKey("content")) {
-                        String base64Content = ((String) response.get("content")).replaceAll("\\n", "");
+                    ResponseEntity<Map> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, Map.class);
+                    if (response.getBody() != null && response.getBody().containsKey("content")) {
+                        String base64Content = ((String) response.getBody().get("content")).replaceAll("\\n", "");
                         byte[] decodedBytes = Base64.getDecoder().decode(base64Content);
                         readmeContent = new String(decodedBytes, StandardCharsets.UTF_8);
-                        
-                        // Truncate to prevent context overflow
-                        if (readmeContent.length() > 4000) {
-                            readmeContent = readmeContent.substring(0, 4000);
+                        if (readmeContent.length() > 3000) {
+                            readmeContent = readmeContent.substring(0, 3000);
                         }
                     }
-                } catch (Exception apiEx) {
-                    logger.warn("Nu s-a putut accesa API-ul Github pentru {}. Motiv: {}", githubLink, apiEx.getMessage());
-                }
+                } catch (Exception e) { logger.warn("No README for {}", repoName); }
+                
+                try {
+                    // 2. Fetch Languages (Technologies)
+                    String langUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/languages";
+                    ResponseEntity<Map> langResponse = restTemplate.exchange(langUrl, HttpMethod.GET, entity, Map.class);
+                    if (langResponse.getBody() != null && !langResponse.getBody().isEmpty()) {
+                        extraMetadata += "- Technologies used: " + String.join(", ", langResponse.getBody().keySet()) + "\n";
+                    }
+                } catch (Exception e) { logger.warn("No languages for {}", repoName); }
+                
+                try {
+                    // 3. Fetch Contributors
+                    String contribUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/contributors";
+                    ResponseEntity<List> contribResponse = restTemplate.exchange(contribUrl, HttpMethod.GET, entity, List.class);
+                    if (contribResponse.getBody() != null && !contribResponse.getBody().isEmpty()) {
+                        List<Map<String, Object>> contributors = contribResponse.getBody();
+                        int totalCommits = 0;
+                        for (Map<String, Object> c : contributors) {
+                            totalCommits += (Integer) c.get("contributions");
+                        }
+                        if (totalCommits > 0) {
+                            Map<String, Object> topContributor = contributors.get(0);
+                            String topName = (String) topContributor.get("login");
+                            int topCommits = (Integer) topContributor.get("contributions");
+                            int percentage = (int) Math.round((topCommits * 100.0) / totalCommits);
+                            extraMetadata += "- Top Contributor: " + topName + " with " + percentage + "% of the commits.\n";
+                        }
+                    }
+                } catch (Exception e) { logger.warn("No contributors for {}", repoName); }
             }
 
             String prompt;
-            if (!readmeContent.isEmpty()) {
-                prompt = "I have the following README content from a GitHub repository called " + repoName + ".\n" +
-                         "Please summarize in 2-3 sentences what this application or project does.\n\n" +
-                         "README Content:\n" + readmeContent;
+            if (!readmeContent.isEmpty() || !extraMetadata.isEmpty()) {
+                prompt = "Please write a comprehensive 3-4 sentence summary about the following GitHub project: " + repoName + ".\n\n" +
+                         "Use the following metadata and README content to construct the summary.\n" +
+                         "You MUST explicitly mention:\n" +
+                         "1. What the project does (based on the README).\n" +
+                         "2. The technologies used (from metadata).\n" +
+                         "3. Who the top contributor is and their percentage of work (from metadata).\n\n" +
+                         "METADATA:\n" + extraMetadata + "\n\n" +
+                         "README CONTENT (truncated):\n" + readmeContent;
             } else {
                 prompt = "I have a GitHub repository link: " + githubLink + ".\n" +
-                         "Can you guess or briefly summarize in 2 sentences what a project with this name might do, based on its URL?";
+                         "Can you guess or briefly summarize what a project with this name might do?";
             }
 
-            logger.info("Trimitere prompt Github către Ollama pentru {}", githubLink);
+            logger.info("Trimitere prompt Github avansat către Ollama pentru {}", githubLink);
+            
+            // Folosim metoda normală de text, deoarece rezumatul este text descriptiv, nu JSON
             String llmSummary = ollamaService.generateResponse(prompt);
             
-            // Cleanup the response a bit
             String cleanSummary = llmSummary.trim();
             if (cleanSummary.isEmpty()) {
                 cleanSummary = "Proiect adăugat. Nu s-a putut genera automat o descriere.";
@@ -434,20 +448,13 @@ public class StudentService {
 
         } catch (Exception e) {
             logger.error("Eroare la procesarea linkului de GitHub.", e);
-            student.getGithubProjects().put(githubLink, "Eroare la generarea rezumatului.");
+            student.getGithubProjects().put(githubLink, "Eroare la generarea rezumatului avansat.");
         }
     }
 
-    /**
-     * Extracts skills from an uploaded file using Ollama LLM and adds them to the student.
-     */
     public void extractAndSaveSkills(Student student, MultipartFile file) {
         try {
-            // For now, we only extract from TXT files for simplicity in reading text
-            // In a real app, you would use a library like Apache PDFBox to read text from PDFs
             String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
-            
-            // Do not send huge files entirely to LLM to prevent context overflow, just the first 3000 chars
             String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
 
             String prompt = "Extract the skills from the following recommendation letter or CV.\n\n" +
@@ -458,18 +465,11 @@ public class StudentService {
                     "- DO NOT return any text outside of the JSON array (no markdown code blocks, just the raw json array).\n\n" +
                     "Text:\n\"\"\"\n" + contentToSend + "\n\"\"\"";
 
-            logger.info("Trimitere text către Ollama pentru extragere de skill-uri...");
-            String jsonResponse = ollamaService.generateResponse(prompt);
+            // Folosim noua metodă ce forțează formatul JSON!
+            String jsonResponse = ollamaService.generateJsonResponse(prompt);
 
-            logger.info("Răspuns brut Ollama: {}", jsonResponse);
-
-            // Parsing the JSON array returned by Ollama
             ObjectMapper mapper = new ObjectMapper();
-            
-            // Clean up the response just in case the LLM returned markdown blocks like ```json ... ```
             String cleanJson = jsonResponse.trim();
-
-            // Extract just the array or object if the LLM output includes other text
             Matcher arrayMatcher = Pattern.compile("\\[.*?\\]", Pattern.DOTALL).matcher(cleanJson);
             Matcher objectMatcher = Pattern.compile("\\{.*?\\}", Pattern.DOTALL).matcher(cleanJson);
 
@@ -482,17 +482,14 @@ public class StudentService {
             try {
                 List<String> extractedSkills = new ArrayList<>();
                 if (cleanJson.startsWith("{")) {
-                    // Try to map it to an object with String keys
                     Map<String, Object> skillsMap = mapper.readValue(cleanJson, new TypeReference<Map<String, Object>>() {});
                     extractedSkills.addAll(skillsMap.keySet());
                 } else if (cleanJson.startsWith("[")) {
-                    // Try to map it to an array of Strings
                     extractedSkills = mapper.readValue(cleanJson, new TypeReference<List<String>>() {});
                 } else {
-                     throw new RuntimeException("Format invalid. Ollama nu a intors nici array nici obiect parsabil: " + cleanJson);
+                     throw new RuntimeException("Format invalid");
                 }
                 
-                // Add new skills to existing ones, avoiding duplicates
                 if (student.getSkills() == null) {
                     student.setSkills(new ArrayList<>());
                 }
@@ -502,15 +499,11 @@ public class StudentService {
                         student.getSkills().add(skill);
                     }
                 }
-                
-                logger.info("Skill-uri adăugate cu succes: {}", extractedSkills);
-
             } catch (Exception parseEx) {
-                logger.error("Nu s-a putut parsa răspunsul de la Ollama: " + cleanJson, parseEx);
+                logger.error("Nu s-a putut parsa: " + cleanJson, parseEx);
             }
-
         } catch (Exception e) {
-            logger.error("Eroare la procesarea fișierului pentru extragerea de skill-uri.", e);
+            logger.error("Eroare la procesarea fișierului", e);
         }
     }
 }
