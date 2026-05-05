@@ -1,5 +1,5 @@
 [ {
-  "id" : 3239,
+  "id" : 11890,
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2002, 1, 21 ],
@@ -11,13 +11,16 @@
   "endYear" : 2026,
   "quizResult" : "Electrica,Dimineata,Remote,Start-up",
   "interestedDomainId" : null,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ "Your application for QA Tester at Electronic Arts was accepted.", "Your application for Sound Designer at Sony Interactive Entertainment was rejected.", "Your application for QA Tester at Electronic Arts was accepted." ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
   "jobApplications" : [ {
-    "id" : 3240,
+    "id" : 11891,
     "jobTitle" : "QA Tester",
     "company" : "Electronic Arts",
     "description" : "Ensuring the quality of our latest titles.",
@@ -25,15 +28,19 @@
     "courseGrades" : null,
     "status" : "ACCEPTED",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
       "endTime" : "22:00",
       "shift" : "După-amiaza"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
   }, {
-    "id" : 3241,
+    "id" : 11892,
     "jobTitle" : "Sound Designer",
     "company" : "Sony Interactive Entertainment",
     "description" : "Creating immersive audio experiences for games.",
@@ -41,15 +48,19 @@
     "courseGrades" : null,
     "status" : "REJECTED",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
       "endTime" : "21:00",
       "shift" : "După-amiaza"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
   }, {
-    "id" : 3242,
+    "id" : 11893,
     "jobTitle" : "Product Manager",
     "company" : "Twitter",
     "description" : "Defining the product vision and roadmap.",
@@ -57,15 +68,19 @@
     "courseGrades" : null,
     "status" : "PENDING",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
       "shift" : "Dimineața"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
   }, {
-    "id" : 3243,
+    "id" : 11894,
     "jobTitle" : "QA Tester",
     "company" : "Electronic Arts",
     "description" : "Ensuring the quality of our latest titles.",
@@ -73,15 +88,19 @@
     "courseGrades" : null,
     "status" : "PENDING",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
       "endTime" : "22:00",
       "shift" : "După-amiaza"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
   }, {
-    "id" : 3244,
+    "id" : 11895,
     "jobTitle" : "Inginer Eletrician",
     "company" : "Siemens",
     "description" : "Designing and developing electrical systems.",
@@ -89,17 +108,81 @@
     "courseGrades" : null,
     "status" : "PENDING",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
       "endTime" : "16:30",
       "shift" : "Dimineața"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
   } ],
   "age" : 24
 }, {
-  "id" : 3245,
+  "id" : 11896,
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2002, 2, 21 ],
@@ -111,15 +194,178 @@
   "endYear" : null,
   "quizResult" : null,
   "interestedDomainId" : 2829,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 24
 }, {
-  "id" : 3246,
+  "id" : 11897,
   "name" : "Andrei Busecan",
   "email" : "xmaxxantono@yahoo.com",
   "dateOfBirth" : [ 1980, 2, 21 ],
@@ -131,15 +377,178 @@
   "endYear" : null,
   "quizResult" : null,
   "interestedDomainId" : 2867,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 46
 }, {
-  "id" : 3247,
+  "id" : 11898,
   "name" : "Andrei Busecan",
   "email" : "xmaxxantono@yahoo.com",
   "dateOfBirth" : [ 2003, 2, 21 ],
@@ -151,15 +560,178 @@
   "endYear" : null,
   "quizResult" : null,
   "interestedDomainId" : 2813,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 23
 }, {
-  "id" : 3248,
+  "id" : 11899,
   "name" : "Andrei Busecan",
   "email" : "xmaxxantono@yahoo.com",
   "dateOfBirth" : [ 2002, 1, 21 ],
@@ -171,15 +743,178 @@
   "endYear" : 2026,
   "quizResult" : null,
   "interestedDomainId" : 2813,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 24
 }, {
-  "id" : 3249,
+  "id" : 11900,
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2003, 2, 2 ],
@@ -191,15 +926,178 @@
   "endYear" : null,
   "quizResult" : null,
   "interestedDomainId" : null,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : null,
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 23
 }, {
-  "id" : 3250,
+  "id" : 11901,
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2002, 2, 21 ],
@@ -211,13 +1109,16 @@
   "endYear" : 2026,
   "quizResult" : "Cloud & DevOps",
   "interestedDomainId" : 2830,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : "Busecan Antonio",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ "JavaScript", "Teamwork", "Excel" ],
   "jobApplications" : [ {
-    "id" : 3251,
+    "id" : 11902,
     "jobTitle" : "Robotics Engineer",
     "company" : "Boston Dynamics",
     "description" : "Designing and building advanced robots.",
@@ -225,17 +1126,161 @@
     "courseGrades" : null,
     "status" : "PENDING",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
       "endTime" : "16:00",
       "shift" : "Dimineața"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
   } ],
   "age" : 24
 }, {
-  "id" : 3252,
+  "id" : 11903,
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 2002, 1, 21 ],
@@ -247,13 +1292,16 @@
   "endYear" : 2026,
   "quizResult" : null,
   "interestedDomainId" : 2828,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : "Busecan Antonio",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ "JavaScript", "Microsoft Office", "Comunicare", "Lucru în echipa", "Organizare" ],
   "jobApplications" : [ {
-    "id" : 3307,
+    "id" : 11904,
     "jobTitle" : "Software Engineer",
     "company" : "Google",
     "description" : "Building the future of search.",
@@ -261,17 +1309,161 @@
     "courseGrades" : null,
     "status" : "PENDING",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "18:00",
       "shift" : "Flexibil"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
   } ],
   "age" : 24
 }, {
-  "id" : 3253,
+  "id" : 11905,
   "name" : "Busecan Alex",
   "email" : "busecanalex@yahoo.com",
   "dateOfBirth" : [ 1999, 12, 26 ],
@@ -283,13 +1475,16 @@
   "endYear" : 2025,
   "quizResult" : "IT,Flexibil,Remote,Start-up",
   "interestedDomainId" : 2861,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : "Busecan Alex",
   "notifications" : [ "Your application for UI/UX Designer at Spotify was accepted." ],
   "uploadedFiles" : [ "CV_Andrei_Popescu.pdf", "CV_Andrei_Popescu.pdf" ],
   "skills" : [ ],
   "jobApplications" : [ {
-    "id" : 3254,
+    "id" : 11906,
     "jobTitle" : "UI/UX Designer",
     "company" : "Spotify",
     "description" : "Designing intuitive and beautiful user interfaces.",
@@ -297,17 +1492,21 @@
     "courseGrades" : null,
     "status" : "ACCEPTED",
     "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "18:00",
       "shift" : "Flexibil"
     },
-    "applicationDate" : null
+    "applicationDate" : null,
+    "remote" : false
   } ],
   "age" : 26
 }, {
-  "id" : 3310,
+  "id" : 11907,
   "name" : "Andrei Busecan",
   "email" : "busecancristian@gmai.com",
   "dateOfBirth" : [ 1980, 6, 21 ],
@@ -319,15 +1518,178 @@
   "endYear" : 2025,
   "quizResult" : "Frontend Development",
   "interestedDomainId" : 2868,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : { },
   "addedBy" : "Busecan Cristian",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 45
 }, {
-  "id" : 11703,
+  "id" : 11908,
   "name" : "Andrei Busecan",
   "email" : "andrei.antonio29@yahoo.com",
   "dateOfBirth" : [ 3, 2, 21 ],
@@ -339,6 +1701,9 @@
   "endYear" : 2025,
   "quizResult" : null,
   "interestedDomainId" : null,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : {
     "UserInterests" : "Game Developer, Unity Developer, Graphics Programmer, Frontend Developer, Mobile Developer, Embedded Engineer, Firmware Engineer"
   },
@@ -346,10 +1711,170 @@
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11892,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "REJECTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11893,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11895,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11902,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11904,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 2023
 }, {
-  "id" : 11705,
+  "id" : 11909,
   "name" : "Alex Mitius",
   "email" : "busecanandrei@yahoo.com",
   "dateOfBirth" : [ 2003, 2, 21 ],
@@ -361,6 +1886,9 @@
   "endYear" : 2026,
   "quizResult" : null,
   "interestedDomainId" : null,
+  "preferredSeniority" : null,
+  "prefersRemote" : false,
+  "preferredLocations" : [ ],
   "applicationAnswers" : {
     "UserInterests" : "Game Developer, Unity Developer, Graphics Programmer, Embedded Engineer, Robotics Engineer, Frontend Developer"
   },
@@ -368,6 +1896,221 @@
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ ],
+  "jobApplications" : [ ],
+  "age" : 23
+}, {
+  "id" : 14759,
+  "name" : "as",
+  "email" : "as@gmail.com",
+  "dateOfBirth" : [ 2002, 2, 21 ],
+  "documents" : [ "CV.pdf", "Scrisoare de Recomandare.txt" ],
+  "major" : "software ingineer",
+  "phoneNumber" : "0774263812",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : null,
+  "interestedDomainId" : null,
+  "preferredSeniority" : "Lead",
+  "prefersRemote" : true,
+  "preferredLocations" : [ ],
+  "applicationAnswers" : {
+    "UserInterests" : "Full Stack Developer, Data Scientist, NLP Engineer, BI Developer, Data Analyst"
+  },
+  "addedBy" : "as",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ "Java", "Python", "JavaScript", "Teamwork", "Communication", "Problem-solving", "Adaptability" ],
+  "jobApplications" : [ {
+    "id" : 14760,
+    "jobTitle" : "Data Scientist",
+    "company" : "Netflix",
+    "description" : "Analyzing viewer data to personalize recommendations.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 14:30",
+      "endTime" : "18:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14761,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14762,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11917,
+    "jobTitle" : "Data Scientist",
+    "company" : "Netflix",
+    "description" : "Analyzing viewer data to personalize recommendations.",
+    "licentaGrade" : "9.7",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : true,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "14:00 - 14:30",
+      "endTime" : "18:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11910,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : "9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : true,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11891,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11894,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
+  "age" : 24
+}, {
+  "id" : 14766,
+  "name" : "Andrei Busecan",
+  "email" : "andrei.antonio29@yahoo.com",
+  "dateOfBirth" : [ 2002, 1, 21 ],
+  "documents" : [ ],
+  "major" : "Cal, inginerie baia mare ",
+  "phoneNumber" : "0771400490",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : null,
+  "interestedDomainId" : null,
+  "preferredSeniority" : "Junior",
+  "prefersRemote" : true,
+  "preferredLocations" : [ "Germany", "Romania" ],
+  "applicationAnswers" : {
+    "UserInterests" : "Full Stack Developer, Embedded Engineer, UX Designer"
+  },
+  "addedBy" : "Busecan Antonio",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ ],
+  "jobApplications" : [ ],
+  "age" : 24
+}, {
+  "id" : 14768,
+  "name" : "asdf",
+  "email" : "asdf@gmail.com",
+  "dateOfBirth" : [ 2003, 2, 21 ],
+  "documents" : [ "Scrisoare de Recomandare.txt" ],
+  "major" : "Cal, inginerie baia mare ",
+  "phoneNumber" : "0771400491",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : null,
+  "interestedDomainId" : null,
+  "preferredSeniority" : "Internship",
+  "prefersRemote" : true,
+  "preferredLocations" : [ "Romania" ],
+  "applicationAnswers" : {
+    "UserInterests" : "ML Engineer, Embedded Engineer, Robotics Engineer"
+  },
+  "addedBy" : "asdf",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ "JavaScript" ],
   "jobApplications" : [ ],
   "age" : 23
 } ]

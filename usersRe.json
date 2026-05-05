@@ -28,4 +28,28 @@
   "password" : "123456",
   "fullName" : "Busecan Antonio Andrei",
   "email" : "busecan.cr.antonio@student.utcluj.ro"
+}, {
+  "id" : 1777892104725,
+  "username" : "as",
+  "password" : "as",
+  "fullName" : "as",
+  "email" : "as@gmail.com"
+}, {
+  "id" : 1777983322860,
+  "username" : "Busecan Antonio",
+  "password" : "1234",
+  "fullName" : "Busecan Antonio Andrei",
+  "email" : "andrei.antonio29@yahoo.com"
+}, {
+  "id" : 1777983366702,
+  "username" : "Busecan Antonio",
+  "password" : "1234",
+  "fullName" : "asd",
+  "email" : "andrei.antonio29@yahoo.com"
+}, {
+  "id" : 1777983585688,
+  "username" : "asdf",
+  "password" : "asdf",
+  "fullName" : "asdf",
+  "email" : "asdf@gmail.com"
 } ]
