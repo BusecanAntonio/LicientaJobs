@@ -74,7 +74,10 @@
                         Other
                     </div>
                 </td>
-                <td class="align-middle fw-bold" th:text="${job.company}"></td>
+                <td class="align-middle fw-bold">
+                    <span th:text="${job.company}"></span><br>
+                    <small class="text-muted" th:if="${job.country != null}"><i class="bi bi-globe"></i> <span th:text="${job.country}"></span></small>
+                </td>
                 <td>
                     <h5 class="mb-1 text-primary" th:text="${job.jobTitle}"></h5>
                     <div class="small text-muted mb-2">
@@ -92,10 +95,20 @@
                     <span th:if="${job.requiredSkills == null or job.requiredSkills.isEmpty()}" class="text-muted small">Nu sunt specificate skill-uri.</span>
                 </td>
                 <td class="align-middle text-center">
-                    <form th:action="@{/students/{id}/apply(id=${student.id})}" method="post">
-                        <input type="hidden" name="id" th:value="${job.id}" />
-                        <button type="submit" class="btn btn-primary">Aplică Acum</button>
-                    </form>
+                    <div class="d-flex flex-column align-items-center">
+                        <form th:action="@{/students/{id}/apply(id=${student.id})}" method="post" class="mb-2">
+                            <input type="hidden" name="id" th:value="${job.id}" />
+                            <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-send"></i> Aplică Acum</button>
+                        </form>
+
+                        <a th:if="${job.latitude != null and job.longitude != null}"
+                           th:href="@{'https://www.openstreetmap.org/?mlat=' + ${job.latitude} + '&mlon=' + ${job.longitude} + '#map=15/' + ${job.latitude} + '/' + ${job.longitude}}"
+                           target="_blank"
+                           class="btn btn-outline-success btn-sm w-100"
+                           title="Deschide locația în OpenStreetMap">
+                            <i class="bi bi-geo-alt-fill text-danger"></i> Vezi pe Hartă
+                        </a>
+                    </div>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(availableJobs)}">
