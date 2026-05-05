@@ -32,6 +32,11 @@ public class JobApplication {
     private boolean isRemote;
     private List<String> requiredSkills = new ArrayList<>();
     private String location; // e.g., "Germany", "Romania", "Netherlands"
+    
+    // New fields for geography
+    private String country;
+    private Double latitude;
+    private Double longitude;
 
     @CompositeProperty
     private Map<String, String> workSchedule = new HashMap<>(); // Use Map instead of custom class
@@ -83,4 +88,13 @@ public class JobApplication {
     
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
+
+    public String getCountry() { return country; }
+    public void setCountry(String country) { this.country = country; }
+
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
+
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 }
