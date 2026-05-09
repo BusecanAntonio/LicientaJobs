@@ -192,7 +192,23 @@
                             </div>
 
                             <!-- Aici vom păstra ca String subcategoriile alese pentru a le trimite spre Backend -->
+                            <!-- Pentru moment refolosim câmpul interestedDomainId sau un camp custom,
+                                 ideea e să salvăm intențiile -->
                             <input type="hidden" id="selectedSubcategories" name="applicationAnswers[UserInterests]">
+                        </div>
+
+                        <h4 class="mb-3 mt-4 text-secondary border-bottom pb-2">5. Simulare Interviu Job Specific (Opțional)</h4>
+                        <p class="text-muted small">Alege un job specific pentru a răspunde la întrebări de interviu predefinite care te vor ajuta să te pregătești.</p>
+                        <div class="mb-3">
+                            <label for="interestedDomain" class="form-label fw-bold">Selectează Job-ul:</label>
+                            <select id="interestedDomain" name="interestedDomainId" class="form-select">
+                                <option value="">-- Fără simulare --</option>
+                                <option th:each="job : ${availableJobs}" th:value="${job.id}" th:text="${job.jobTitle}" th:attr="data-interviu=${job.interviu}"></option>
+                            </select>
+                        </div>
+
+                        <div id="questions-container" class="mb-3">
+                            <!-- Questions will be dynamically inserted here -->
                         </div>
 
 
@@ -230,10 +246,6 @@
 
         let selectedDomains = new Set();
         let selectedSubcats = new Set();
-
-        // Initialize selected domains/subcategories if editing an existing student
-        // This part would need to be enhanced if you implement editing functionality
-        // For now, it assumes a new student or clears previous selections.
 
         domainCheckboxes.forEach(cb => {
             cb.addEventListener('change', function() {
@@ -315,7 +327,84 @@
                 });
             });
         }
-        renderSubcategories(); // Initial render in case of pre-selected domains (for edit)
+
+        // --- Interview Questions Logic ---
+        const interestedDomainSelect = document.getElementById('interestedDomain');
+        const questionsContainer = document.getElementById('questions-container');
+        let allQuestions = [];
+
+        // Fetch all questions once
+        fetch('/questions.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok for questions.json');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Successfully fetched questions.json');
+                allQuestions = data;
+            })
+            .catch(error => console.error('Error fetching questions:', error));
+
+        interestedDomainSelect.addEventListener('change', function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const selectedJobId = this.value;
+            const needsInterview = selectedOption.getAttribute('data-interviu') === 'true';
+
+            questionsContainer.innerHTML = ''; // Clear previous questions
+
+            if (selectedJobId && needsInterview) {
+                // Use parseInt to ensure the ID is a number for comparison
+                const jobIdNumber = parseInt(selectedJobId, 10);
+                const jobQuestionsData = allQuestions.find(q => q.jobId === jobIdNumber);
+
+                if (jobQuestionsData && jobQuestionsData.questions) {
+                    const questionsToDisplay = jobQuestionsData.questions.slice(0, 5);
+
+                    questionsToDisplay.forEach((question) => {
+                        const formGroup = document.createElement('div');
+                        formGroup.classList.add('mb-3', 'p-3', 'bg-white', 'border', 'rounded', 'shadow-sm');
+
+                        const label = document.createElement('label');
+                        label.classList.add('form-label', 'fw-bold', 'text-primary');
+                        label.innerHTML = `<i class="bi bi-question-circle me-1"></i>${question.questionText}`;
+
+                        let inputElement;
+                        const inputName = `applicationAnswers[${question.questionText}]`;
+
+                        if (question.type === 'TEXT') {
+                            inputElement = document.createElement('textarea');
+                            inputElement.classList.add('form-control');
+                            inputElement.name = inputName;
+                            inputElement.rows = 2;
+                        } else if (question.type === 'MULTIPLE_CHOICE') {
+                            inputElement = document.createElement('select');
+                            inputElement.classList.add('form-select');
+                            inputElement.name = inputName;
+
+                            const defaultOption = document.createElement('option');
+                            defaultOption.value = '';
+                            defaultOption.textContent = 'Selectează o variantă';
+                            inputElement.appendChild(defaultOption);
+
+                            question.options.forEach(optionText => {
+                                const option = document.createElement('option');
+                                option.value = optionText;
+                                option.textContent = optionText;
+                                inputElement.appendChild(option);
+                            });
+                        }
+
+                        if(inputElement) {
+                            formGroup.appendChild(label);
+                            formGroup.appendChild(inputElement);
+                            questionsContainer.appendChild(formGroup);
+                        }
+                    });
+                }
+            }
+        });
     });
 </script>
 </body>
