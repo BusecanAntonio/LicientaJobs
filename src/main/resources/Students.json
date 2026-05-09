@@ -1714,7 +1714,7 @@
   "name" : "Andrei Busecan",
   "email" : "busecancristian@gmai.com",
   "dateOfBirth" : [ 1980, 6, 21 ],
-  "documents" : [ ],
+  "documents" : [ "Scrisoare de Recomandare.txt" ],
   "major" : "Electricity",
   "phoneNumber" : "2312312444",
   "address" : "mm tamaia strada trandafirilor nr 13",
@@ -1726,11 +1726,13 @@
   "prefersRemote" : false,
   "preferredLocations" : [ ],
   "applicationAnswers" : { },
-  "githubProjects" : { },
+  "githubProjects" : {
+    "https://github.com/BusecanAntonio/LicientaJobs" : "I'm happy to help! However, I don't see any README content provided. Could you please provide the truncated README content so I can construct a comprehensive summary?"
+  },
   "addedBy" : "Busecan Cristian",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
-  "skills" : [ ],
+  "skills" : [ "Java" ],
   "jobApplications" : [ {
     "id" : 11891,
     "jobTitle" : "QA Tester",
@@ -2132,7 +2134,7 @@
   "name" : "Alex Mitius",
   "email" : "busecanandrei@yahoo.com",
   "dateOfBirth" : [ 2003, 2, 21 ],
-  "documents" : [ ],
+  "documents" : [ "Scrisoare de Recomandare.txt" ],
   "major" : "software ingineer",
   "phoneNumber" : "0714893214",
   "address" : "baia mare ghioceilor nr 15 etaj 2 ",
@@ -2150,7 +2152,7 @@
   "addedBy" : "Alex Stefan Mitrius",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
-  "skills" : [ ],
+  "skills" : [ "JavaScript", "Java", "Python", "Teamwork", "Communication", "Problem-solving", "Perfectionism", "Adaptability", "Leadership" ],
   "jobApplications" : [ ],
   "age" : 23
 }, {
@@ -2335,6 +2337,29 @@
       "breakTime" : "18:00 - 18:30",
       "endTime" : "22:00",
       "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14771,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
     },
     "applicationDate" : null,
     "remote" : false
@@ -2570,7 +2595,9 @@
     "UserInterests" : "ML Engineer, Embedded Engineer, Robotics Engineer"
   },
   "githubProjects" : {
-    "https://github.com/BusecanAntonio/LicientaJobs" : "{}"
+    "https://github.com/BusecanAntonio/LicientaJobs" : "{ }",
+    "https://github.com/BusecanAntonio/GoogleMapsProject" : "Here is a comprehensive summary of the GitHub project:\n\nThe GoogleMapsProject, developed by top contributor BusecanAntonio with 100% of the commits, is an interactive map application that utilizes JavaScript and CSS to provide users with real-time mapping capabilities. This project allows users to search for locations, view maps, and even receive directions via HTML-based interfaces. The technology stack employed in this project includes Java, HTML, and CSS, making it a comprehensive tool for anyone looking to harness the power of Google Maps. With BusecanAntonio's 100% contribution, this project showcases their expertise and dedication to creating an innovative mapping solution.",
+    "https://github.com/BusecanAntonio/SDI_StreamingApplication" : "{}"
   },
   "addedBy" : "asdf",
   "notifications" : [ ],
@@ -2578,4 +2605,130 @@
   "skills" : [ "JavaScript" ],
   "jobApplications" : [ ],
   "age" : 23
+}, {
+  "id" : 14770,
+  "name" : "Victor Terpe Cristian",
+  "email" : "victor@gmail.com",
+  "dateOfBirth" : [ 2003, 8, 8 ],
+  "documents" : [ "Scrisoare de Recomandare.txt", "CV.pdf" ],
+  "major" : "Cal, inginerie baia mare ",
+  "phoneNumber" : "2312312444",
+  "address" : "Baia mare",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : "Cybersecurity",
+  "interestedDomainId" : null,
+  "preferredSeniority" : "Senior",
+  "prefersRemote" : true,
+  "preferredLocations" : [ "Poland" ],
+  "applicationAnswers" : {
+    "UserInterests" : "Full Stack Developer, ML Engineer, Computer Vision Engineer, Data Scientist, NLP Engineer, Data Analyst, Data Engineer, Cloud Engineer, DevOps Engineer, Game Developer, Graphics Programmer, UX Designer, UI Designer, SOC Analyst, Pentester, Embedded Engineer, IoT Engineer"
+  },
+  "githubProjects" : {
+    "https://github.com/BusecanAntonio/MeteoCalculMobil" : "Here is a comprehensive summary of the GitHub project:\n\nThe MeteoCalculMobil project, developed by top contributor BusecanAntonio who has contributed 100% of the commits, provides a mobile application that calculates meteorological data. Using Kotlin as its primary technology, this app enables users to input their location and retrieve weather-related information such as temperature, humidity, and wind speed. By harnessing the power of mobile computing, MeteoCalculMobil aims to simplify the process of accessing crucial meteorological data on-the-go. With BusecanAntonio's sole contributions, this project showcases a commitment to leveraging Kotlin's capabilities in mobile app development.",
+    "https://github.com/BusecanAntonio/SDI_StreamingApplication" : "I apologize, but there seems to be no README content provided. However, based on the given metadata, here is a summary:\n\nThe SDI_StreamingApplication project, maintained by BusecanAntonio, is a Java-based application that enables streaming functionality. This project leverages the power of Java to develop an efficient and scalable solution for handling real-time data streams. With 100% of the commits attributed to top contributor BusecanAntonio, it's clear that they have been instrumental in shaping the direction of this project. By using Java as its primary technology stack, SDI_StreamingApplication has likely benefited from the language's robustness and flexibility for building large-scale applications."
+  },
+  "addedBy" : "Terpe",
+  "notifications" : [ "Your application for Game Developer at Ubisoft was accepted." ],
+  "uploadedFiles" : [ ],
+  "skills" : [ "Java", "Python", "JavaScript" ],
+  "jobApplications" : [ {
+    "id" : 14761,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 11910,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : "9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : true,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 14771,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
+  "age" : 22
+}, {
+  "id" : 14773,
+  "name" : "qwerty",
+  "email" : "qwe@gmail.com",
+  "dateOfBirth" : [ 2002, 2, 21 ],
+  "documents" : [ ],
+  "major" : "Programator",
+  "phoneNumber" : "0771400490",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : null,
+  "interestedDomainId" : 2813,
+  "preferredSeniority" : "Internship",
+  "prefersRemote" : true,
+  "preferredLocations" : [ ],
+  "applicationAnswers" : {
+    "Ce limbaje de programare preferi pentru game development?" : "C++",
+    "UserInterests" : "Full Stack Developer, Product Manager",
+    "Care este principala provocare pe care ai întâmpinat-o în dezvoltarea unui joc?" : "sponsorizarea jocului si a unui feedback "
+  },
+  "githubProjects" : { },
+  "addedBy" : "qwe",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ ],
+  "jobApplications" : [ ],
+  "age" : 24
 } ]

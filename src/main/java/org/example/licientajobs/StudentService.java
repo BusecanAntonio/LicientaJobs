@@ -2,11 +2,12 @@ package org.example.licientajobs;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataAccessResourceFailureException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -105,7 +106,7 @@ public class StudentService {
     public List<Student> findAllStudents() {
         try {
             return studentRepository.findAll();
-        } catch (DataAccessResourceFailureException e) {
+        } catch (DataAccessException e) {
             logger.warn("Memgraph connection failed. Reading from JSON fallback file.", e);
             List<Student> students = jsonFallbackService.readStudentsFallbackData();
             return students != null ? students : new ArrayList<>();
@@ -121,7 +122,7 @@ public class StudentService {
     public Optional<Student> findStudentById(Long id) {
         try {
             return studentRepository.findById(id);
-        } catch (DataAccessResourceFailureException e) {
+        } catch (DataAccessException e) {
             logger.warn("Memgraph connection failed. Reading from JSON fallback file.", e);
             return jsonFallbackService.readStudentsFallbackData().stream()
                 .filter(s -> s.getId() != null && s.getId().equals(id))
@@ -137,7 +138,7 @@ public class StudentService {
                     studentRepository.deleteById(id);
                     synchronizeDbToJson();
                     notifyClients("Student with ID " + id + " has been deleted.");
-                } catch (DataAccessResourceFailureException e) {
+                } catch (DataAccessException e) {
                     logger.warn("Memgraph connection failed. Deleting only from JSON fallback.", e);
                     List<Student> students = jsonFallbackService.readStudentsFallbackData();
                     boolean removed = students.removeIf(s -> s.getId() != null && s.getId().equals(id));
@@ -308,7 +309,7 @@ public class StudentService {
         user.setEmail(email);
         try {
             userRepository.save(user);
-        } catch (DataAccessResourceFailureException e) {
+        } catch (DataAccessException e) {
             logger.warn("Memgraph connection failed. Saving user to fallback.", e);
         }
         
@@ -324,7 +325,7 @@ public class StudentService {
             if(!users.isEmpty()) {
                 return users.get(0).getPassword().equals(password);
             }
-        } catch (DataAccessResourceFailureException e) {
+        } catch (DataAccessException e) {
             logger.warn("Memgraph connection failed. Authenticating from fallback.", e);
         }
         
@@ -457,53 +458,90 @@ public class StudentService {
             String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
             String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
 
-            String prompt = "Extract the skills from the following recommendation letter or CV.\n\n" +
-                    "Return ONLY a JSON array of strings containing the skills using these rules:\n" +
-                    "- Use standard skill names (e.g., \"JavaScript\", \"Teamwork\", \"Excel\")\n" +
-                    "- Do not invent new skills\n" +
-                    "- Avoid duplicates\n" +
-                    "- DO NOT return any text outside of the JSON array (no markdown code blocks, just the raw json array).\n\n" +
+            String prompt = "Extract the skills from the following text.\n" +
+                    "Return ONLY a JSON array of strings containing the skills. Example: [\"Java\", \"Spring\", \"Teamwork\"]\n" +
+                    "Do NOT return any other text, markdown blocks, or explanations.\n" +
                     "Text:\n\"\"\"\n" + contentToSend + "\n\"\"\"";
 
-            // Folosim noua metodă ce forțează formatul JSON!
+            logger.info("Sending prompt to Ollama for skill extraction:\n{}", prompt);
             String jsonResponse = ollamaService.generateJsonResponse(prompt);
+            logger.info("Ollama raw response for skill extraction:\n{}", jsonResponse);
 
-            ObjectMapper mapper = new ObjectMapper();
-            String cleanJson = jsonResponse.trim();
-            Matcher arrayMatcher = Pattern.compile("\\[.*?\\]", Pattern.DOTALL).matcher(cleanJson);
-            Matcher objectMatcher = Pattern.compile("\\{.*?\\}", Pattern.DOTALL).matcher(cleanJson);
-
-            if (arrayMatcher.find()) {
-                cleanJson = arrayMatcher.group(0);
-            } else if (objectMatcher.find()) {
-                cleanJson = objectMatcher.group(0);
+            if (jsonResponse == null || jsonResponse.trim().isEmpty() || jsonResponse.trim().equals("{}")) {
+                logger.warn("Ollama returned an empty or invalid response.");
+                return;
             }
-            
-            try {
-                List<String> extractedSkills = new ArrayList<>();
-                if (cleanJson.startsWith("{")) {
-                    Map<String, Object> skillsMap = mapper.readValue(cleanJson, new TypeReference<Map<String, Object>>() {});
-                    extractedSkills.addAll(skillsMap.keySet());
-                } else if (cleanJson.startsWith("[")) {
-                    extractedSkills = mapper.readValue(cleanJson, new TypeReference<List<String>>() {});
-                } else {
-                     throw new RuntimeException("Format invalid");
+
+            List<String> extractedSkills = new ArrayList<>();
+            Matcher matcher = Pattern.compile("\"([^\"]+)\"").matcher(jsonResponse);
+            while (matcher.find()) {
+                String potentialSkill = matcher.group(1).trim();
+                // Exclude common JSON keys that the LLM might hallucinate
+                if (!potentialSkill.isEmpty() && !potentialSkill.equalsIgnoreCase("skills") && !potentialSkill.equalsIgnoreCase("skill")) {
+                    extractedSkills.add(potentialSkill);
                 }
-                
+            }
+
+            logger.info("Extracted skills: {}", extractedSkills);
+
+            if (!extractedSkills.isEmpty()) {
                 if (student.getSkills() == null) {
                     student.setSkills(new ArrayList<>());
                 }
-                
+
                 for (String skill : extractedSkills) {
                     if (!student.getSkills().contains(skill)) {
                         student.getSkills().add(skill);
                     }
                 }
-            } catch (Exception parseEx) {
-                logger.error("Nu s-a putut parsa: " + cleanJson, parseEx);
+            } else {
+                 logger.warn("No skills could be parsed from the JSON response.");
             }
+
         } catch (Exception e) {
-            logger.error("Eroare la procesarea fișierului", e);
+            logger.error("Error extracting skills from file", e);
+        }
+    }
+    
+    public Map<String, String> evaluateInterviewAnswer(JobApplication job, String answer) {
+        String prompt = "You are an expert technical IT recruiter in Romania evaluating a candidate for the position of '" + job.getJobTitle() + "'.\n" +
+                "The candidate provided the following answer to a general technical and behavioral interview question:\n\"" + answer + "\"\n\n" +
+                "Evaluate the answer based on clarity, technical relevance, and problem-solving skills.\n" +
+                "Return ONLY a JSON object with exactly two keys:\n" +
+                "1. \"score\": an integer from 1 to 100 representing how good the answer is.\n" +
+                "2. \"feedback\": a short paragraph (2-3 sentences) of constructive feedback in Romanian.\n" +
+                "Do NOT return any other text or formatting.";
+        
+        String jsonResponse = ollamaService.generateJsonResponse(prompt);
+        ObjectMapper mapper = new ObjectMapper();
+        
+        try {
+            // Trim to handle potential markdown wrappers
+            String cleanJson = jsonResponse.trim();
+            if (cleanJson.startsWith("```json")) {
+                cleanJson = cleanJson.substring(7);
+            }
+            if (cleanJson.startsWith("```")) {
+                cleanJson = cleanJson.substring(3);
+            }
+            if (cleanJson.endsWith("```")) {
+                cleanJson = cleanJson.substring(0, cleanJson.length() - 3);
+            }
+            
+            JsonNode rootNode = mapper.readTree(cleanJson);
+            String score = rootNode.has("score") ? rootNode.get("score").asText() : "N/A";
+            String feedback = rootNode.has("feedback") ? rootNode.get("feedback").asText() : "Nu s-a putut genera feedback.";
+            
+            Map<String, String> result = new HashMap<>();
+            result.put("score", score);
+            result.put("feedback", feedback);
+            return result;
+        } catch(Exception e) {
+            logger.error("Error parsing interview evaluation JSON: " + jsonResponse, e);
+            Map<String, String> result = new HashMap<>();
+            result.put("score", "Eroare");
+            result.put("feedback", "Eroare la procesarea răspunsului generat de AI. Te rog încearcă din nou.");
+            return result;
         }
     }
 }

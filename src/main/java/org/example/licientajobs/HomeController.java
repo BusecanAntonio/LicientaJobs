@@ -355,6 +355,28 @@ public class HomeController {
         return "redirect:/students";
     }
 
+    @PostMapping("/students/{studentId}/simulate-interview")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> simulateInterview(
+            @PathVariable Long studentId,
+            @RequestParam Long jobId,
+            @RequestParam String answer,
+            HttpSession session) {
+        
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return ResponseEntity.status(401).body(Map.of("error", "Neautorizat"));
+        }
+        
+        Optional<JobApplication> jobOpt = studentService.findJobById(jobId);
+        if (jobOpt.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Job not found"));
+        }
+        
+        Map<String, String> evaluation = studentService.evaluateInterviewAnswer(jobOpt.get(), answer);
+        return ResponseEntity.ok(evaluation);
+    }
+
     // --- Quiz ---
     @GetMapping("/quiz/{id}")
     public String showQuiz(@PathVariable Long id, HttpSession session, Model model) {
