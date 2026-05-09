@@ -46,8 +46,19 @@
         <i class="bi bi-info-circle"></i> Joburile de mai jos sunt ordonate în funcție de <strong>Match Score</strong> (potrivirea cu profilul tău).
     </div>
 
+    <div class="row mb-3">
+        <div class="col-md-6 offset-md-6">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                </div>
+                <input type="text" id="jobSearchInput" class="form-control" placeholder="Caută job după titlu, companie sau skill-uri...">
+            </div>
+        </div>
+    </div>
+
     <div class="table-responsive mt-4">
-        <table class="table table-hover bg-white shadow-sm rounded">
+        <table class="table table-hover bg-white shadow-sm rounded" id="jobsTable">
             <thead class="thead-dark">
             <tr>
                 <th>Scor Potrivire</th>
@@ -58,7 +69,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="job, iterStat : ${availableJobs}">
+            <tr th:each="job, iterStat : ${availableJobs}" class="job-row">
                 <!-- Aici calculăm teoretic scorul în backend, dar pentru UI,
                      cum sunt deja sortate, le vom vizualiza simplu.
                      Dacă backend-ul nu trimite scorul atașat obiectului job, putem doar
@@ -74,23 +85,23 @@
                         Other
                     </div>
                 </td>
-                <td class="align-middle fw-bold">
+                <td class="align-middle fw-bold job-company">
                     <span th:text="${job.company}"></span><br>
                     <small class="text-muted" th:if="${job.country != null}"><i class="bi bi-globe"></i> <span th:text="${job.country}"></span></small>
                 </td>
-                <td>
-                    <h5 class="mb-1 text-primary" th:text="${job.jobTitle}"></h5>
+                <td class="job-details">
+                    <h5 class="mb-1 text-primary job-title" th:text="${job.jobTitle}"></h5>
                     <div class="small text-muted mb-2">
                         <span th:if="${job.seniority != null}" class="badge badge-dark me-1" th:text="${job.seniority}"></span>
                         <span th:if="${job.isRemote}" class="badge badge-success me-1">Remote</span>
                         <span th:unless="${job.isRemote}" class="badge badge-secondary me-1">On-site/Hybrid</span>
                     </div>
-                    <p class="small mb-0" th:text="${job.description}"></p>
+                    <p class="small mb-0 job-desc" th:text="${job.description}"></p>
                 </td>
-                <td class="align-middle">
+                <td class="align-middle job-skills">
                     <!-- Afișăm cerințele doar dacă există (necesită update în Jobs.json pe viitor) -->
                     <div th:if="${job.requiredSkills != null and !job.requiredSkills.isEmpty()}">
-                        <span class="badge badge-outline-primary m-1 border" th:each="reqSkill : ${job.requiredSkills}" th:text="${reqSkill}"></span>
+                        <span class="badge badge-outline-primary m-1 border skill-badge" th:each="reqSkill : ${job.requiredSkills}" th:text="${reqSkill}"></span>
                     </div>
                     <span th:if="${job.requiredSkills == null or job.requiredSkills.isEmpty()}" class="text-muted small">Nu sunt specificate skill-uri.</span>
                 </td>
@@ -111,6 +122,9 @@
                     </div>
                 </td>
             </tr>
+            <tr id="noResultsRow" style="display: none;">
+                <td colspan="5" class="text-center py-4 text-muted">Nu am găsit joburi care să corespundă căutării.</td>
+            </tr>
             <tr th:if="${#lists.isEmpty(availableJobs)}">
                 <td colspan="5" class="text-center py-4">Nu am găsit joburi disponibile în acest moment.</td>
             </tr>
@@ -118,5 +132,39 @@
         </table>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('jobSearchInput');
+        const jobRows = document.querySelectorAll('.job-row');
+        const noResultsRow = document.getElementById('noResultsRow');
+
+        searchInput.addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            let visibleCount = 0;
+
+            jobRows.forEach(row => {
+                const company = row.querySelector('.job-company').textContent.toLowerCase();
+                const title = row.querySelector('.job-title').textContent.toLowerCase();
+                const desc = row.querySelector('.job-desc').textContent.toLowerCase();
+                const skills = row.querySelector('.job-skills').textContent.toLowerCase();
+
+                if (company.includes(searchTerm) || title.includes(searchTerm) || desc.includes(searchTerm) || skills.includes(searchTerm)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0 && jobRows.length > 0) {
+                noResultsRow.style.display = '';
+            } else {
+                noResultsRow.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
