@@ -198,12 +198,23 @@ public class HomeController {
         studentService.findStudentById(id).ifPresent(student -> {
             if (!file.isEmpty()) {
                 try {
-                    String fileName = storageService.store(file, id);
+                    // Read the file content once
+                    byte[] fileBytes = file.getBytes();
+                    String originalFilename = file.getOriginalFilename();
+
+                    // 1. Store the file on disk
+                    String fileName = storageService.store(fileBytes, id, originalFilename);
+                    
+                    // 2. Add document reference to student
                     if (student.getDocuments() == null) {
                         student.setDocuments(new ArrayList<>());
                     }
                     student.getDocuments().add(fileName);
+                    
+                    // 3. Extract skills from the content
                     studentService.extractAndSaveSkills(student, file);
+                    
+                    // 4. Save the updated student
                     studentService.saveStudent(student, loggedInUser);
                 } catch (Exception e) {
                     e.printStackTrace();

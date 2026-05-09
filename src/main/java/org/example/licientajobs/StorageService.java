@@ -1,16 +1,13 @@
 package org.example.licientajobs;
 
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.io.IOException;
+import java.io.ByteArrayInputStream;
 
 @Service
 public class StorageService {
@@ -20,31 +17,39 @@ public class StorageService {
     public StorageService() {
         try {
             Files.createDirectories(rootLocation);
-        } catch (IOException e) {
-            throw new RuntimeException("Could not initialize storage", e);
+        } catch (Exception ex) {
+            throw new RuntimeException("Could not create upload directory!", ex);
         }
     }
 
     public String store(MultipartFile file, Long studentId) {
         try {
-            if (file.isEmpty()) {
+            return store(file.getBytes(), studentId, file.getOriginalFilename());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to read file.", e);
+        }
+    }
+
+    public String store(byte[] fileBytes, Long studentId, String originalFilename) {
+        try {
+            if (fileBytes == null || fileBytes.length == 0) {
                 throw new RuntimeException("Failed to store empty file.");
             }
             Path studentDirectory = rootLocation.resolve(String.valueOf(studentId));
             Files.createDirectories(studentDirectory);
 
             Path destinationFile = studentDirectory.resolve(
-                    Paths.get(file.getOriginalFilename())).normalize().toAbsolutePath();
+                    Paths.get(originalFilename)).normalize().toAbsolutePath();
             
             if (!destinationFile.getParent().equals(studentDirectory.toAbsolutePath())) {
                 throw new RuntimeException(
                         "Cannot store file outside current directory.");
             }
-            try (var inputStream = file.getInputStream()) {
-                Files.copy(inputStream, destinationFile,
-                    StandardCopyOption.REPLACE_EXISTING);
+            
+            try (ByteArrayInputStream inputStream = new ByteArrayInputStream(fileBytes)) {
+                Files.copy(inputStream, destinationFile, StandardCopyOption.REPLACE_EXISTING);
             }
-            return file.getOriginalFilename();
+            return originalFilename;
         } catch (IOException e) {
             throw new RuntimeException("Failed to store file.", e);
         }
@@ -52,22 +57,5 @@ public class StorageService {
 
     public Path load(Long studentId, String filename) {
         return rootLocation.resolve(String.valueOf(studentId)).resolve(filename);
-    }
-
-    public Resource loadAsResource(Long studentId, String filename) {
-        try {
-            Path file = load(studentId, filename);
-            Resource resource = new UrlResource(file.toUri());
-            if (resource.exists() || resource.isReadable()) {
-                return resource;
-            }
-            else {
-                throw new RuntimeException(
-                        "Could not read file: " + filename);
-            }
-        }
-        catch (MalformedURLException e) {
-            throw new RuntimeException("Could not read file: " + filename, e);
-        }
     }
 }
