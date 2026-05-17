@@ -5,9 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Component;
+import org.springframework.core.io.Resource;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class DataSynchronizer implements CommandLineRunner {
@@ -19,6 +24,9 @@ public class DataSynchronizer implements CommandLineRunner {
     private final JobApplicationRepository jobApplicationRepository;
     private final EscoImportService escoImportService;
     private final Neo4jClient neo4jClient;
+    
+    @Value("classpath:ESCO/cor_esco_mapping.csv")
+    private Resource corMappingFile;
 
     public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository, 
                             JobApplicationRepository jobApplicationRepository, EscoImportService escoImportService,
@@ -44,6 +52,16 @@ public class DataSynchronizer implements CommandLineRunner {
                 escoImportService.importEscoData();
             } else {
                 logger.info("S-au găsit {} Ocupații ESCO în baza de date. Trecem peste importul din CSV.", occupationsCount);
+            }
+
+            // AUTO-IMPORT COR IF MISSING OR IF RELATIONSHIPS ARE MISSING
+            Long corRelCount = neo4jClient.query("MATCH (c:COROccupation)-[:EQUIVALENT_TO]->() RETURN count(c) as count")
+                    .fetchAs(Long.class).mappedBy((ts, r) -> r.get("count").asLong()).one().orElse(0L);
+            if (corRelCount == 0 && occupationsCount > 0) {
+                logger.info("Import automat noduri COR și mapare deoarece lipsesc relațiile...");
+                // Ștergem nodurile orfane (fără relații) create eventual în rulări anterioare greșite
+                neo4jClient.query("MATCH (c:COROccupation) DETACH DELETE c").run();
+                importCorAndMapToEsco(corMappingFile);
             }
 
             List<Student> fallbackStudents = fallbackData.getStudents();
@@ -142,29 +160,39 @@ public class DataSynchronizer implements CommandLineRunner {
 
     private void generateAdvancedRelationships() {
         try {
+            // Ștergem relațiile vechi de tip REQUIRES_SKILL și HAS_SKILL pentru a nu crea duplicate la modificarea algoritmului
+            neo4jClient.query("MATCH ()-[r:REQUIRES_SKILL]->() DELETE r").run();
+            neo4jClient.query("MATCH ()-[r:HAS_SKILL]->() DELETE r").run();
+
+            // Folosim o logică mai sigură. Dacă ESCOSkill-ul conține numele skillului sau invers
+            logger.info("Regenerăm relațiile de tip REQUIRES_SKILL...");
             neo4jClient.query(
                 "MATCH (j:JobApplication) " +
-                "WITH j, COALESCE(j.requiredSkills, []) AS reqSkills " +
-                "UNWIND reqSkills AS reqSkill " +
+                "WHERE j.requiredSkills IS NOT NULL " +
+                "UNWIND j.requiredSkills AS reqSkill " +
                 "MATCH (s:ESCOSkill) " +
-                "WHERE toLower(s.preferredLabel) = toLower(reqSkill) " +
+                "WHERE toLower(s.preferredLabel) CONTAINS toLower(reqSkill) OR toLower(reqSkill) CONTAINS toLower(s.preferredLabel) " +
+                "WITH j, s " +
                 "MERGE (j)-[:REQUIRES_SKILL]->(s)"
             ).run();
             
+            logger.info("Regenerăm relațiile de tip HAS_SKILL...");
             neo4jClient.query(
                 "MATCH (st:Student) " +
-                "WITH st, COALESCE(st.skills, []) AS stSkills " +
-                "UNWIND stSkills AS studentSkill " +
+                "WHERE st.skills IS NOT NULL " +
+                "UNWIND st.skills AS studentSkill " +
                 "MATCH (s:ESCOSkill) " +
-                "WHERE toLower(s.preferredLabel) = toLower(studentSkill) " +
+                "WHERE toLower(s.preferredLabel) CONTAINS toLower(studentSkill) OR toLower(studentSkill) CONTAINS toLower(s.preferredLabel) " +
+                "WITH st, s " +
                 "MERGE (st)-[:HAS_SKILL]->(s)"
             ).run();
             
+            logger.info("Regenerăm relațiile de tip RELATED_TO_OCCUPATION...");
             neo4jClient.query(
                 "MATCH (j:JobApplication) " +
                 "MATCH (o:ESCOOccupation) " +
-                "WHERE toLower(j.jobTitle) CONTAINS toLower(o.preferredLabel) " +
-                "WITH j, o LIMIT 100 " + 
+                "WHERE toLower(j.jobTitle) CONTAINS toLower(o.preferredLabel) OR toLower(o.preferredLabel) CONTAINS toLower(j.jobTitle) " +
+                "WITH j, o " + 
                 "MERGE (j)-[:RELATED_TO_OCCUPATION]->(o)"
             ).run();
 
@@ -174,8 +202,58 @@ public class DataSynchronizer implements CommandLineRunner {
                 "MERGE (j)-[:BELONGS_TO_CATEGORY]->(c)"
             ).run();
 
+            Long reqSkillsCount = neo4jClient.query("MATCH ()-[r:REQUIRES_SKILL]->() RETURN count(r) as count")
+                    .fetchAs(Long.class).mappedBy((ts, r) -> r.get("count").asLong()).one().orElse(0L);
+            logger.info("S-au generat {} relații REQUIRES_SKILL.", reqSkillsCount);
+
         } catch (Exception e) {
             logger.error("Eroare la generarea relațiilor avansate: ", e);
+        }
+    }
+    
+    private void importCorAndMapToEsco(Resource file) {
+        if (!file.exists()) {
+            logger.warn("Fișierul COR {} nu a fost găsit.", file.getFilename());
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"))) {
+            String headerLine = reader.readLine();
+            if (headerLine == null) return;
+            
+            List<Map<String, Object>> batch = new ArrayList<>();
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",", 3);
+                if (values.length >= 3) {
+                    batch.add(Map.of(
+                        "corCode", values[0].trim(),
+                        "romanianName", values[1].trim(),
+                        "escoLabel", values[2].trim()
+                    ));
+                }
+            }
+            
+            if (!batch.isEmpty()) {
+                String cypher = "UNWIND $batch AS row " +
+                                "MERGE (c:COROccupation {code: row.corCode}) " +
+                                "SET c.name = row.romanianName " +
+                                "WITH c, row " +
+                                "OPTIONAL MATCH (e:ESCOOccupation) " +
+                                "WHERE toLower(e.preferredLabel) CONTAINS toLower(row.escoLabel) " +
+                                "WITH c, e WHERE e IS NOT NULL " +
+                                "MERGE (c)-[:EQUIVALENT_TO]->(e)";
+                
+                neo4jClient.query(cypher)
+                        .bind(batch).to("batch")
+                        .run();
+                        
+                logger.info("Import automat COR și mapare ESCO finalizate cu succes pentru {} înregistrări.", batch.size());
+            }
+            
+        } catch (Exception e) {
+             logger.error("Eroare la auto-importul COR: ", e);
         }
     }
 }

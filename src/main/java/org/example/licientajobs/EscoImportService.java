@@ -28,6 +28,9 @@ public class EscoImportService {
 
     @Value("classpath:ESCO/occupationSkillRelations_en.csv")
     private Resource relationsFile;
+    
+    @Value("classpath:ESCO/cor_esco_mapping.csv")
+    private Resource corMappingFile;
 
     @Autowired
     private Neo4jClient neo4jClient;
@@ -40,13 +43,14 @@ public class EscoImportService {
      * deoarece neo4jClient poate avea conflicte cu managerul de tranzactii implicite in context web
      */
     public void importEscoData() {
-        logger.info("--- Începem importul datelor ESCO (Durează câteva minute) ---");
+        logger.info("--- Începem importul datelor ESCO și COR (Durează câteva minute) ---");
 
         try {
             // 1. Curățăm nodurile vechi ESCO (Dacă există)
-            logger.info("Pasul 1: Se șterg datele ESCO vechi...");
+            logger.info("Pasul 1: Se șterg datele vechi...");
             neo4jClient.query("MATCH (n:ESCOOccupation) DETACH DELETE n").run();
             neo4jClient.query("MATCH (n:ESCOSkill) DETACH DELETE n").run();
+            neo4jClient.query("MATCH (n:COROccupation) DETACH DELETE n").run();
             neo4jClient.query("MATCH (n:Subcategory)-[r:MAPS_TO_ESCO]->() DELETE r").run();
 
             // 2. Creăm Constrângeri de Unicitate (Important pentru viteza de import)
@@ -54,6 +58,7 @@ public class EscoImportService {
             try {
                 neo4jClient.query("CREATE CONSTRAINT IF NOT EXISTS FOR (o:ESCOOccupation) REQUIRE o.uri IS UNIQUE").run();
                 neo4jClient.query("CREATE CONSTRAINT IF NOT EXISTS FOR (s:ESCOSkill) REQUIRE s.uri IS UNIQUE").run();
+                neo4jClient.query("CREATE CONSTRAINT IF NOT EXISTS FOR (c:COROccupation) REQUIRE c.code IS UNIQUE").run();
             } catch (Exception e) {
                 logger.warn("Constrângerile există deja sau baza de date nu le suportă direct: " + e.getMessage());
             }
@@ -69,11 +74,15 @@ public class EscoImportService {
             // 5. Citire și Creare Relații (Occupation -> Skill)
             logger.info("Pasul 5: Creăm Relațiile Ocupație -> Skill...");
             importRelations(relationsFile);
+            
+            // 6. Import COR și maparea la ESCO
+            logger.info("Pasul 6: Importăm și mapăm codurile COR la ESCO...");
+            importCorAndMapToEsco(corMappingFile);
 
-            logger.info("--- IMPORTUL ESCO S-A TERMINAT CU SUCCES! ---");
+            logger.info("--- IMPORTUL ESCO & COR S-A TERMINAT CU SUCCES! ---");
 
         } catch (Exception e) {
-            logger.error("Eroare critică în timpul importului ESCO: ", e);
+            logger.error("Eroare critică în timpul importului: ", e);
         }
     }
 
@@ -217,5 +226,53 @@ public class EscoImportService {
         neo4jClient.query(cypher)
                 .bind(batch).to("batch")
                 .run();
+    }
+    
+    public void importCorAndMapToEsco(Resource file) {
+        if (!file.exists()) {
+            logger.warn("Fișierul COR {} nu a fost găsit.", file.getFilename());
+            return;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"))) {
+            String headerLine = reader.readLine();
+            if (headerLine == null) return;
+            
+            List<Map<String, Object>> batch = new ArrayList<>();
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+                String[] values = line.split(",", 3);
+                if (values.length >= 3) {
+                    batch.add(Map.of(
+                        "corCode", values[0].trim(),
+                        "romanianName", values[1].trim(),
+                        "escoLabel", values[2].trim()
+                    ));
+                }
+            }
+            
+            if (!batch.isEmpty()) {
+                // OPTIONAL MATCH prevents the query from failing if ESCO equivalent is not found
+                // So at least the COR node is created
+                String cypher = "UNWIND $batch AS row " +
+                                "MERGE (c:COROccupation {code: row.corCode}) " +
+                                "SET c.name = row.romanianName " +
+                                "WITH c, row " +
+                                "OPTIONAL MATCH (e:ESCOOccupation) " +
+                                "WHERE toLower(e.preferredLabel) CONTAINS toLower(row.escoLabel) " +
+                                "WITH c, e WHERE e IS NOT NULL " +
+                                "MERGE (c)-[:EQUIVALENT_TO]->(e)";
+                
+                neo4jClient.query(cypher)
+                        .bind(batch).to("batch")
+                        .run();
+                        
+                logger.info("Import automat COR și mapare ESCO finalizate cu succes pentru {} înregistrări.", batch.size());
+            }
+            
+        } catch (Exception e) {
+             logger.error("Eroare la auto-importul COR: ", e);
+        }
     }
 }
