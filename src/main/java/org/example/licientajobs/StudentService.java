@@ -287,6 +287,7 @@ public class StudentService {
             score += 10;
         }
 
+        // Puncte bonus pentru Locație
         int locationScore = 0;
         if (prefersRemote && job.isRemote()) {
             locationScore += 10;
