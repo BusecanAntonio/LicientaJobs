@@ -250,26 +250,29 @@ public class StudentService {
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
         String jobDescription = job.getDescription() != null ? job.getDescription().toLowerCase() : "";
 
+        // 10% - Interesele alese de utilizator (User Interests)
         int categoryPoints = 0;
         for (String interest : studentInterests) {
             if (interest.isEmpty()) continue;
             String lowerInterest = interest.toLowerCase();
             if (jobTitle.contains(lowerInterest) || jobDescription.contains(lowerInterest)) {
-                categoryPoints += 20;
+                categoryPoints += 5;
             }
         }
-        score += Math.min(categoryPoints, 40);
+        score += Math.min(categoryPoints, 10); // Maxim 10 puncte
 
+        // 90% - Skill-urile extrase de LLM
         int skillPoints = 0;
         List<String> jobSkills = job.getRequiredSkills() != null ? job.getRequiredSkills() : new ArrayList<>();
         if (!jobSkills.isEmpty() && !studentSkills.isEmpty()) {
+            int pointsPerSkill = 90 / Math.max(1, jobSkills.size());
             for (String requiredSkill : jobSkills) {
                 if (studentSkills.contains(requiredSkill.toLowerCase())) {
-                    skillPoints += (30 / jobSkills.size());
+                    skillPoints += pointsPerSkill;
                 }
             }
         }
-        score += Math.min(skillPoints, 30);
+        score += Math.min(skillPoints, 90); // Maxim 90 puncte
 
         String jobSeniority = job.getSeniority() != null ? job.getSeniority().toLowerCase() : "";
         if (!preferredSeniority.isEmpty() && !jobSeniority.isEmpty()) {

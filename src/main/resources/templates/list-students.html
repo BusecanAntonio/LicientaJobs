@@ -354,6 +354,92 @@
                                     <label class="form-label fw-bold">Data Nașterii</label>
                                     <input type="date" class="form-control" name="dateOfBirth" th:value="${student.dateOfBirth}">
                                 </div>
+
+                                <!-- Nivel de Senioritate și Remote -->
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Nivel Senioritate</label>
+                                    <select class="form-select" name="preferredSeniority">
+                                        <option value="">Nespecificat</option>
+                                        <option value="Internship" th:selected="${student.preferredSeniority == 'Internship'}">Internship</option>
+                                        <option value="Junior" th:selected="${student.preferredSeniority == 'Junior'}">Junior</option>
+                                        <option value="Mid" th:selected="${student.preferredSeniority == 'Mid'}">Mid</option>
+                                        <option value="Senior" th:selected="${student.preferredSeniority == 'Senior'}">Senior</option>
+                                        <option value="Lead" th:selected="${student.preferredSeniority == 'Lead'}">Lead</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 d-flex align-items-end">
+                                    <div class="form-check mb-2">
+                                        <input class="form-check-input" type="checkbox" name="prefersRemote" value="true" th:id="'remote_' + ${student.id}" th:checked="${student.prefersRemote}">
+                                        <input type="hidden" value="on" name="_prefersRemote"> <!-- Spring boot checkbox trick -->
+                                        <label class="form-check-label fw-bold" th:for="'remote_' + ${student.id}">
+                                            Preferă Remote
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Țări de interes -->
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Țări de Interes (UE)</label>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferredLocations" value="Germany" th:id="'loc_de_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Germany')}">
+                                            <label class="form-check-label" th:for="'loc_de_' + ${student.id}">Germany</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferredLocations" value="Netherlands" th:id="'loc_nl_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Netherlands')}">
+                                            <label class="form-check-label" th:for="'loc_nl_' + ${student.id}">Netherlands</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferredLocations" value="Ireland" th:id="'loc_ie_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Ireland')}">
+                                            <label class="form-check-label" th:for="'loc_ie_' + ${student.id}">Ireland</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferredLocations" value="Romania" th:id="'loc_ro_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Romania')}">
+                                            <label class="form-check-label" th:for="'loc_ro_' + ${student.id}">Romania</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="preferredLocations" value="Poland" th:id="'loc_pl_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Poland')}">
+                                            <label class="form-check-label" th:for="'loc_pl_' + ${student.id}">Poland</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Interese Taxonomie IT (UserInterests) -->
+                                <div class="col-12">
+                                    <label class="form-label fw-bold">Interese Carieră (Domenii)</label>
+                                    <p class="small text-muted mb-1">Selectează rapid domeniile principale de interes (se vor suprascrie interesele specifice anterioare).</p>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Software Engineering" th:id="'int_sw_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Software Engineering')}">
+                                            <label class="form-check-label" th:for="'int_sw_' + ${student.id}">Software Eng.</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="AI / Machine Learning" th:id="'int_ai_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'AI / Machine Learning')}">
+                                            <label class="form-check-label" th:for="'int_ai_' + ${student.id}">AI / ML</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Data & Analytics" th:id="'int_da_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Data & Analytics')}">
+                                            <label class="form-check-label" th:for="'int_da_' + ${student.id}">Data</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Cloud / DevOps / Infra" th:id="'int_cl_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Cloud / DevOps')}">
+                                            <label class="form-check-label" th:for="'int_cl_' + ${student.id}">DevOps</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Cybersecurity" th:id="'int_cy_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Cybersecurity')}">
+                                            <label class="form-check-label" th:for="'int_cy_' + ${student.id}">Cybersecurity</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Embedded / Hardware" th:id="'int_hw_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Embedded / Hardware')}">
+                                            <label class="form-check-label" th:for="'int_hw_' + ${student.id}">Hardware</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Product / UX / Design" th:id="'int_ux_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'UX')}">
+                                            <label class="form-check-label" th:for="'int_ux_' + ${student.id}">UX/Design</label>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                         <div class="modal-footer bg-light d-flex justify-content-between">

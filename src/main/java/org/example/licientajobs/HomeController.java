@@ -160,7 +160,7 @@ public class HomeController {
     }
 
     @PostMapping("/students/edit/{id}")
-    public String editStudent(@PathVariable Long id, @ModelAttribute Student updatedStudent, HttpSession session) {
+    public String editStudent(@PathVariable Long id, @ModelAttribute Student updatedStudent, @RequestParam Map<String, String> allParams, HttpSession session) {
         String loggedInUser = (String) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
@@ -176,8 +176,20 @@ public class HomeController {
                 existingStudent.setStartYear(updatedStudent.getStartYear());
                 existingStudent.setEndYear(updatedStudent.getEndYear());
                 existingStudent.setDateOfBirth(updatedStudent.getDateOfBirth());
+                
+                // Actualizare campuri noi preferinte
                 existingStudent.setPreferredSeniority(updatedStudent.getPreferredSeniority());
                 existingStudent.setPrefersRemote(updatedStudent.isPrefersRemote());
+                existingStudent.setPreferredLocations(updatedStudent.getPreferredLocations());
+                
+                // Actualizare interese (taxonomie)
+                String userInterests = allParams.entrySet().stream()
+                        .filter(e -> e.getKey().equals("applicationAnswers[UserInterests]"))
+                        .map(Map.Entry::getValue)
+                        .findFirst()
+                        .orElse("");
+                        
+                existingStudent.getApplicationAnswers().put("UserInterests", userInterests);
                 
                 studentService.saveStudent(existingStudent, loggedInUser);
             }
