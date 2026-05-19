@@ -127,7 +127,7 @@
                 <div style="font-size: 0.6rem; font-weight: bold;">EDIT</div>
             </div>
 
-            <div class="graph-trigger" data-bs-toggle="modal" th:attr="data-bs-target='#graphModal' + ${student.id}" title="Vezi Grafic Joburi">
+            <div class="graph-trigger admin-controls" data-bs-toggle="modal" th:attr="data-bs-target='#graphModal' + ${student.id}" title="Vezi Grafic Joburi">
                 <i class="bi bi-diagram-3"></i>
                 <div style="font-size: 0.6rem; font-weight: bold;">GRAPH</div>
             </div>
@@ -484,6 +484,7 @@
                 var jobData = /*[[${student.jobApplications}]]*/ [];
                 var studentId = /*[[${student.id}]]*/ '';
                 var studentName = /*[[${student.name}]]*/ 'Student';
+                var studentSkills = /*[[${student.skills}]]*/ [];
 
                 document.addEventListener('DOMContentLoaded', (event) => {
                     var graphModal = document.getElementById('graphModal' + studentId);
@@ -498,6 +499,7 @@
                         ];
                         var edgesArray = [];
                         var addedCompanies = new Set();
+                        var addedSkills = new Set();
 
                         if (jobData && jobData.length > 0) {
                             jobData.forEach((app, index) => {
@@ -509,9 +511,12 @@
                                 else if (app.status === 'PENDING') statusColor = '#ffc107';
                                 else if (app.status === 'REJECTED') statusColor = '#dc3545';
 
+                                var jobLabel = (app.jobTitle || 'Job') + '\n[' + (app.status || 'N/A') + ']';
+                                if(app.seniority) jobLabel += '\n' + app.seniority;
+
                                 nodesArray.push({
                                     id: jobId,
-                                    label: (app.jobTitle || 'Job') + '\n[' + (app.status || 'N/A') + ']',
+                                    label: jobLabel,
                                     shape: 'box',
                                     color: { background: statusColor, border: '#212529' },
                                     font: { color: (app.status === 'PENDING' ? 'black' : 'white') },
@@ -547,6 +552,30 @@
                                     arrows: 'to',
                                     label: 'la'
                                 });
+
+                                if (app.requiredSkills && app.requiredSkills.length > 0) {
+                                    app.requiredSkills.forEach(skill => {
+                                        var skillId = 'skill_' + skill.replace(/[^a-zA-Z0-9]/g, '_');
+                                        if (!addedSkills.has(skillId)) {
+                                            var hasSkill = studentSkills.includes(skill);
+                                            nodesArray.push({
+                                                id: skillId,
+                                                label: skill,
+                                                shape: 'ellipse',
+                                                color: { background: hasSkill ? '#d1e7dd' : '#f8d7da', border: hasSkill ? '#0f5132' : '#842029' },
+                                                font: { color: 'black' }
+                                            });
+                                            addedSkills.add(skillId);
+                                        }
+                                        edgesArray.push({
+                                            from: jobId,
+                                            to: skillId,
+                                            color: { color: '#6c757d' },
+                                            dashes: true,
+                                            label: 'necesită'
+                                        });
+                                    });
+                                }
                             });
                         } else {
                             nodesArray[0].label = studentName + "\n(Nu are aplicații)";
