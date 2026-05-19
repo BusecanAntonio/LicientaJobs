@@ -6,6 +6,8 @@
     <title>Lista Studenti - Licență Jobs</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Am înlocuit Chart.js cu vis-network pentru grafice interactive cu noduri -->
+    <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
     <style>
         body { background-color: #f8f9fa; }
         .container { margin-top: 30px; }
@@ -34,7 +36,7 @@
         }
         .card-sidebar:hover { background-color: #e8eaed; }
 
-        .upload-trigger, .edit-trigger {
+        .upload-trigger, .edit-trigger, .graph-trigger {
             color: #5f6368;
             font-size: 1.5rem;
             cursor: pointer;
@@ -42,7 +44,7 @@
             margin-bottom: 20px;
             text-align: center;
         }
-        .upload-trigger:hover, .edit-trigger:hover { color: #0d6efd; }
+        .upload-trigger:hover, .edit-trigger:hover, .graph-trigger:hover { color: #0d6efd; }
 
         .card-content { flex: 1; } /* Restul conținutului ocupă spațiul rămas */
 
@@ -112,7 +114,7 @@
         Nu există studenți adăugați de tine. <a th:href="@{/students/add}" class="alert-link">Adaugă unul acum!</a>
     </div>
 
-    <div th:each="student : ${students}" class="card">
+    <div th:each="student, iterStat : ${students}" class="card">
 
         <div class="card-sidebar">
             <div class="upload-trigger" data-bs-toggle="offcanvas" th:data-bs-target="'#docs' + ${student.id}" title="Încarcă Documente și Linkuri">
@@ -123,6 +125,11 @@
             <div class="edit-trigger" data-bs-toggle="modal" th:data-bs-target="'#editStudentModal' + ${student.id}" title="Vizualizare / Editare Date">
                 <i class="bi bi-person-gear"></i>
                 <div style="font-size: 0.6rem; font-weight: bold;">EDIT</div>
+            </div>
+
+            <div class="graph-trigger" data-bs-toggle="modal" th:attr="data-bs-target='#graphModal' + ${student.id}" title="Vezi Grafic Joburi">
+                <i class="bi bi-diagram-3"></i>
+                <div style="font-size: 0.6rem; font-weight: bold;">GRAPH</div>
             </div>
         </div>
 
@@ -450,6 +457,140 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal pentru Grafic Joburi Interactiv (Rețea de Noduri) -->
+        <div class="modal fade" th:id="'graphModal' + ${student.id}" tabindex="-1" aria-labelledby="graphModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header bg-info text-white">
+                        <h5 class="modal-title fw-bold" id="graphModalLabel">
+                            <i class="bi bi-diagram-3 me-2"></i>Rețea Joburi: <span th:text="${student.name}"></span>
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="bg-light p-2 border-bottom">
+                            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Poți trage de noduri pentru a le rearanja și poți face scroll pentru zoom.</small>
+                        </div>
+                        <div th:id="'jobNetwork' + ${student.id}" style="width: 100%; height: 600px; background-color: #ffffff;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            /*<![CDATA[*/
+            (function() {
+                var jobData = /*[[${student.jobApplications}]]*/ [];
+                var studentId = /*[[${student.id}]]*/ '';
+                var studentName = /*[[${student.name}]]*/ 'Student';
+
+                document.addEventListener('DOMContentLoaded', (event) => {
+                    var graphModal = document.getElementById('graphModal' + studentId);
+                    if (!graphModal) return;
+                    var network = null;
+
+                    graphModal.addEventListener('shown.bs.modal', function () {
+                        var container = document.getElementById('jobNetwork' + studentId);
+
+                        var nodesArray = [
+                            { id: 'student', label: studentName + '\n(Student)', shape: 'circle', color: { background: '#0d6efd', border: '#0a58ca' }, font: {color: 'white', size: 16, bold: true} }
+                        ];
+                        var edgesArray = [];
+                        var addedCompanies = new Set();
+
+                        if (jobData && jobData.length > 0) {
+                            jobData.forEach((app, index) => {
+                                var jobId = 'job_' + index;
+                                var companyId = 'comp_' + (app.company ? app.company.replace(/[^a-zA-Z0-9]/g, '_') : 'unknown');
+
+                                var statusColor = '#6c757d'; // default
+                                if (app.status === 'ACCEPTED') statusColor = '#198754';
+                                else if (app.status === 'PENDING') statusColor = '#ffc107';
+                                else if (app.status === 'REJECTED') statusColor = '#dc3545';
+
+                                nodesArray.push({
+                                    id: jobId,
+                                    label: (app.jobTitle || 'Job') + '\n[' + (app.status || 'N/A') + ']',
+                                    shape: 'box',
+                                    color: { background: statusColor, border: '#212529' },
+                                    font: { color: (app.status === 'PENDING' ? 'black' : 'white') },
+                                    shadow: true
+                                });
+
+                                if (!addedCompanies.has(companyId)) {
+                                    nodesArray.push({
+                                        id: companyId,
+                                        label: app.company || 'Companie Necunoscută',
+                                        shape: 'hexagon',
+                                        color: { background: '#f8f9fa', border: '#ced4da' },
+                                        font: { color: 'black', bold: true },
+                                        shadow: true
+                                    });
+                                    addedCompanies.add(companyId);
+                                }
+
+                                edgesArray.push({
+                                    from: 'student',
+                                    to: jobId,
+                                    color: { color: statusColor },
+                                    width: 2,
+                                    arrows: 'to',
+                                    label: 'a aplicat'
+                                });
+
+                                edgesArray.push({
+                                    from: jobId,
+                                    to: companyId,
+                                    color: { color: '#adb5bd' },
+                                    dashes: true,
+                                    arrows: 'to',
+                                    label: 'la'
+                                });
+                            });
+                        } else {
+                            nodesArray[0].label = studentName + "\n(Nu are aplicații)";
+                        }
+
+                        var data = {
+                            nodes: new vis.DataSet(nodesArray),
+                            edges: new vis.DataSet(edgesArray)
+                        };
+
+                        var options = {
+                            physics: {
+                                stabilization: false,
+                                barnesHut: {
+                                    springLength: 150,
+                                    avoidOverlap: 0.8
+                                }
+                            },
+                            edges: {
+                                smooth: { type: 'continuous' },
+                                font: { align: 'middle', size: 12 }
+                            },
+                            interaction: {
+                                dragNodes: true,
+                                dragView: true,
+                                zoomView: true,
+                                hover: true
+                            }
+                        };
+
+                        if (network !== null) {
+                            network.destroy();
+                        }
+                        network = new vis.Network(container, data, options);
+
+                        // Centrare automată pe grafic
+                        network.once('stabilizationIterationsDone', function() {
+                            network.fit();
+                        });
+                    });
+                });
+            })();
+            /*]]>*/
+        </script>
 
     </div>
 </div>
