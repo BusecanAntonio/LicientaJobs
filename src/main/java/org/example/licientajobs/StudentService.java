@@ -230,7 +230,7 @@ public class StudentService {
             : new ArrayList<>();
 
         allJobs.forEach(job -> {
-            double score = calculateWeightedJaccard(job, studentInterests, studentSkills);
+            double score = calculateWeightedScore(job, studentInterests, studentSkills);
             job.setMatchScore(score);
         });
 
@@ -260,30 +260,31 @@ public class StudentService {
         return (double) intersection.size() / union.size();
     }
 
-    private double calculateWeightedJaccard(JobApplication job, List<String> studentInterests, List<String> studentSkills) {
+    private double calculateWeightedScore(JobApplication job, List<String> studentInterests, List<String> studentSkills) {
         double score = 0.0;
         
+        // 1. Interest-based score (10% weight)
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
         String jobDescription = job.getDescription() != null ? job.getDescription().toLowerCase() : "";
-        
         Set<String> jobTextTokens = new HashSet<>(Arrays.asList((jobTitle + " " + jobDescription).split("\\s+")));
-        
-        List<String> requiredJobSkills = job.getRequiredSkills() != null 
-            ? job.getRequiredSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
-            : new ArrayList<>();
-        Set<String> jobSkillSet = new HashSet<>(requiredJobSkills);
-
-        // 1. Jaccard Similarity for Manual Interests (10% weight)
-        // This compares student's general interests against all text in the job ad.
         Set<String> interestSet = new HashSet<>(studentInterests);
+        
         double interestJaccard = calculateJaccardSimilarity(interestSet, jobTextTokens);
         score += interestJaccard * 10.0;
 
-        // 2. Jaccard Similarity for AI Extracted Skills (90% weight)
-        // This compares student's hard skills against the job's required skills.
-        Set<String> studentSkillSet = new HashSet<>(studentSkills);
-        double skillsJaccard = calculateJaccardSimilarity(studentSkillSet, jobSkillSet);
-        score += skillsJaccard * 90.0;
+        // 2. Skill-based score (90% weight) - CORRECTED LOGIC
+        List<String> requiredJobSkills = job.getRequiredSkills() != null 
+            ? job.getRequiredSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
+            : new ArrayList<>();
+        
+        if (!requiredJobSkills.isEmpty()) {
+            long matchedSkills = studentSkills.stream()
+                                              .filter(s -> requiredJobSkills.contains(s))
+                                              .count();
+            
+            double skillMatchPercentage = (double) matchedSkills / requiredJobSkills.size();
+            score += skillMatchPercentage * 90.0;
+        }
 
         return score;
     }
