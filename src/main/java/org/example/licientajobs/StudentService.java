@@ -21,9 +21,11 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -218,22 +220,22 @@ public class StudentService {
         List<JobApplication> allJobs = findAllAvailableJobs();
 
         String interestsStr = student.getApplicationAnswers().getOrDefault("UserInterests", "");
-        List<String> studentInterests = Arrays.asList(interestsStr.split("\\s*,\\s*"));
+        List<String> studentInterests = Arrays.stream(interestsStr.split("\\s*,\\s*"))
+                                              .map(String::toLowerCase)
+                                              .filter(s -> !s.isEmpty())
+                                              .collect(Collectors.toList());
 
         List<String> studentSkills = student.getSkills() != null 
             ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
             : new ArrayList<>();
 
-        String preferredSeniority = student.getPreferredSeniority() != null ? student.getPreferredSeniority().toLowerCase() : "";
-        boolean prefersRemote = student.isPrefersRemote();
-        List<String> preferredLocations = student.getPreferredLocations() != null ? student.getPreferredLocations() : new ArrayList<>();
+        allJobs.forEach(job -> {
+            double score = calculateWeightedJaccard(job, studentInterests, studentSkills);
+            job.setMatchScore(score);
+        });
 
         return allJobs.stream()
-                .sorted((job1, job2) -> {
-                    int score1 = calculateAdvancedMatchScore(job1, studentInterests, studentSkills, preferredSeniority, prefersRemote, preferredLocations);
-                    int score2 = calculateAdvancedMatchScore(job2, studentInterests, studentSkills, preferredSeniority, prefersRemote, preferredLocations);
-                    return Integer.compare(score2, score1); 
-                })
+                .sorted(Comparator.comparingDouble(JobApplication::getMatchScore).reversed())
                 .collect(Collectors.toList());
     }
 
@@ -243,64 +245,45 @@ public class StudentService {
         
         return allJobs.get(0); 
     }
+    
+    private double calculateJaccardSimilarity(Set<String> set1, Set<String> set2) {
+        if (set1.isEmpty() || set2.isEmpty()) return 0.0;
+        
+        Set<String> intersection = new HashSet<>(set1);
+        intersection.retainAll(set2);
+        
+        Set<String> union = new HashSet<>(set1);
+        union.addAll(set2);
+        
+        if (union.isEmpty()) return 0.0;
 
-    private int calculateAdvancedMatchScore(JobApplication job, List<String> studentInterests, List<String> studentSkills, String preferredSeniority, boolean prefersRemote, List<String> preferredLocations) {
-        int score = 0;
+        return (double) intersection.size() / union.size();
+    }
+
+    private double calculateWeightedJaccard(JobApplication job, List<String> studentInterests, List<String> studentSkills) {
+        double score = 0.0;
         
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
         String jobDescription = job.getDescription() != null ? job.getDescription().toLowerCase() : "";
+        
+        Set<String> jobTextTokens = new HashSet<>(Arrays.asList((jobTitle + " " + jobDescription).split("\\s+")));
+        
+        List<String> requiredJobSkills = job.getRequiredSkills() != null 
+            ? job.getRequiredSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
+            : new ArrayList<>();
+        Set<String> jobSkillSet = new HashSet<>(requiredJobSkills);
 
-        // 10% - Interesele alese de utilizator (User Interests)
-        int categoryPoints = 0;
-        for (String interest : studentInterests) {
-            if (interest.isEmpty()) continue;
-            String lowerInterest = interest.toLowerCase();
-            if (jobTitle.contains(lowerInterest) || jobDescription.contains(lowerInterest)) {
-                categoryPoints += 5;
-            }
-        }
-        score += Math.min(categoryPoints, 10); // Maxim 10 puncte
+        // 1. Jaccard Similarity for Manual Interests (10% weight)
+        // This compares student's general interests against all text in the job ad.
+        Set<String> interestSet = new HashSet<>(studentInterests);
+        double interestJaccard = calculateJaccardSimilarity(interestSet, jobTextTokens);
+        score += interestJaccard * 10.0;
 
-        // 90% - Skill-urile extrase de LLM
-        int skillPoints = 0;
-        List<String> jobSkills = job.getRequiredSkills() != null ? job.getRequiredSkills() : new ArrayList<>();
-        if (!jobSkills.isEmpty() && !studentSkills.isEmpty()) {
-            int pointsPerSkill = 90 / Math.max(1, jobSkills.size());
-            for (String requiredSkill : jobSkills) {
-                if (studentSkills.contains(requiredSkill.toLowerCase())) {
-                    skillPoints += pointsPerSkill;
-                }
-            }
-        }
-        score += Math.min(skillPoints, 90); // Maxim 90 puncte
-
-        String jobSeniority = job.getSeniority() != null ? job.getSeniority().toLowerCase() : "";
-        if (!preferredSeniority.isEmpty() && !jobSeniority.isEmpty()) {
-            if (preferredSeniority.equals(jobSeniority)) {
-                score += 20;
-            } else if (
-                (preferredSeniority.equals("junior") && jobSeniority.equals("internship")) ||
-                (preferredSeniority.equals("internship") && jobSeniority.equals("junior")) ||
-                (preferredSeniority.equals("mid") && jobSeniority.equals("junior")) ||
-                (preferredSeniority.equals("senior") && jobSeniority.equals("mid"))
-            ) {
-                 score += 10;
-            }
-        } else if (preferredSeniority.isEmpty() && jobSeniority.isEmpty()){
-            score += 10;
-        }
-
-        // Puncte bonus pentru Locație
-        int locationScore = 0;
-        if (prefersRemote && job.isRemote()) {
-            locationScore += 10;
-        } else if (!prefersRemote && !job.isRemote()) {
-            String jobLocation = job.getLocation() != null ? job.getLocation() : "";
-            if (!preferredLocations.isEmpty() && !jobLocation.isEmpty() && preferredLocations.contains(jobLocation)) {
-                locationScore += 10;
-            }
-        }
-        score += Math.min(locationScore, 10);
+        // 2. Jaccard Similarity for AI Extracted Skills (90% weight)
+        // This compares student's hard skills against the job's required skills.
+        Set<String> studentSkillSet = new HashSet<>(studentSkills);
+        double skillsJaccard = calculateJaccardSimilarity(studentSkillSet, jobSkillSet);
+        score += skillsJaccard * 90.0;
 
         return score;
     }

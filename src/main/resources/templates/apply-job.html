@@ -114,8 +114,27 @@
                 </td>
                 <td class="align-middle job-skills">
                     <div th:if="${job.requiredSkills != null and !job.requiredSkills.isEmpty()}">
-                        <span class="badge badge-outline-primary m-1 border skill-badge" th:each="reqSkill : ${job.requiredSkills}" th:text="${reqSkill}"></span>
+                        <!-- Bucla pentru afișarea skill-urilor colorate -->
+                        <th:block th:each="reqSkill : ${job.requiredSkills}">
+            <span th:if="${studentSkills.contains(reqSkill.toLowerCase())}"
+                  class="badge bg-success me-1"
+                  th:text="${reqSkill}">
+            </span>
+                            <span th:unless="${studentSkills.contains(reqSkill.toLowerCase())}"
+                                  class="badge bg-danger me-1"
+                                  th:text="${reqSkill}">
+            </span>
+                        </th:block>
+
+                        <!-- Diviziunea nou adăugată pentru afișarea procentajului -->
+                        <div class="mt-2">
+            <span class="badge bg-info">
+                Potrivire: <th:block th:text="${#numbers.formatDecimal(job.matchScore, 1, 0)} + '%'"></th:block>
+            </span>
+                        </div>
                     </div>
+
+                    <!-- Mesaj dacă nu sunt specificate skill-uri -->
                     <span th:if="${job.requiredSkills == null or job.requiredSkills.isEmpty()}" class="text-muted small">Nu sunt specificate skill-uri.</span>
                 </td>
                 <td class="align-middle text-center">

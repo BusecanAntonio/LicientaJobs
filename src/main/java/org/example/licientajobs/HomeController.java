@@ -12,10 +12,13 @@ import org.springframework.core.io.UrlResource;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Controller
@@ -190,6 +193,18 @@ public class HomeController {
                         .orElse("");
                         
                 existingStudent.getApplicationAnswers().put("UserInterests", userInterests);
+
+                // Handle skills update
+                String skillsStr = allParams.get("skills");
+                if (skillsStr != null && !skillsStr.trim().isEmpty()) {
+                    List<String> skillsList = Arrays.stream(skillsStr.split(","))
+                            .map(String::trim)
+                            .filter(s -> !s.isEmpty())
+                            .collect(Collectors.toList());
+                    existingStudent.setSkills(skillsList);
+                } else {
+                    existingStudent.setSkills(new ArrayList<>());
+                }
                 
                 studentService.saveStudent(existingStudent, loggedInUser);
             }
@@ -337,11 +352,20 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        Optional<Student> student = studentService.findStudentById(id);
-        if (student.isPresent() && loggedInUser.equals(student.get().getAddedBy())) {
-            model.addAttribute("student", student.get());
-            List<JobApplication> recommendedJobs = studentService.getJobRecommendations(student.get());
+        Optional<Student> studentOpt = studentService.findStudentById(id);
+        if (studentOpt.isPresent() && loggedInUser.equals(studentOpt.get().getAddedBy())) {
+            Student student = studentOpt.get();
+            model.addAttribute("student", student);
+            
+            // Prepare student's skills for easy lookup in the view
+            Set<String> studentSkills = student.getSkills() != null
+                ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toSet())
+                : new HashSet<>();
+            model.addAttribute("studentSkills", studentSkills);
+
+            List<JobApplication> recommendedJobs = studentService.getJobRecommendations(student);
             model.addAttribute("availableJobs", recommendedJobs);
+
             return "apply-job";
         }
         return "redirect:/students";

@@ -1,5 +1,6 @@
 package org.example.licientajobs;
 
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.neo4j.core.schema.CompositeProperty;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
@@ -37,6 +38,9 @@ public class JobApplication {
     private String country;
     private Double latitude;
     private Double longitude;
+
+    @Transient
+    private double matchScore;
 
     @CompositeProperty
     private Map<String, String> workSchedule = new HashMap<>(); // Use Map instead of custom class
@@ -97,4 +101,7 @@ public class JobApplication {
 
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public double getMatchScore() { return matchScore; }
+    public void setMatchScore(double matchScore) { this.matchScore = matchScore; }
 }
