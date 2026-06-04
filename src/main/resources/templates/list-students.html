@@ -126,9 +126,9 @@
                 <div style="font-size: 0.6rem; font-weight: bold;">EDIT</div>
             </div>
 
-            <div class="graph-trigger admin-controls" data-bs-toggle="modal" th:attr="data-bs-target='#graphModal' + ${student.id}" title="Vezi Grafic Joburi">
-                <i class="bi bi-diagram-3"></i>
-                <div style="font-size: 0.6rem; font-weight: bold;">GRAPH</div>
+            <div class="graph-trigger" data-bs-toggle="modal" th:attr="data-bs-target='#graphModal' + ${student.id}" title="Vezi Profil & Grafic">
+                <i class="bi bi-person-vcard"></i>
+                <div style="font-size: 0.6rem; font-weight: bold;">PROFIL</div>
             </div>
         </div>
 
@@ -496,21 +496,100 @@
             </div>
         </div>
 
-        <!-- Modal pentru Grafic Joburi Interactiv (Rețea de Noduri) -->
+        <!-- Modal pentru View Profile / Grafic Joburi -->
         <div class="modal fade" th:id="'graphModal' + ${student.id}" tabindex="-1" aria-labelledby="graphModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-dialog modal-dialog-centered modal-xl" style="max-width: 95%;"> <!-- Lățime maximă pentru a încăpea ambele -->
                 <div class="modal-content">
                     <div class="modal-header bg-info text-white">
                         <h5 class="modal-title fw-bold" id="graphModalLabel">
-                            <i class="bi bi-diagram-3 me-2"></i>Rețea Joburi: <span th:text="${student.name}"></span>
+                            <i class="bi bi-person-badge me-2"></i>Profil & Rețea Joburi: <span th:text="${student.name}"></span>
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body p-0">
-                        <div class="bg-light p-2 border-bottom">
-                            <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Poți trage de noduri pentru a le rearanja și poți face scroll pentru zoom.</small>
+                        <div class="row g-0"> <!-- Folosim grid-ul Bootstrap -->
+
+                            <!-- Partea Stângă: Graficul -->
+                            <div class="col-md-8 border-end">
+                                <div class="bg-light p-2 border-bottom">
+                                    <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Trage de noduri pentru rearanjare. Scroll pentru zoom.</small>
+                                </div>
+                                <div th:id="'jobNetwork' + ${student.id}" style="width: 100%; height: 650px; background-color: #ffffff;"></div>
+                            </div>
+
+                            <!-- Partea Dreaptă: Datele Profilului -->
+                            <div class="col-md-4 p-4" style="height: 650px; overflow-y: auto;"> <!-- Scroll intern dacă datele sunt multe -->
+
+                                <!-- Header Profil -->
+                                <div class="text-center mb-4">
+                                    <img th:src="@{/images/default-avatar.png}" alt="Avatar" class="rounded-circle mb-2 shadow-sm" style="width: 100px; height: 100px; object-fit: cover;" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=' + ${student.name} + '&background=random';">
+                                    <h4 class="fw-bold mb-0" th:text="${student.name}">Nume Student</h4>
+                                    <span class="badge bg-primary mt-1" th:text="${student.major}">Specializare</span>
+                                </div>
+
+                                <!-- Date Contact -->
+                                <div class="mb-4">
+                                    <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-person-lines-fill me-2"></i>Contact & Info</h6>
+                                    <p class="mb-1 small"><i class="bi bi-envelope me-2 text-muted"></i><strong th:text="${student.email}"></strong></p>
+                                    <p class="mb-1 small" th:if="${student.phoneNumber}"><i class="bi bi-telephone me-2 text-muted"></i><span th:text="${student.phoneNumber}"></span></p>
+                                    <p class="mb-1 small" th:if="${student.address}"><i class="bi bi-geo-alt me-2 text-muted"></i><span th:text="${student.address}"></span></p>
+                                    <p class="mb-1 small text-muted"><i class="bi bi-calendar-event me-2"></i>Studii: <span th:text="${student.startYear}"></span> - <span th:text="${student.endYear}"></span></p>
+                                </div>
+
+                                <!-- Interese Carieră -->
+                                <div class="mb-4">
+                                    <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-briefcase me-2"></i>Preferințe Carieră</h6>
+                                    <div class="mb-2">
+                                        <span class="badge bg-secondary me-1" th:if="${student.preferredSeniority}" th:text="'Nivel: ' + ${student.preferredSeniority}"></span>
+                                        <span class="badge bg-success me-1" th:if="${student.prefersRemote}">Remote OK</span>
+                                        <span class="badge bg-info text-dark me-1" th:if="${student.quizResult}" th:text="'Recomandare: ' + ${student.quizResult}"></span>
+                                    </div>
+                                    <div th:if="${student.preferredLocations != null and !student.preferredLocations.isEmpty()}">
+                                        <small class="text-muted d-block mb-1">Locații preferate:</small>
+                                        <span th:each="loc : ${student.preferredLocations}" class="badge border border-secondary text-secondary me-1 mb-1" th:text="${loc}"></span>
+                                    </div>
+                                    <div th:if="${student.applicationAnswers['UserInterests'] != null and !student.applicationAnswers['UserInterests'].isEmpty()}" class="mt-2">
+                                        <small class="text-muted d-block mb-1">Domenii de interes:</small>
+                                        <span th:each="interest : ${#strings.arraySplit(student.applicationAnswers['UserInterests'], ',')}" class="badge bg-light text-dark border me-1 mb-1" th:text="${interest}"></span>
+                                    </div>
+                                </div>
+
+                                <!-- Skill-uri -->
+                                <div class="mb-4">
+                                    <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-stars me-2"></i>Skill-uri</h6>
+                                    <div th:if="${student.skills != null and !student.skills.isEmpty()}">
+                                        <span th:each="skill : ${student.skills}" class="badge bg-primary me-1 mb-1" th:text="${skill}"></span>
+                                    </div>
+                                    <p th:if="${student.skills == null or student.skills.isEmpty()}" class="small text-muted mb-0">Niciun skill definit.</p>
+                                </div>
+
+                                <!-- Statistici Aplicații -->
+                                <div>
+                                    <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-bar-chart-fill me-2"></i>Status Aplicații</h6>
+                                    <div class="row text-center g-2">
+                                        <div class="col-4">
+                                            <div class="p-2 bg-light rounded border">
+                                                <div class="fs-4 fw-bold text-dark" th:text="${#lists.size(student.jobApplications)}">0</div>
+                                                <div style="font-size: 0.7rem;" class="text-uppercase text-muted">Total</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="p-2 bg-success bg-opacity-10 rounded border border-success">
+                                                <div class="fs-4 fw-bold text-success" th:text="${#lists.size(student.jobApplications.?[status == 'ACCEPTED'])}">0</div>
+                                                <div style="font-size: 0.7rem;" class="text-uppercase text-success">Acceptat</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="p-2 bg-danger bg-opacity-10 rounded border border-danger">
+                                                <div class="fs-4 fw-bold text-danger" th:text="${#lists.size(student.jobApplications.?[status == 'REJECTED'])}">0</div>
+                                                <div style="font-size: 0.7rem;" class="text-uppercase text-danger">Respins</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div> <!-- End Partea Dreaptă -->
                         </div>
-                        <div th:id="'jobNetwork' + ${student.id}" style="width: 100%; height: 600px; background-color: #ffffff;"></div>
                     </div>
                 </div>
             </div>
@@ -523,6 +602,7 @@
                 var studentId = /*[[${student.id}]]*/ '';
                 var studentName = /*[[${student.name}]]*/ 'Student';
                 var studentSkills = /*[[${student.skills}]]*/ [];
+                var studentInterestsStr = /*[[${student.applicationAnswers['UserInterests']}]]*/ '';
 
                 document.addEventListener('DOMContentLoaded', (event) => {
                     var graphModal = document.getElementById('graphModal' + studentId);
@@ -532,19 +612,48 @@
                     graphModal.addEventListener('shown.bs.modal', function () {
                         var container = document.getElementById('jobNetwork' + studentId);
 
+                        // 1. Nodul Central (Studentul)
                         var nodesArray = [
-                            { id: 'student', label: studentName + '\n(Student)', shape: 'circle', color: { background: '#0d6efd', border: '#0a58ca' }, font: {color: 'white', size: 16, bold: true} }
+                            { id: 'student', label: studentName + '\n(Student)', shape: 'circle', color: { background: '#0d6efd', border: '#0a58ca' }, font: {color: 'white', size: 18, bold: true} }
                         ];
                         var edgesArray = [];
+
                         var addedCompanies = new Set();
                         var addedSkills = new Set();
+                        var addedInterests = new Set();
 
+                        // 2. Noduri pentru Interesele Studentului
+                        if (studentInterestsStr && studentInterestsStr.trim() !== '') {
+                            var interests = studentInterestsStr.split(',').map(s => s.trim()).filter(s => s !== '');
+                            interests.forEach((interest, index) => {
+                                var interestId = 'interest_' + index;
+                                nodesArray.push({
+                                    id: interestId,
+                                    label: interest,
+                                    shape: 'diamond',
+                                    color: { background: '#e0cffc', border: '#6f42c1' }, // Mov
+                                    font: { color: 'black' },
+                                    shadow: true
+                                });
+                                edgesArray.push({
+                                    from: 'student',
+                                    to: interestId,
+                                    color: { color: '#6f42c1' },
+                                    width: 1,
+                                    dashes: true,
+                                    label: 'este interesat de'
+                                });
+                            });
+                        }
+
+                        // 3. Noduri pentru Joburi, Companii și Skill-uri
                         if (jobData && jobData.length > 0) {
                             jobData.forEach((app, index) => {
                                 var jobId = 'job_' + index;
                                 var companyId = 'comp_' + (app.company ? app.company.replace(/[^a-zA-Z0-9]/g, '_') : 'unknown');
 
-                                var statusColor = '#6c757d'; // default
+                                // Culoare status job
+                                var statusColor = '#6c757d'; // default (gri)
                                 if (app.status === 'ACCEPTED') statusColor = '#198754';
                                 else if (app.status === 'PENDING') statusColor = '#ffc107';
                                 else if (app.status === 'REJECTED') statusColor = '#dc3545';
@@ -552,6 +661,7 @@
                                 var jobLabel = (app.jobTitle || 'Job') + '\n[' + (app.status || 'N/A') + ']';
                                 if(app.seniority) jobLabel += '\n' + app.seniority;
 
+                                // Adaugă nod Job
                                 nodesArray.push({
                                     id: jobId,
                                     label: jobLabel,
@@ -561,6 +671,7 @@
                                     shadow: true
                                 });
 
+                                // Adaugă nod Companie
                                 if (!addedCompanies.has(companyId)) {
                                     nodesArray.push({
                                         id: companyId,
@@ -573,6 +684,7 @@
                                     addedCompanies.add(companyId);
                                 }
 
+                                // Link Student -> Job
                                 edgesArray.push({
                                     from: 'student',
                                     to: jobId,
@@ -582,6 +694,7 @@
                                     label: 'a aplicat'
                                 });
 
+                                // Link Job -> Companie
                                 edgesArray.push({
                                     from: jobId,
                                     to: companyId,
@@ -591,26 +704,47 @@
                                     label: 'la'
                                 });
 
+                                // Procesare Skill-uri cerute de Job
                                 if (app.requiredSkills && app.requiredSkills.length > 0) {
                                     app.requiredSkills.forEach(skill => {
                                         var skillId = 'skill_' + skill.replace(/[^a-zA-Z0-9]/g, '_');
+
+                                        // Verificăm dacă studentul are acest skill (case-insensitive)
+                                        var hasSkill = false;
+                                        if (studentSkills && studentSkills.length > 0) {
+                                            hasSkill = studentSkills.some(s => s.toLowerCase() === skill.toLowerCase());
+                                        }
+
                                         if (!addedSkills.has(skillId)) {
-                                            var hasSkill = studentSkills.includes(skill);
                                             nodesArray.push({
                                                 id: skillId,
                                                 label: skill,
                                                 shape: 'ellipse',
+                                                // Verde dacă îl are, Roșu dacă nu îl are
                                                 color: { background: hasSkill ? '#d1e7dd' : '#f8d7da', border: hasSkill ? '#0f5132' : '#842029' },
                                                 font: { color: 'black' }
                                             });
                                             addedSkills.add(skillId);
+
+                                            // Dacă studentul are skill-ul, tragem o linie de la student la skill
+                                            if (hasSkill) {
+                                                edgesArray.push({
+                                                    from: 'student',
+                                                    to: skillId,
+                                                    color: { color: '#0f5132' }, // Linie verde închis
+                                                    width: 1,
+                                                    label: 'deține'
+                                                });
+                                            }
                                         }
+
+                                        // Link Job -> Skill (Jobul cere acest skill)
                                         edgesArray.push({
                                             from: jobId,
                                             to: skillId,
                                             color: { color: '#6c757d' },
                                             dashes: true,
-                                            label: 'necesită'
+                                            label: 'cere'
                                         });
                                     });
                                 }
@@ -618,6 +752,32 @@
                         } else {
                             nodesArray[0].label = studentName + "\n(Nu are aplicații)";
                         }
+
+                        // Adăugăm în grafic și skill-urile pe care studentul le are, dar care NU au apărut în joburi
+                        if (studentSkills && studentSkills.length > 0) {
+                            studentSkills.forEach(skill => {
+                                var skillId = 'skill_' + skill.replace(/[^a-zA-Z0-9]/g, '_');
+                                if (!addedSkills.has(skillId)) {
+                                    nodesArray.push({
+                                        id: skillId,
+                                        label: skill,
+                                        shape: 'ellipse',
+                                        color: { background: '#d1e7dd', border: '#0f5132' }, // Verde
+                                        font: { color: 'black' }
+                                    });
+                                    addedSkills.add(skillId);
+
+                                    edgesArray.push({
+                                        from: 'student',
+                                        to: skillId,
+                                        color: { color: '#0f5132' },
+                                        width: 1,
+                                        label: 'deține'
+                                    });
+                                }
+                            });
+                        }
+
 
                         var data = {
                             nodes: new vis.DataSet(nodesArray),
@@ -628,13 +788,17 @@
                             physics: {
                                 stabilization: false,
                                 barnesHut: {
+                                    gravitationalConstant: -2000,
+                                    centralGravity: 0.3,
                                     springLength: 150,
-                                    avoidOverlap: 0.8
+                                    springConstant: 0.04,
+                                    damping: 0.09,
+                                    avoidOverlap: 0.1
                                 }
                             },
                             edges: {
                                 smooth: { type: 'continuous' },
-                                font: { align: 'middle', size: 12 }
+                                font: { align: 'middle', size: 10 }
                             },
                             interaction: {
                                 dragNodes: true,

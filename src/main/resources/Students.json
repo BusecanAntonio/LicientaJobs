@@ -3050,11 +3050,37 @@
   "applicationAnswers" : {
     "UserInterests" : "Game Developer, ML Engineer, Firmware Engineer, IoT Engineer"
   },
-  "githubProjects" : { },
+  "githubProjects" : {
+    "https://github.com/BusecanAntonio/TankarioGlb" : "Unfortunately, I don't see any README content provided. However, based on the given metadata, here is a summary:\n\nThe TankarioGlb project, created by BusecanAntonio, utilizes Python to provide a functionality. As per the top contributor's involvement, 100% of the commits were made by BusecanAntonio, indicating their significant role in developing and maintaining this project."
+  },
   "addedBy" : "Busecan",
   "notifications" : [ ],
   "uploadedFiles" : [ ],
   "skills" : [ "Java", "C#", "C++", "Blender", "Unity" ],
-  "jobApplications" : [ ],
+  "jobApplications" : [ {
+    "id" : 20475,
+    "jobTitle" : "Game Developer",
+    "company" : "Ubisoft",
+    "description" : "Developing the next-gen gaming experience.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  } ],
   "age" : 24
 } ]
