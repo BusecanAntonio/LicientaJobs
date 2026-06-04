@@ -102,11 +102,14 @@
 </nav>
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="fw-bold text-dark">Lista de Studenți</h1>
-        <button id="admin-toggle" class="btn btn-secondary shadow-sm">
-            <i class="bi bi-shield-lock me-1"></i> Admin Mode: OFF
-        </button>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2"></i>Aplicații Joburi</h5>
+        <a th:href="@{/students(showHidden=${param.showHidden == null or param.showHidden[0] == 'false'})}"
+           class="btn btn-sm btn-outline-secondary">
+            <i th:if="${param.showHidden != null and param.showHidden[0] == 'true'}" class="bi bi-eye-slash-fill"></i>
+            <i th:unless="${param.showHidden != null and param.showHidden[0] == 'true'}" class="bi bi-eye-fill"></i>
+            <span th:text="${param.showHidden != null and param.showHidden[0] == 'true' ? 'Ascunde Arhivate' : 'Afișează Arhivate'}"></span>
+        </a>
     </div>
 
     <div th:if="${#lists.isEmpty(students)}" class="alert alert-info text-center">
@@ -202,6 +205,31 @@
                     </div>
                 </div>
 
+                <!-- Modal universal pentru Vizualizare Aplicație -->
+                <div class="modal fade" id="viewApplicationModal" tabindex="-1" aria-labelledby="viewApplicationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="viewApplicationModalLabel">Detalii Aplicație</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h3 id="modalJobTitle">Titlu Job</h3>
+                                <h5 id="modalCompany" class="text-muted mb-3">Companie</h5>
+                                <p id="modalDescription">Descrierea jobului va apărea aici.</p>
+                                <hr>
+                                <h6>Cerințe (Skill-uri)</h6>
+                                <div id="modalRequiredSkills">
+                                    <!-- Skill-urile vor fi injectate aici de JavaScript -->
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- Afișarea GitHub Projects -->
                 <div th:if="${student.githubProjects != null and !student.githubProjects.isEmpty()}" class="mb-4">
@@ -233,33 +261,57 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="app : ${student.jobApplications}">
+                        <tr th:each="app : ${student.jobApplications}"
+                            th:if="${!app.hidden or (param.showHidden != null and param.showHidden[0] == 'true')}"
+                            th:classappend="${app.status == 'ACCEPTED' ? 'table-success' : (app.status == 'REJECTED' ? 'table-danger' : '')} + ${app.hidden ? ' opacity-50' : ''}">
+
                             <td th:text="${app.company}" class="fw-bold"></td>
                             <td th:text="${app.jobTitle}"></td>
                             <td>
-                                <span th:classappend="${app.status == 'ACCEPTED' ? 'badge bg-success' : (app.status == 'REJECTED' ? 'badge bg-danger' : 'badge bg-warning text-dark')}"
-                                      th:text="${app.status}">
-                                </span>
+                                <!-- Badge-urile de status rămân la fel -->
+                                <span th:if="${app.status == 'ACCEPTED'}" class="badge bg-success fs-6"><i class="bi bi-check-circle-fill me-1"></i> Acceptat</span>
+                                <span th:if="${app.status == 'REJECTED'}" class="badge bg-danger fs-6"><i class="bi bi-x-circle-fill me-1"></i> Respins</span>
+                                <span th:if="${app.status == 'PENDING'}" class="badge bg-warning text-dark fs-6"><i class="bi bi-hourglass-split me-1"></i> În așteptare</span>
                             </td>
                             <td>
-                                <table class="schedule-table">
-                                    <tr><td><small>Tura:</small></td><td th:text="${app.workSchedule['shift']}"></td></tr>
-                                    <tr><td><small>Program:</small></td><td th:text="${app.workSchedule['startTime']} + '-' + ${app.workSchedule['endTime']}"></td></tr>
-                                </table>
+                                <!-- Butonul de Vizualizare -->
+                                <button type="button" class="btn btn-sm btn-outline-info view-app-btn"
+                                        title="Vizualizează Detalii"
+                                        th:attr="data-bs-target='#viewApplicationModal'"
+                                        th:data-title="${app.jobTitle}"
+                                        th:data-company="${app.company}"
+                                        th:data-description="${app.description}"
+                                        th:data-required-skills="${#strings.listJoin(app.requiredSkills, ',')}">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+
+                                <!-- Butonul de Ascundere/Afisare -->
+                                <form th:action="@{/students/{studentId}/applications/{applicationId}/toggle-visibility(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary" th:title="${app.hidden ? 'Arată' : 'Ascunde'}">
+                                        <i th:if="${app.hidden}" class="bi bi-eye-fill"></i>
+                                        <i th:unless="${app.hidden}" class="bi bi-eye-slash-fill"></i>
+                                    </button>
+                                </form>
+
+                                <!-- Butonul de Ștergere -->
+                                <form th:action="@{/students/{studentId}/applications/{applicationId}/delete(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline;" onsubmit="return confirm('Ești sigur că vrei să ștergi definitiv această aplicație?');">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Șterge Definitiv">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                             <td class="admin-controls text-center">
-                                <div class="btn-group">
-                                    <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
-                                        <input type="hidden" name="status" value="ACCEPTED">
-                                        <button type="submit" class="btn btn-success btn-sm me-1">Accept</button>
-                                    </form>
-                                    <form th:action="@{/students/{studentId}/applications/{applicationId}/status(studentId=${student.id}, applicationId=${app.id})}" method="post">
-                                        <input type="hidden" name="status" value="REJECTED">
-                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
-                                    </form>
-                                </div>
+                                <!-- Butoanele de admin -->
                             </td>
                         </tr>
+                        <!-- ... restul ... -->
+                        </tbody>
+                        <!-- ... restul ... -->
+                        </tbody>
+                        <tr th:if="${#lists.isEmpty(student.jobApplications)}">
+                            <td colspan="5" class="text-center text-muted py-3">Nicio aplicare deocamdată.</td>
+                        </tr>
+
                         <tr th:if="${#lists.isEmpty(student.jobApplications)}">
                             <td colspan="5" class="text-center text-muted py-3">Nicio aplicare deocamdată.</td>
                         </tr>

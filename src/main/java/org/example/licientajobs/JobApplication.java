@@ -27,6 +27,7 @@ public class JobApplication {
     private String courseGrades;
     private String status = "PENDING";
     private boolean interviu;
+    private boolean hidden = false; // New field
 
     // New fields for recommendation logic
     private String seniority; // e.g., "Internship", "Junior", "Mid", "Senior"
@@ -73,6 +74,9 @@ public class JobApplication {
     
     public boolean isInterviu() { return interviu; }
     public void setInterviu(boolean interviu) { this.interviu = interviu; }
+
+    public boolean isHidden() { return hidden; }
+    public void setHidden(boolean hidden) { this.hidden = hidden; }
 
     public Map<String, String> getWorkSchedule() { return workSchedule; }
     public void setWorkSchedule(Map<String, String> workSchedule) { this.workSchedule = workSchedule; }

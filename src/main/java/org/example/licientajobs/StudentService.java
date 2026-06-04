@@ -164,6 +164,16 @@ public class StudentService {
         return data.getAvailableJobs() != null ? data.getAvailableJobs() : new ArrayList<>();
     }
 
+    public void deleteJobById(Long jobId) {
+        FallbackData data = jsonFallbackService.readFallbackData();
+        if (data.getAvailableJobs() != null) {
+            boolean removed = data.getAvailableJobs().removeIf(job -> job.getId().equals(jobId));
+            if (removed) {
+                jsonFallbackService.writeFallbackData(data);
+            }
+        }
+    }
+
     public void updateJobApplicationStatus(Long studentId, Long applicationId, String status) {
         Optional<Student> studentOpt = findStudentById(studentId);
         if (studentOpt.isPresent()) {
@@ -204,6 +214,46 @@ public class StudentService {
             student.getJobApplications().add(newApplication);
             saveStudent(student);
         }
+    }
+
+    public void toggleApplicationVisibility(Long studentId, Long applicationId, String loggedInUser) {
+        findStudentById(studentId).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy()) && student.getJobApplications() != null) {
+                student.getJobApplications().stream()
+                    .filter(app -> app.getId().equals(applicationId))
+                    .findFirst()
+                    .ifPresent(app -> {
+                        app.setHidden(!app.isHidden());
+                        saveStudent(student);
+                        String action = app.isHidden() ? "hidden" : "unhidden";
+                        notifyClients("Application for " + app.getJobTitle() + " was " + action + ".");
+                    });
+            }
+        });
+    }
+
+    public void removeJobApplication(Long studentId, Long applicationId, String loggedInUser) {
+        findStudentById(studentId).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy()) && student.getJobApplications() != null) {
+                boolean removed = student.getJobApplications().removeIf(app -> app.getId().equals(applicationId));
+                if (removed) {
+                    saveStudent(student);
+                    notifyClients("Application for student " + student.getName() + " was removed.");
+                }
+            }
+        });
+    }
+
+    public void deleteJobApplication(Long studentId, Long applicationId, String loggedInUser) {
+        findStudentById(studentId).ifPresent(student -> {
+            if (loggedInUser.equals(student.getAddedBy()) && student.getJobApplications() != null) {
+                boolean removed = student.getJobApplications().removeIf(app -> app.getId().equals(applicationId));
+                if (removed) {
+                    saveStudent(student);
+                    notifyClients("Application deleted for student " + student.getName() + ".");
+                }
+            }
+        });
     }
 
     public void updateQuizResult(Long studentId, String quizResult) {

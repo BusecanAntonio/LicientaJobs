@@ -391,6 +391,20 @@ public class HomeController {
             return "redirect:/login";
         }
         studentService.applyForJob(id, jobId, loggedInUser);
+        return "redirect:/students/" + id + "/apply";
+    }
+
+    @PostMapping("/jobs/delete/{jobId}")
+    public String deleteJob(@PathVariable Long jobId, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        studentService.deleteJobById(jobId);
+        // We redirect back to the current student's apply page. 
+        // This is a bit tricky to do cleanly without passing the studentId in the URL, 
+        // so for simplicity, we might just redirect to /students, or pass studentId as a query param.
+        // Given the current architecture, let's redirect to /students.
         return "redirect:/students";
     }
 
@@ -401,6 +415,26 @@ public class HomeController {
             return "redirect:/login";
         }
         studentService.updateJobApplicationStatus(studentId, applicationId, status);
+        return "redirect:/students";
+    }
+
+    @PostMapping("/students/{studentId}/applications/{applicationId}/toggle-visibility")
+    public String toggleApplicationVisibility(@PathVariable Long studentId, @PathVariable Long applicationId, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        studentService.toggleApplicationVisibility(studentId, applicationId, loggedInUser);
+        return "redirect:/students";
+    }
+
+    @PostMapping("/students/{studentId}/applications/{applicationId}/delete")
+    public String deleteJobApplication(@PathVariable Long studentId, @PathVariable Long applicationId, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+        studentService.deleteJobApplication(studentId, applicationId, loggedInUser);
         return "redirect:/students";
     }
 
