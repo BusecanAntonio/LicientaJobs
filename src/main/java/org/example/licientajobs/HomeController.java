@@ -193,9 +193,23 @@ public class HomeController {
                         .orElse("");
                         
                 existingStudent.getApplicationAnswers().put("UserInterests", userInterests);
+                
+                studentService.saveStudent(existingStudent, loggedInUser);
+            }
+        });
 
-                // Handle skills update
-                String skillsStr = allParams.get("skills");
+        return "redirect:/students";
+    }
+
+    @PostMapping("/students/edit-skills/{id}")
+    public String editStudentSkills(@PathVariable Long id, @RequestParam("skills") String skillsStr, HttpSession session) {
+        String loggedInUser = (String) session.getAttribute("loggedInUser");
+        if (loggedInUser == null) {
+            return "redirect:/login";
+        }
+
+        studentService.findStudentById(id).ifPresent(existingStudent -> {
+            if (loggedInUser.equals(existingStudent.getAddedBy())) {
                 if (skillsStr != null && !skillsStr.trim().isEmpty()) {
                     List<String> skillsList = Arrays.stream(skillsStr.split(","))
                             .map(String::trim)
@@ -205,7 +219,6 @@ public class HomeController {
                 } else {
                     existingStudent.setSkills(new ArrayList<>());
                 }
-                
                 studentService.saveStudent(existingStudent, loggedInUser);
             }
         });

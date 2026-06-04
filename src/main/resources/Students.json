@@ -35,6 +35,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -58,6 +59,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -81,6 +83,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -104,6 +107,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -127,6 +131,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -150,6 +155,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -173,6 +179,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -196,6 +203,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -243,6 +275,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -266,6 +299,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -289,6 +323,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -312,6 +347,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -335,6 +371,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -358,6 +395,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -381,6 +419,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -404,6 +443,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -451,6 +515,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -474,6 +539,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -497,6 +563,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -520,6 +587,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -543,6 +611,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -566,6 +635,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -589,6 +659,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -612,6 +683,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -659,6 +755,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -682,6 +779,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -705,6 +803,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -728,6 +827,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -751,6 +851,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -774,6 +875,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -797,6 +899,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -820,6 +923,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -867,6 +995,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -890,6 +1019,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -913,6 +1043,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -936,6 +1067,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -959,6 +1091,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -982,6 +1115,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1005,6 +1139,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1028,6 +1163,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1075,6 +1235,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -1098,6 +1259,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -1121,6 +1283,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -1144,6 +1307,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -1167,6 +1331,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -1190,6 +1355,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1213,6 +1379,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1236,6 +1403,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1273,7 +1465,7 @@
   "uploadedFiles" : [ ],
   "skills" : [ "JavaScript", "Teamwork", "Excel", "Java, Python, JavaScript", ",", ":", "Java" ],
   "jobApplications" : [ {
-    "id" : 20460,
+    "id" : 20461,
     "jobTitle" : "Software Engineer",
     "company" : "Google",
     "description" : "Building the future of search.",
@@ -1287,6 +1479,151 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20398,
+    "jobTitle" : "QA Tester",
+    "company" : "Electronic Arts",
+    "description" : "Ensuring the quality of our latest titles.",
+    "licentaGrade" : "8",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : true,
+    "seniority" : null,
+    "requiredSkills" : [ "Testing", "Quality Assurance", "JIRA" ],
+    "location" : null,
+    "country" : "USA",
+    "latitude" : 37.525,
+    "longitude" : -122.253,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "14:00",
+      "breakTime" : "18:00 - 18:30",
+      "endTime" : "22:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20419,
+    "jobTitle" : "Sound Designer",
+    "company" : "Sony Interactive Entertainment",
+    "description" : "Creating immersive audio experiences for games.",
+    "licentaGrade" : "9.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ "Audio Design", "Pro Tools", "Sound Mixing" ],
+    "location" : null,
+    "country" : "USA",
+    "latitude" : 37.564,
+    "longitude" : -122.285,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "13:00",
+      "breakTime" : "17:00 - 17:30",
+      "endTime" : "21:00",
+      "shift" : "După-amiaza"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20409,
+    "jobTitle" : "Product Manager",
+    "company" : "Twitter",
+    "description" : "Defining the product vision and roadmap.",
+    "licentaGrade" : "9.0",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ "Product Management", "Agile", "Leadership" ],
+    "location" : null,
+    "country" : "USA",
+    "latitude" : 37.776,
+    "longitude" : -122.417,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "09:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "17:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20452,
+    "jobTitle" : "Inginer Eletrician",
+    "company" : "Siemens",
+    "description" : "Designing and developing electrical systems.",
+    "licentaGrade" : "9.1",
+    "courseGrades" : "",
+    "status" : "ACCEPTED",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ "Electrical Engineering", "AutoCAD Electrical" ],
+    "location" : null,
+    "country" : "Germany",
+    "latitude" : 48.14,
+    "longitude" : 11.576,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:30 - 13:00",
+      "endTime" : "16:30",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20445,
+    "jobTitle" : "Robotics Engineer",
+    "company" : "Boston Dynamics",
+    "description" : "Designing and building advanced robots.",
+    "licentaGrade" : "9.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ "Robotics", "C++", "ROS", "Engineering" ],
+    "location" : null,
+    "country" : "USA",
+    "latitude" : 42.396,
+    "longitude" : -71.252,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "08:00",
+      "breakTime" : "12:00 - 13:00",
+      "endTime" : "16:00",
+      "shift" : "Dimineața"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20402,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : "9.9",
+    "courseGrades" : "",
+    "status" : "AVAILABLE",
+    "interviu" : true,
+    "seniority" : null,
+    "requiredSkills" : [ "Java", "Python", "Algorithms" ],
+    "location" : null,
+    "country" : "USA",
+    "latitude" : 37.422,
+    "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1310,6 +1647,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1319,145 +1657,7 @@
     "applicationDate" : null,
     "remote" : false
   }, {
-    "id" : 20402,
-    "jobTitle" : "Software Engineer",
-    "company" : "Google",
-    "description" : "Building the future of search.",
-    "licentaGrade" : "9.9",
-    "courseGrades" : "",
-    "status" : "AVAILABLE",
-    "interviu" : true,
-    "seniority" : null,
-    "requiredSkills" : [ "Java", "Python", "Algorithms" ],
-    "location" : null,
-    "country" : "USA",
-    "latitude" : 37.422,
-    "longitude" : -122.084,
-    "workSchedule" : {
-      "startTime" : "10:00",
-      "breakTime" : "13:00 - 14:00",
-      "endTime" : "18:00",
-      "shift" : "Flexibil"
-    },
-    "applicationDate" : null,
-    "remote" : false
-  }, {
-    "id" : 20445,
-    "jobTitle" : "Robotics Engineer",
-    "company" : "Boston Dynamics",
-    "description" : "Designing and building advanced robots.",
-    "licentaGrade" : "9.9",
-    "courseGrades" : "",
-    "status" : "AVAILABLE",
-    "interviu" : false,
-    "seniority" : null,
-    "requiredSkills" : [ "Robotics", "C++", "ROS", "Engineering" ],
-    "location" : null,
-    "country" : "USA",
-    "latitude" : 42.396,
-    "longitude" : -71.252,
-    "workSchedule" : {
-      "startTime" : "08:00",
-      "breakTime" : "12:00 - 13:00",
-      "endTime" : "16:00",
-      "shift" : "Dimineața"
-    },
-    "applicationDate" : null,
-    "remote" : false
-  }, {
-    "id" : 20452,
-    "jobTitle" : "Inginer Eletrician",
-    "company" : "Siemens",
-    "description" : "Designing and developing electrical systems.",
-    "licentaGrade" : "9.1",
-    "courseGrades" : "",
-    "status" : "ACCEPTED",
-    "interviu" : false,
-    "seniority" : null,
-    "requiredSkills" : [ "Electrical Engineering", "AutoCAD Electrical" ],
-    "location" : null,
-    "country" : "Germany",
-    "latitude" : 48.14,
-    "longitude" : 11.576,
-    "workSchedule" : {
-      "startTime" : "08:00",
-      "breakTime" : "12:30 - 13:00",
-      "endTime" : "16:30",
-      "shift" : "Dimineața"
-    },
-    "applicationDate" : null,
-    "remote" : false
-  }, {
-    "id" : 20409,
-    "jobTitle" : "Product Manager",
-    "company" : "Twitter",
-    "description" : "Defining the product vision and roadmap.",
-    "licentaGrade" : "9.0",
-    "courseGrades" : "",
-    "status" : "AVAILABLE",
-    "interviu" : false,
-    "seniority" : null,
-    "requiredSkills" : [ "Product Management", "Agile", "Leadership" ],
-    "location" : null,
-    "country" : "USA",
-    "latitude" : 37.776,
-    "longitude" : -122.417,
-    "workSchedule" : {
-      "startTime" : "09:00",
-      "breakTime" : "13:00 - 14:00",
-      "endTime" : "17:00",
-      "shift" : "Dimineața"
-    },
-    "applicationDate" : null,
-    "remote" : false
-  }, {
-    "id" : 20419,
-    "jobTitle" : "Sound Designer",
-    "company" : "Sony Interactive Entertainment",
-    "description" : "Creating immersive audio experiences for games.",
-    "licentaGrade" : "9.0",
-    "courseGrades" : "",
-    "status" : "AVAILABLE",
-    "interviu" : false,
-    "seniority" : null,
-    "requiredSkills" : [ "Audio Design", "Pro Tools", "Sound Mixing" ],
-    "location" : null,
-    "country" : "USA",
-    "latitude" : 37.564,
-    "longitude" : -122.285,
-    "workSchedule" : {
-      "startTime" : "13:00",
-      "breakTime" : "17:00 - 17:30",
-      "endTime" : "21:00",
-      "shift" : "După-amiaza"
-    },
-    "applicationDate" : null,
-    "remote" : false
-  }, {
-    "id" : 20398,
-    "jobTitle" : "QA Tester",
-    "company" : "Electronic Arts",
-    "description" : "Ensuring the quality of our latest titles.",
-    "licentaGrade" : "8",
-    "courseGrades" : "",
-    "status" : "AVAILABLE",
-    "interviu" : true,
-    "seniority" : null,
-    "requiredSkills" : [ "Testing", "Quality Assurance", "JIRA" ],
-    "location" : null,
-    "country" : "USA",
-    "latitude" : 37.525,
-    "longitude" : -122.253,
-    "workSchedule" : {
-      "startTime" : "14:00",
-      "breakTime" : "18:00 - 18:30",
-      "endTime" : "22:00",
-      "shift" : "După-amiaza"
-    },
-    "applicationDate" : null,
-    "remote" : false
-  }, {
-    "id" : 20461,
+    "id" : 20460,
     "jobTitle" : "Software Engineer",
     "company" : "Google",
     "description" : "Building the future of search.",
@@ -1471,6 +1671,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1518,6 +1719,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1541,6 +1743,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -1564,6 +1767,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -1587,6 +1791,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -1610,6 +1815,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -1633,6 +1839,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -1656,6 +1863,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1679,6 +1887,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1726,6 +1959,7 @@
     "country" : "Sweden",
     "latitude" : 59.332,
     "longitude" : 18.058,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1775,6 +2009,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1798,6 +2033,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -1821,6 +2057,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -1844,6 +2081,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -1867,6 +2105,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -1890,6 +2129,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -1913,6 +2153,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1936,6 +2177,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -1985,6 +2251,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -2008,6 +2275,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -2031,6 +2299,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -2054,6 +2323,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -2077,6 +2347,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -2100,6 +2371,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -2123,6 +2395,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -2146,6 +2419,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -2221,6 +2519,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -2244,6 +2543,7 @@
     "country" : "France",
     "latitude" : 48.852,
     "longitude" : 2.42,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -2267,6 +2567,7 @@
     "country" : "USA",
     "latitude" : 37.259,
     "longitude" : -121.963,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 14:30",
@@ -2316,6 +2617,7 @@
     "country" : "USA",
     "latitude" : 37.525,
     "longitude" : -122.253,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -2339,6 +2641,7 @@
     "country" : "USA",
     "latitude" : 37.564,
     "longitude" : -122.285,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -2362,6 +2665,7 @@
     "country" : "USA",
     "latitude" : 37.776,
     "longitude" : -122.417,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -2385,6 +2689,7 @@
     "country" : "Germany",
     "latitude" : 48.14,
     "longitude" : 11.576,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -2408,6 +2713,7 @@
     "country" : "USA",
     "latitude" : 42.396,
     "longitude" : -71.252,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -2431,6 +2737,7 @@
     "country" : "USA",
     "latitude" : 37.422,
     "longitude" : -122.084,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -2454,6 +2761,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -2477,6 +2785,31 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
+    "workSchedule" : {
+      "startTime" : "10:00",
+      "breakTime" : "13:00 - 14:00",
+      "endTime" : "18:00",
+      "shift" : "Flexibil"
+    },
+    "applicationDate" : null,
+    "remote" : false
+  }, {
+    "id" : 20461,
+    "jobTitle" : "Software Engineer",
+    "company" : "Google",
+    "description" : "Building the future of search.",
+    "licentaGrade" : null,
+    "courseGrades" : null,
+    "status" : "PENDING",
+    "interviu" : false,
+    "seniority" : null,
+    "requiredSkills" : [ ],
+    "location" : null,
+    "country" : null,
+    "latitude" : null,
+    "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -2559,6 +2892,7 @@
     "country" : "France",
     "latitude" : 48.852,
     "longitude" : 2.42,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -2582,6 +2916,7 @@
     "country" : null,
     "latitude" : null,
     "longitude" : null,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "22:00",
       "breakTime" : "02:00 - 02:30",
@@ -2605,6 +2940,7 @@
     "country" : "USA",
     "latitude" : 47.615,
     "longitude" : -122.339,
+    "matchScore" : 0.0,
     "workSchedule" : {
       "startTime" : "22:00",
       "breakTime" : "02:00 - 02:30",
@@ -2695,4 +3031,30 @@
   "skills" : [ "Java, Python, JavaScript", "profesionalism", "seriozitate", "programare", "tehnologii", "communicare", "lucru în echipă", "inovatoare", "suport", "dedicat", "coleg de încredere", "dezvoltării software" ],
   "jobApplications" : [ ],
   "age" : 23
+}, {
+  "id" : 20474,
+  "name" : "Busecan Alex Stefan",
+  "email" : "BusecanAlexantruStefan@gmail.com",
+  "dateOfBirth" : [ 2002, 1, 21 ],
+  "documents" : [ "Documente_Profesionale.pdf" ],
+  "major" : "Cal, inginerie baia mare ",
+  "phoneNumber" : "0771400490",
+  "address" : "mm tamaia strada trandafirilor nr 13",
+  "startYear" : 2022,
+  "endYear" : 2026,
+  "quizResult" : null,
+  "interestedDomainId" : null,
+  "preferredSeniority" : "",
+  "prefersRemote" : true,
+  "preferredLocations" : [ "Romania" ],
+  "applicationAnswers" : {
+    "UserInterests" : "Game Developer, ML Engineer, Firmware Engineer, IoT Engineer"
+  },
+  "githubProjects" : { },
+  "addedBy" : "Busecan",
+  "notifications" : [ ],
+  "uploadedFiles" : [ ],
+  "skills" : [ "Java", "C#", "C++", "Blender", "Unity" ],
+  "jobApplications" : [ ],
+  "age" : 24
 } ]

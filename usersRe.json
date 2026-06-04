@@ -58,4 +58,10 @@
   "password" : "qwe",
   "fullName" : "qwe",
   "email" : "qwe@gmail.com"
+}, {
+  "id" : 1780572219111,
+  "username" : "Busecan",
+  "password" : "Andrei123",
+  "fullName" : "Busecan Alexantru Stefan",
+  "email" : "BusecanAlexantruStefan@gmail.com"
 } ]
