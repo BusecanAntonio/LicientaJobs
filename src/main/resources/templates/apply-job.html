@@ -64,14 +64,37 @@
         <i class="bi bi-info-circle"></i> Joburile de mai jos sunt ordonate în funcție de <strong>Match Score</strong> (potrivirea cu profilul tău).
     </div>
 
-    <div class="row mb-3">
-        <div class="col-md-6 offset-md-6">
-            <div class="input-group">
+    <div class="row mb-4 align-items-start">
+        <!-- Căutare locală normală (instant) -->
+        <div class="col-md-4">
+            <label class="form-label fw-bold text-muted small mb-1">Filtrare rapidă</label>
+            <div class="input-group shadow-sm">
                 <div class="input-group-prepend">
-                    <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
                 </div>
-                <input type="text" id="jobSearchInput" class="form-control" placeholder="Caută job după titlu, companie sau skill-uri...">
+                <input type="text" id="jobSearchInput" class="form-control border-start-0" placeholder="Caută în listă...">
             </div>
+        </div>
+
+        <!-- Căutare AI cu Ollama -->
+        <div class="col-md-8">
+            <label class="form-label fw-bold text-info small mb-1"><i class="bi bi-robot"></i> Asistent AI Ollama</label>
+            <form th:action="@{/students/{id}/apply(id=${student.id})}" method="get" id="ollamaSearchForm">
+                <div class="input-group shadow-sm">
+                    <input type="text" name="searchQuery" class="form-control border-info"
+                           placeholder="Ex: /ollama vreau un job unde să creez jocuri în Franța..."
+                           th:value="${searchQuery != null and searchQuery.startsWith('/ollama') ? searchQuery : ''}"
+                           required>
+                    <div class="input-group-append">
+                        <button class="btn btn-info text-white border-info fw-bold px-4" type="submit" id="ollamaSearchButton">
+                            <i class="bi bi-magic"></i> Caută
+                        </button>
+                    </div>
+                </div>
+                <small class="form-text text-muted mt-1">
+                    Începe propoziția cu <strong>/ollama</strong> pentru a cere AI-ului să îți găsească joburile perfecte.
+                </small>
+            </form>
         </div>
     </div>
 
@@ -302,13 +325,27 @@
 
         searchInput.addEventListener('input', function(e) {
             const searchTerm = e.target.value.toLowerCase().trim();
+
+            if (searchTerm.startsWith('/ollama')) {
+                document.getElementById('searchButton').innerHTML = '<i class="bi bi-robot"></i> Întreabă AI';
+                document.getElementById('searchButton').classList.replace('btn-primary', 'btn-info');
+                document.getElementById('searchButton').classList.add('text-white');
+                jobRows.forEach(row => row.style.display = '');
+                if (noResultsRow) noResultsRow.style.display = 'none';
+                return;
+            } else {
+                document.getElementById('searchButton').innerHTML = '<i class="bi bi-search"></i> Caută';
+                document.getElementById('searchButton').classList.replace('btn-info', 'btn-primary');
+                document.getElementById('searchButton').classList.remove('text-white');
+            }
+
             let visibleCount = 0;
 
             jobRows.forEach(row => {
                 const company = row.querySelector('.job-company').textContent.toLowerCase();
                 const title = row.querySelector('.job-title').textContent.toLowerCase();
                 const desc = row.querySelector('.job-desc').textContent.toLowerCase();
-                const skills = row.querySelector('.job-skills').textContent.toLowerCase();
+                const skills = row.querySelector('.job-skills') ? row.querySelector('.job-skills').textContent.toLowerCase() : "";
 
                 if (company.includes(searchTerm) || title.includes(searchTerm) || desc.includes(searchTerm) || skills.includes(searchTerm)) {
                     row.style.display = '';
@@ -318,10 +355,12 @@
                 }
             });
 
+
+
             if (visibleCount === 0 && jobRows.length > 0) {
-                noResultsRow.style.display = '';
+                if (noResultsRow) noResultsRow.style.display = '';
             } else {
-                noResultsRow.style.display = 'none';
+                if (noResultsRow) noResultsRow.style.display = 'none';
             }
         });
     });

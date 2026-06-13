@@ -232,18 +232,6 @@ public class StudentService {
         });
     }
 
-    public void removeJobApplication(Long studentId, Long applicationId, String loggedInUser) {
-        findStudentById(studentId).ifPresent(student -> {
-            if (loggedInUser.equals(student.getAddedBy()) && student.getJobApplications() != null) {
-                boolean removed = student.getJobApplications().removeIf(app -> app.getId().equals(applicationId));
-                if (removed) {
-                    saveStudent(student);
-                    notifyClients("Application for student " + student.getName() + " was removed.");
-                }
-            }
-        });
-    }
-
     public void deleteJobApplication(Long studentId, Long applicationId, String loggedInUser) {
         findStudentById(studentId).ifPresent(student -> {
             if (loggedInUser.equals(student.getAddedBy()) && student.getJobApplications() != null) {
@@ -266,7 +254,11 @@ public class StudentService {
         }
     }
 
-    public List<JobApplication> getJobRecommendations(Student student) {
+    public List<JobApplication> getJobRecommendations(Student student, boolean useLlm, String aiQuery) {
+        if (useLlm && aiQuery != null && !aiQuery.trim().isEmpty()) {
+            return getLlmJobRecommendations(student, aiQuery);
+        }
+        
         List<JobApplication> allJobs = findAllAvailableJobs();
 
         String interestsStr = student.getApplicationAnswers().getOrDefault("UserInterests", "");
@@ -287,6 +279,59 @@ public class StudentService {
         return allJobs.stream()
                 .sorted(Comparator.comparingDouble(JobApplication::getMatchScore).reversed())
                 .collect(Collectors.toList());
+    }
+
+    public List<JobApplication> getLlmJobRecommendations(Student student, String aiQuery) {
+        List<JobApplication> allJobs = findAllAvailableJobs();
+        
+        String jobListJson = allJobs.stream()
+                .map(j -> String.format("{\"id\":%d,\"title\":\"%s\",\"company\":\"%s\",\"skills\":%s}", 
+                        j.getId(), 
+                        j.getJobTitle().replace("\"", "\\\""), 
+                        j.getCompany().replace("\"", "\\\""), 
+                        j.getRequiredSkills() != null ? "[\"" + String.join("\",\"", j.getRequiredSkills()) + "\"]" : "[]"))
+                .collect(Collectors.joining(","));
+
+        String prompt = "You are an expert technical IT recruiter. The user is asking for job recommendations based on the following specific query:\n" +
+                "\"" + aiQuery + "\"\n\n" +
+                "The student has the following skills: " + (student.getSkills() != null ? student.getSkills() : "None specified") + "\n" +
+                "The student's general interests are: " + student.getApplicationAnswers().getOrDefault("UserInterests", "None specified") + "\n\n" +
+                "Here is the list of available jobs in the system (as a JSON array):\n" +
+                "[" + jobListJson + "]\n\n" +
+                "Based on the user's explicit query (give this highest priority) and the student's profile, return ONLY a JSON array of integers representing the job IDs that best match the request. For example: [2813, 2815, 2820]. Do NOT return any other text, markdown formatting, or explanations.";
+
+        logger.info("Sending LLM Search Prompt: {}", prompt);
+        String jsonResponse = ollamaService.generateJsonResponse(prompt);
+        logger.info("LLM Search Response: {}", jsonResponse);
+
+        try {
+            String cleanJson = jsonResponse.trim();
+            if (cleanJson.startsWith("```json")) {
+                cleanJson = cleanJson.substring(7);
+            }
+            if (cleanJson.startsWith("```")) {
+                cleanJson = cleanJson.substring(3);
+            }
+            if (cleanJson.endsWith("```")) {
+                cleanJson = cleanJson.substring(0, cleanJson.length() - 3);
+            }
+            
+            ObjectMapper mapper = new ObjectMapper();
+            List<Long> recommendedIds = mapper.readValue(cleanJson, new TypeReference<List<Long>>(){});
+            
+            List<JobApplication> filteredJobs = allJobs.stream()
+                    .filter(job -> recommendedIds.contains(job.getId()))
+                    .collect(Collectors.toList());
+                    
+            // Assign a high match score to indicate they were picked by AI
+            filteredJobs.forEach(job -> job.setMatchScore(100.0));
+            
+            return filteredJobs;
+        } catch (Exception e) {
+            logger.error("Error parsing LLM job recommendations: {}", jsonResponse, e);
+            // Fallback to standard recommendations if LLM parsing fails
+            return getJobRecommendations(student, false, null);
+        }
     }
 
     public JobApplication findRecommendedJob(String quizResult) {

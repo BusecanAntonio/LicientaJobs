@@ -359,7 +359,9 @@ public class HomeController {
 
     // --- Job Applications ---
     @GetMapping("/students/{id}/apply")
-    public String showJobApplicationForm(@PathVariable Long id, HttpSession session, Model model) {
+    public String showJobApplicationForm(@PathVariable Long id, 
+                                         @RequestParam(required = false) String searchQuery,
+                                         HttpSession session, Model model) {
         String loggedInUser = (String) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
@@ -370,14 +372,29 @@ public class HomeController {
             Student student = studentOpt.get();
             model.addAttribute("student", student);
             
-            // Prepare student's skills for easy lookup in the view
             Set<String> studentSkills = student.getSkills() != null
                 ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toSet())
                 : new HashSet<>();
             model.addAttribute("studentSkills", studentSkills);
 
-            List<JobApplication> recommendedJobs = studentService.getJobRecommendations(student);
+            List<JobApplication> recommendedJobs;
+            boolean useLlm = false;
+            if (searchQuery != null && searchQuery.toLowerCase().startsWith("/ollama ")) {
+                String prompt = searchQuery.substring(8).trim();
+                if (!prompt.isEmpty()) {
+                    recommendedJobs = studentService.getLlmJobRecommendations(student, prompt);
+                    useLlm = true;
+                } else {
+                    recommendedJobs = studentService.getJobRecommendations(student, false, null);
+                }
+                model.addAttribute("aiQuery", searchQuery);
+            } else {
+                recommendedJobs = studentService.getJobRecommendations(student, false, searchQuery);
+                model.addAttribute("searchQuery", searchQuery);
+            }
+            
             model.addAttribute("availableJobs", recommendedJobs);
+            model.addAttribute("useLlm", useLlm);
 
             return "apply-job";
         }
@@ -395,17 +412,13 @@ public class HomeController {
     }
 
     @PostMapping("/jobs/delete/{jobId}")
-    public String deleteJob(@PathVariable Long jobId, HttpSession session) {
+    public String deleteJob(@PathVariable Long jobId, @RequestParam Long studentId, HttpSession session) {
         String loggedInUser = (String) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return "redirect:/login";
         }
         studentService.deleteJobById(jobId);
-        // We redirect back to the current student's apply page. 
-        // This is a bit tricky to do cleanly without passing the studentId in the URL, 
-        // so for simplicity, we might just redirect to /students, or pass studentId as a query param.
-        // Given the current architecture, let's redirect to /students.
-        return "redirect:/students";
+        return "redirect:/students/" + studentId + "/apply";
     }
 
     @PostMapping("/students/{studentId}/applications/{applicationId}/status")
