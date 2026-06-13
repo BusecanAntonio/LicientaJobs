@@ -112,14 +112,15 @@
             <tbody>
             <tr th:each="job, iterStat : ${availableJobs}" class="job-row">
                 <td class="text-center align-middle">
-                    <div th:if="${iterStat.index == 0}" class="match-score score-high">
+                    <!-- Logica noua bazata pe scor, nu pe pozitie -->
+                    <div th:if="${job.matchScore >= 90}" class="match-score score-high">
                         <i class="bi bi-star-fill text-warning"></i> Top Match
                     </div>
-                    <div th:if="${iterStat.index == 1 or iterStat.index == 2}" class="match-score score-medium">
+                    <div th:if="${job.matchScore >= 70 and job.matchScore < 90}" class="match-score score-medium">
                         Good Match
                     </div>
-                    <div th:if="${iterStat.index > 2}" class="text-muted">
-                        Other
+                    <div th:if="${job.matchScore < 70}" class="text-muted">
+                        Potrivire
                     </div>
                 </td>
                 <td class="align-middle fw-bold job-company">

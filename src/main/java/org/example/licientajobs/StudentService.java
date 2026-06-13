@@ -285,48 +285,61 @@ public class StudentService {
         List<JobApplication> allJobs = findAllAvailableJobs();
         
         String jobListJson = allJobs.stream()
-                .map(j -> String.format("{\"id\":%d,\"title\":\"%s\",\"company\":\"%s\",\"skills\":%s}", 
+                .map(j -> String.format("{\"id\":%d,\"title\":\"%s\",\"company\":\"%s\",\"country\":\"%s\",\"skills\":%s}", 
                         j.getId(), 
                         j.getJobTitle().replace("\"", "\\\""), 
-                        j.getCompany().replace("\"", "\\\""), 
+                        j.getCompany().replace("\"", "\\\""),
+                        j.getCountry() != null ? j.getCountry() : "Unknown",
                         j.getRequiredSkills() != null ? "[\"" + String.join("\",\"", j.getRequiredSkills()) + "\"]" : "[]"))
                 .collect(Collectors.joining(","));
 
-        String prompt = "You are an expert technical IT recruiter. The user is asking for job recommendations based on the following specific query:\n" +
-                "\"" + aiQuery + "\"\n\n" +
-                "The student has the following skills: " + (student.getSkills() != null ? student.getSkills() : "None specified") + "\n" +
-                "The student's general interests are: " + student.getApplicationAnswers().getOrDefault("UserInterests", "None specified") + "\n\n" +
-                "Here is the list of available jobs in the system (as a JSON array):\n" +
+        String prompt = "You are an expert IT recruiter. You must filter the provided list of jobs based strictly on the user's query.\n\n" +
+                "USER QUERY: \"" + aiQuery + "\"\n\n" +
+                "AVAILABLE JOBS (JSON array):\n" +
                 "[" + jobListJson + "]\n\n" +
-                "Based on the user's explicit query (give this highest priority) and the student's profile, return ONLY a JSON array of integers representing the job IDs that best match the request. For example: [2813, 2815, 2820]. Do NOT return any other text, markdown formatting, or explanations.";
+                "INSTRUCTIONS:\n" +
+                "1. Filter the jobs to ONLY include those that match the USER QUERY (e.g., location, role, or technology specified in the query).\n" +
+                "2. If multiple jobs match the query, you may optionally use the student's profile (Skills: " + (student.getSkills() != null ? student.getSkills() : "None") + ") to rank them, but DO NOT include jobs that violate the USER QUERY.\n" +
+                "3. Return ONLY a JSON array of integers representing the matching job IDs. Example: [2813, 2815]. Do NOT return any markdown, text, or explanations.";
 
         logger.info("Sending LLM Search Prompt: {}", prompt);
         String jsonResponse = ollamaService.generateJsonResponse(prompt);
         logger.info("LLM Search Response: {}", jsonResponse);
 
         try {
-            String cleanJson = jsonResponse.trim();
-            if (cleanJson.startsWith("```json")) {
-                cleanJson = cleanJson.substring(7);
+            // Robust extraction: Find the first JSON array in the response using Regex
+            Matcher matcher = Pattern.compile("\\[.*?\\]", Pattern.DOTALL).matcher(jsonResponse);
+            if (!matcher.find()) {
+                throw new RuntimeException("No JSON array found in Ollama response");
             }
-            if (cleanJson.startsWith("```")) {
-                cleanJson = cleanJson.substring(3);
-            }
-            if (cleanJson.endsWith("```")) {
-                cleanJson = cleanJson.substring(0, cleanJson.length() - 3);
-            }
+            String arrayJson = matcher.group();
             
             ObjectMapper mapper = new ObjectMapper();
-            List<Long> recommendedIds = mapper.readValue(cleanJson, new TypeReference<List<Long>>(){});
+            List<Long> recommendedIds = mapper.readValue(arrayJson, new TypeReference<List<Long>>(){});
             
             List<JobApplication> filteredJobs = allJobs.stream()
                     .filter(job -> recommendedIds.contains(job.getId()))
                     .collect(Collectors.toList());
                     
-            // Assign a high match score to indicate they were picked by AI
-            filteredJobs.forEach(job -> job.setMatchScore(100.0));
+            // Calculate the real match score for the jobs returned by the AI
+            String interestsStr = student.getApplicationAnswers().getOrDefault("UserInterests", "");
+            List<String> studentInterests = Arrays.stream(interestsStr.split("\\s*,\\s*"))
+                                                  .map(String::toLowerCase)
+                                                  .filter(s -> !s.isEmpty())
+                                                  .collect(Collectors.toList());
+            List<String> studentSkills = student.getSkills() != null 
+                ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toList()) 
+                : new ArrayList<>();
+
+            filteredJobs.forEach(job -> {
+                double score = calculateWeightedScore(job, studentInterests, studentSkills);
+                job.setMatchScore(score);
+            });
             
-            return filteredJobs;
+            return filteredJobs.stream()
+                .sorted(Comparator.comparingDouble(JobApplication::getMatchScore).reversed())
+                .collect(Collectors.toList());
+
         } catch (Exception e) {
             logger.error("Error parsing LLM job recommendations: {}", jsonResponse, e);
             // Fallback to standard recommendations if LLM parsing fails
