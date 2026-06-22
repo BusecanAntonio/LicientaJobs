@@ -185,6 +185,23 @@ public class StudentService {
                     .ifPresent(app -> {
                         app.setStatus(status);
                         
+                        // Adaugă logica pentru decrementarea locurilor dacă statusul este "ANGAJAT"
+                        if ("ANGAJAT".equalsIgnoreCase(status) && app.getOriginalJobId() != null) {
+                            FallbackData data = jsonFallbackService.readFallbackData();
+                            if (data.getAvailableJobs() != null) {
+                                for (JobApplication job : data.getAvailableJobs()) {
+                                    if (job.getId().equals(app.getOriginalJobId())) {
+                                        if (job.getAvailablePositions() != null && job.getAvailablePositions() > 0) {
+                                            job.setAvailablePositions(job.getAvailablePositions() - 1);
+                                            jsonFallbackService.writeFallbackData(data); // Salvează modificarea în JSON
+                                            logger.info("Decremented available positions for job ID {}", job.getId());
+                                        }
+                                        break; // Am găsit jobul, ne oprim
+                                    }
+                                }
+                            }
+                        }
+
                         // Add notification
                         String notificationMsg = "Your application for " + app.getJobTitle() + " at " + app.getCompany() + " was " + status.toLowerCase() + ".";
                         student.addNotification(notificationMsg);
@@ -205,6 +222,7 @@ public class StudentService {
             JobApplication jobToApply = jobOptional.get();
 
             JobApplication newApplication = new JobApplication();
+            newApplication.setOriginalJobId(jobToApply.getId()); // Setăm referința către jobul original
             newApplication.setJobTitle(jobToApply.getJobTitle());
             newApplication.setCompany(jobToApply.getCompany());
             newApplication.setDescription(jobToApply.getDescription());
@@ -394,9 +412,17 @@ public class StudentService {
             rawScore += skillMatchPercentage * 90.0;
         }
 
-        // Remap the raw score (0-100) to a new range (20-100).
-        // This makes a "raw" score of 50% appear as 60%, and 70% as 76%, fitting the user's expectation.
-        double finalScore = 20.0 + (rawScore * 0.8);
+        double finalScore;
+        if (rawScore > 0) {
+            // Apply the remapping only if there's an actual raw score
+            finalScore = 20.0 + (rawScore * 0.8);
+            // Ensure score does not exceed 100
+            if (finalScore > 100.0) {
+                finalScore = 100.0;
+            }
+        } else {
+            finalScore = 0.0; // If rawScore is 0, finalScore is 0
+        }
 
         return finalScore;
     }
@@ -590,7 +616,8 @@ public class StudentService {
                 }
 
                 for (String skill : extractedSkills) {
-                    if (!student.getSkills().contains(skill)) {
+                    // Adăugăm skill-ul doar dacă nu există deja (case-insensitive)
+                    if (student.getSkills().stream().noneMatch(s -> s.equalsIgnoreCase(skill))) {
                         student.getSkills().add(skill);
                     }
                 }

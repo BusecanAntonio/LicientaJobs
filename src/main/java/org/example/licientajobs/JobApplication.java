@@ -40,6 +40,12 @@ public class JobApplication {
     private Double latitude;
     private Double longitude;
 
+    // Number of available positions for this job
+    private Integer availablePositions;
+
+    // Link to the original job posting
+    private Long originalJobId;
+
     @Transient
     private double matchScore;
 
@@ -105,6 +111,12 @@ public class JobApplication {
 
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public Integer getAvailablePositions() { return availablePositions; }
+    public void setAvailablePositions(Integer availablePositions) { this.availablePositions = availablePositions; }
+
+    public Long getOriginalJobId() { return originalJobId; }
+    public void setOriginalJobId(Long originalJobId) { this.originalJobId = originalJobId; }
 
     public double getMatchScore() { return matchScore; }
     public void setMatchScore(double matchScore) { this.matchScore = matchScore; }
