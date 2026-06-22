@@ -14,6 +14,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder; // Added import
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -41,14 +42,16 @@ public class StudentService {
     private final StorageService storageService;
     private final SimpMessagingTemplate messagingTemplate;
     private final OllamaService ollamaService;
+    private final PasswordEncoder passwordEncoder; // Added field
 
-    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService) {
+    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService, PasswordEncoder passwordEncoder) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.jsonFallbackService = jsonFallbackService;
         this.storageService = storageService;
         this.messagingTemplate = messagingTemplate;
         this.ollamaService = ollamaService;
+        this.passwordEncoder = passwordEncoder; // Initialized field
     }
 
 
@@ -430,31 +433,58 @@ public class StudentService {
     public void registerUser(String username, String password, String fullName, String email) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password);
         user.setFullName(fullName);
         user.setEmail(email);
-        try {
-            userRepository.save(user);
-        } catch (DataAccessException e) {
-            logger.warn("Memgraph connection failed. Saving user to fallback.", e);
-        }
-        
+        user.setPassword(password); // Store unencrypted password temporarily for fallback logic
+
+        // Handle fallback first, ensuring unencrypted password is saved there
         List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
-        user.setId(System.currentTimeMillis()); 
+        // Remove existing user if updating, or ensure ID is unique for new user
+        fallbackUsers.removeIf(u -> u.getUsername().equals(username)); // Assuming username is unique for fallback
+        user.setId(System.currentTimeMillis()); // Assign ID for fallback if not already set
         fallbackUsers.add(user);
         jsonFallbackService.writeUsersFallbackData(fallbackUsers);
+        logger.info("User {} saved to JSON fallback with unencrypted password.", username);
+
+        // Now, encrypt password for Memgraph and save
+        user.setPassword(passwordEncoder.encode(password)); // Encrypt password for Memgraph
+        try {
+            userRepository.save(user); // Save to Memgraph with encrypted password
+            logger.info("User {} saved to Memgraph with encrypted password.", username);
+        } catch (DataAccessException e) {
+            logger.warn("Memgraph connection failed. User {} saved to JSON fallback only.", username, e);
+            // If Memgraph fails, the user is already saved to JSON fallback with unencrypted password.
+            // No further action needed here for fallback, as it was already handled.
+        }
     }
 
     public boolean authenticateUser(String username, String password) {
         try {
             List<User> users = userRepository.findByUsername(username);
             if(!users.isEmpty()) {
-                return users.get(0).getPassword().equals(password);
+                User user = users.get(0);
+                // Try authenticating with encrypted password
+                if (passwordEncoder.matches(password, user.getPassword())) {
+                    return true;
+                } else {
+                    // If encrypted password doesn't match, check if it's an old unencrypted password
+                    // A BCrypt hash always starts with "$2a$", "$2b$", "$2y$"
+                    if (!user.getPassword().startsWith("$2a$") && !user.getPassword().startsWith("$2b$") && !user.getPassword().startsWith("$2y$")) {
+                        if (password.equals(user.getPassword())) {
+                            // Old unencrypted password matched, re-encrypt and save
+                            user.setPassword(passwordEncoder.encode(password));
+                            userRepository.save(user); // Save updated user with encrypted password
+                            logger.info("User {} password re-encrypted and saved to Memgraph.", username);
+                            return true;
+                        }
+                    }
+                }
             }
         } catch (DataAccessException e) {
-            logger.warn("Memgraph connection failed. Authenticating from fallback.", e);
+            logger.warn("Memgraph connection failed. Authenticating from JSON fallback.", e);
         }
         
+        // Fallback authentication (against unencrypted password in JSON)
         List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
         for (User user : fallbackUsers) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {

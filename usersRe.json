@@ -64,4 +64,10 @@
   "password" : "Andrei123",
   "fullName" : "Busecan Alexantru Stefan",
   "email" : "BusecanAlexantruStefan@gmail.com"
+}, {
+  "id" : 1782127271822,
+  "username" : "Cartof Mihai",
+  "password" : "Mihai123",
+  "fullName" : "Cartof Stefan Mihai",
+  "email" : "Mihai.Cartof@gmail.com"
 } ]
