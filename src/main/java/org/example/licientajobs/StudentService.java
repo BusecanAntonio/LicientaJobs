@@ -14,9 +14,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.security.crypto.password.PasswordEncoder; // Added import
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -42,20 +45,88 @@ public class StudentService {
     private final StorageService storageService;
     private final SimpMessagingTemplate messagingTemplate;
     private final OllamaService ollamaService;
-    private final PasswordEncoder passwordEncoder; // Added field
+    private final PasswordEncoder passwordEncoder;
+    private final PdfService pdfService; // Adăugat PdfService
 
-    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService, PasswordEncoder passwordEncoder) {
+    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService, PasswordEncoder passwordEncoder, PdfService pdfService) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.jsonFallbackService = jsonFallbackService;
         this.storageService = storageService;
         this.messagingTemplate = messagingTemplate;
         this.ollamaService = ollamaService;
-        this.passwordEncoder = passwordEncoder; // Initialized field
+        this.passwordEncoder = passwordEncoder;
+        this.pdfService = pdfService; // Inițializat PdfService
     }
 
+    // ... restul metodelor rămân neschimbate ...
 
+    public void extractAndSaveSkills(Student student, MultipartFile pdfFile) {
+        try {
+            // 1. Salvează fișierul PDF pe disc folosind StorageService
+            String pdfFileName = storageService.store(pdfFile, student.getId());
+            Path pdfPath = storageService.load(student.getId(), pdfFileName);
 
+            // 2. Creează calea pentru fișierul TXT
+            String txtFileName = pdfFileName.replace(".pdf", ".txt");
+            Path txtPath = storageService.load(student.getId(), txtFileName);
+
+            // 3. Convertește PDF-ul în TXT folosind PdfService
+            pdfService.convertPdfToTxt(pdfPath, txtPath);
+            logger.info("Converted PDF {} to TXT {}", pdfFileName, txtFileName);
+
+            // 4. Citește conținutul din fișierul TXT nou creat
+            String fileContent = Files.readString(txtPath, StandardCharsets.UTF_8);
+            String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
+
+            // 5. Trimite conținutul TXT la Ollama pentru extragerea competențelor
+            String prompt = "Extract the skills from the following text.\n" +
+                    "Return ONLY a JSON array of strings containing the skills. Example: [\"Java\", \"Spring\", \"Teamwork\"]\n" +
+                    "Do NOT return any other text, markdown blocks, or explanations.\n" +
+                    "Text:\n\"\"\"\n" + contentToSend + "\n\"\"\"";
+
+            logger.info("Sending prompt to Ollama for skill extraction from TXT file.");
+            String jsonResponse = ollamaService.generateJsonResponse(prompt);
+            logger.info("Ollama raw response for skill extraction: {}", jsonResponse);
+
+            if (jsonResponse == null || jsonResponse.trim().isEmpty() || jsonResponse.trim().equals("{}")) {
+                logger.warn("Ollama returned an empty or invalid response.");
+                return;
+            }
+
+            List<String> extractedSkills = new ArrayList<>();
+            Matcher matcher = Pattern.compile("\"([^\"]+)\"").matcher(jsonResponse);
+            while (matcher.find()) {
+                String potentialSkill = matcher.group(1).trim();
+                if (!potentialSkill.isEmpty() && !potentialSkill.equalsIgnoreCase("skills") && !potentialSkill.equalsIgnoreCase("skill")) {
+                    extractedSkills.add(potentialSkill);
+                }
+            }
+
+            logger.info("Extracted skills: {}", extractedSkills);
+
+            if (!extractedSkills.isEmpty()) {
+                if (student.getSkills() == null) {
+                    student.setSkills(new ArrayList<>());
+                }
+                for (String skill : extractedSkills) {
+                    if (student.getSkills().stream().noneMatch(s -> s.equalsIgnoreCase(skill))) {
+                        student.getSkills().add(skill);
+                    }
+                }
+            } else {
+                 logger.warn("No skills could be parsed from the JSON response.");
+            }
+
+        } catch (Exception e) {
+            logger.error("Error in extractAndSaveSkills process", e);
+        }
+    }
+    
+    // =========================================================
+    // RESTUL METODELOR (copy-paste de la versiunea anterioară)
+    // =========================================================
+    
     private void synchronizeDbToJson() {
         logger.info("Synchronizing all data from Memgraph to JSON file.");
         List<Student> students = studentRepository.findAll();
@@ -67,29 +138,20 @@ public class StudentService {
         messagingTemplate.convertAndSend("/topic/students", message);
     }
 
-    // =========================================================
-    // METODA 1: Cea principală (folosită de noul HomeController)
-    // =========================================================
     public Student saveStudent(Student student, String currentUser) {
         try {
-            // SETĂM PROPRIETARUL: Asta face ca studentul să apară în lista ta
             student.setAddedBy(currentUser);
-
             logger.info("Attempting to save student {} to Memgraph.", student.getName());
             Student savedStudent = studentRepository.save(student);
             synchronizeDbToJson();
             notifyClients("Data for " + savedStudent.getName() + " has been updated.");
             return savedStudent;
-
-        } catch (Exception e) { // Exception prinde orice problemă de bază de date
+        } catch (Exception e) {
             logger.warn("Memgraph connection failed. Saving only to JSON fallback.", e);
             List<Student> students = jsonFallbackService.readStudentsFallbackData();
-
-            // PROTECȚIE ID: Ștergem din listă doar dacă studentul are deja un ID
             if (student.getId() != null) {
                 students.removeIf(s -> s.getId() != null && s.getId().equals(student.getId()));
             }
-
             students.add(student);
             jsonFallbackService.writeStudentsFallbackData(students);
             notifyClients("Data for " + student.getName() + " has been updated (Offline Mode).");
@@ -97,16 +159,9 @@ public class StudentService {
         }
     }
 
-    // =========================================================
-    // METODA 2: "Puntea" pentru codul vechi (QuizController, etc)
-    // =========================================================
     public Student saveStudent(Student student) {
-        // Când codul vechi apelează salvarea cu un singur parametru,
-        // noi trimitem datele spre metoda de sus, folosind numele deja existent.
         return saveStudent(student, student.getAddedBy());
     }
-
-
 
     public List<Student> findAllStudents() {
         try {
@@ -187,8 +242,6 @@ public class StudentService {
                     .findFirst()
                     .ifPresent(app -> {
                         app.setStatus(status);
-                        
-                        // Adaugă logica pentru decrementarea locurilor dacă statusul este "ANGAJAT"
                         if ("ANGAJAT".equalsIgnoreCase(status) && app.getOriginalJobId() != null) {
                             FallbackData data = jsonFallbackService.readFallbackData();
                             if (data.getAvailableJobs() != null) {
@@ -196,19 +249,16 @@ public class StudentService {
                                     if (job.getId().equals(app.getOriginalJobId())) {
                                         if (job.getAvailablePositions() != null && job.getAvailablePositions() > 0) {
                                             job.setAvailablePositions(job.getAvailablePositions() - 1);
-                                            jsonFallbackService.writeFallbackData(data); // Salvează modificarea în JSON
+                                            jsonFallbackService.writeFallbackData(data);
                                             logger.info("Decremented available positions for job ID {}", job.getId());
                                         }
-                                        break; // Am găsit jobul, ne oprim
+                                        break;
                                     }
                                 }
                             }
                         }
-
-                        // Add notification
                         String notificationMsg = "Your application for " + app.getJobTitle() + " at " + app.getCompany() + " was " + status.toLowerCase() + ".";
                         student.addNotification(notificationMsg);
-                        
                         saveStudent(student);
                         notifyClients("Job application status for " + student.getName() + " changed to " + status);
                     });
@@ -225,7 +275,7 @@ public class StudentService {
             JobApplication jobToApply = jobOptional.get();
 
             JobApplication newApplication = new JobApplication();
-            newApplication.setOriginalJobId(jobToApply.getId()); // Setăm referința către jobul original
+            newApplication.setOriginalJobId(jobToApply.getId());
             newApplication.setJobTitle(jobToApply.getJobTitle());
             newApplication.setCompany(jobToApply.getCompany());
             newApplication.setDescription(jobToApply.getDescription());
@@ -328,7 +378,6 @@ public class StudentService {
         logger.info("LLM Search Response: {}", jsonResponse);
 
         try {
-            // Robust extraction: Find the first JSON array in the response using Regex
             Matcher matcher = Pattern.compile("\\[.*?\\]", Pattern.DOTALL).matcher(jsonResponse);
             if (!matcher.find()) {
                 throw new RuntimeException("No JSON array found in Ollama response");
@@ -342,7 +391,6 @@ public class StudentService {
                     .filter(job -> recommendedIds.contains(job.getId()))
                     .collect(Collectors.toList());
                     
-            // Calculate the real match score for the jobs returned by the AI
             String interestsStr = student.getApplicationAnswers().getOrDefault("UserInterests", "");
             List<String> studentInterests = Arrays.stream(interestsStr.split("\\s*,\\s*"))
                                                   .map(String::toLowerCase)
@@ -363,7 +411,6 @@ public class StudentService {
 
         } catch (Exception e) {
             logger.error("Error parsing LLM job recommendations: {}", jsonResponse, e);
-            // Fallback to standard recommendations if LLM parsing fails
             return getJobRecommendations(student, false, null);
         }
     }
@@ -391,8 +438,6 @@ public class StudentService {
 
     private double calculateWeightedScore(JobApplication job, List<String> studentInterests, List<String> studentSkills) {
         double rawScore = 0.0;
-
-        // 1. Interest-based score (10% weight)
         String jobTitle = job.getJobTitle() != null ? job.getJobTitle().toLowerCase() : "";
         String jobDescription = job.getDescription() != null ? job.getDescription().toLowerCase() : "";
         Set<String> jobTextTokens = new HashSet<>(Arrays.asList((jobTitle + " " + jobDescription).split("\\s+")));
@@ -401,7 +446,6 @@ public class StudentService {
         double interestJaccard = calculateJaccardSimilarity(interestSet, jobTextTokens);
         rawScore += interestJaccard * 10.0;
 
-        // 2. Skill-based score (90% weight)
         List<String> requiredJobSkills = job.getRequiredSkills() != null
             ? job.getRequiredSkills().stream().map(String::toLowerCase).distinct().collect(Collectors.toList())
             : new ArrayList<>();
@@ -417,14 +461,12 @@ public class StudentService {
 
         double finalScore;
         if (rawScore > 0) {
-            // Apply the remapping only if there's an actual raw score
             finalScore = 20.0 + (rawScore * 0.8);
-            // Ensure score does not exceed 100
             if (finalScore > 100.0) {
                 finalScore = 100.0;
             }
         } else {
-            finalScore = 0.0; // If rawScore is 0, finalScore is 0
+            finalScore = 0.0;
         }
 
         return finalScore;
@@ -435,26 +477,21 @@ public class StudentService {
         user.setUsername(username);
         user.setFullName(fullName);
         user.setEmail(email);
-        user.setPassword(password); // Store unencrypted password temporarily for fallback logic
+        user.setPassword(password);
 
-        // Handle fallback first, ensuring unencrypted password is saved there
         List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
-        // Remove existing user if updating, or ensure ID is unique for new user
-        fallbackUsers.removeIf(u -> u.getUsername().equals(username)); // Assuming username is unique for fallback
-        user.setId(System.currentTimeMillis()); // Assign ID for fallback if not already set
+        fallbackUsers.removeIf(u -> u.getUsername().equals(username));
+        user.setId(System.currentTimeMillis());
         fallbackUsers.add(user);
         jsonFallbackService.writeUsersFallbackData(fallbackUsers);
         logger.info("User {} saved to JSON fallback with unencrypted password.", username);
 
-        // Now, encrypt password for Memgraph and save
-        user.setPassword(passwordEncoder.encode(password)); // Encrypt password for Memgraph
+        user.setPassword(passwordEncoder.encode(password));
         try {
-            userRepository.save(user); // Save to Memgraph with encrypted password
+            userRepository.save(user);
             logger.info("User {} saved to Memgraph with encrypted password.", username);
         } catch (DataAccessException e) {
             logger.warn("Memgraph connection failed. User {} saved to JSON fallback only.", username, e);
-            // If Memgraph fails, the user is already saved to JSON fallback with unencrypted password.
-            // No further action needed here for fallback, as it was already handled.
         }
     }
 
@@ -463,17 +500,13 @@ public class StudentService {
             List<User> users = userRepository.findByUsername(username);
             if(!users.isEmpty()) {
                 User user = users.get(0);
-                // Try authenticating with encrypted password
                 if (passwordEncoder.matches(password, user.getPassword())) {
                     return true;
                 } else {
-                    // If encrypted password doesn't match, check if it's an old unencrypted password
-                    // A BCrypt hash always starts with "$2a$", "$2b$", "$2y$"
                     if (!user.getPassword().startsWith("$2a$") && !user.getPassword().startsWith("$2b$") && !user.getPassword().startsWith("$2y$")) {
                         if (password.equals(user.getPassword())) {
-                            // Old unencrypted password matched, re-encrypt and save
                             user.setPassword(passwordEncoder.encode(password));
-                            userRepository.save(user); // Save updated user with encrypted password
+                            userRepository.save(user);
                             logger.info("User {} password re-encrypted and saved to Memgraph.", username);
                             return true;
                         }
@@ -484,7 +517,6 @@ public class StudentService {
             logger.warn("Memgraph connection failed. Authenticating from JSON fallback.", e);
         }
         
-        // Fallback authentication (against unencrypted password in JSON)
         List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
         for (User user : fallbackUsers) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
@@ -505,9 +537,6 @@ public class StudentService {
         });
     }
 
-    /**
-     * Fetch Github Repo Data + Contributors and ask LLM to summarize
-     */
     public void processGithubLink(Student student, String githubLink) {
         try {
             if (student.getGithubProjects() == null) {
@@ -532,7 +561,6 @@ public class StudentService {
                 HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
                 
                 try {
-                    // 1. Fetch README
                     String apiUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/readme";
                     ResponseEntity<Map> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, Map.class);
                     if (response.getBody() != null && response.getBody().containsKey("content")) {
@@ -546,7 +574,6 @@ public class StudentService {
                 } catch (Exception e) { logger.warn("No README for {}", repoName); }
                 
                 try {
-                    // 2. Fetch Languages (Technologies)
                     String langUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/languages";
                     ResponseEntity<Map> langResponse = restTemplate.exchange(langUrl, HttpMethod.GET, entity, Map.class);
                     if (langResponse.getBody() != null && !langResponse.getBody().isEmpty()) {
@@ -555,7 +582,6 @@ public class StudentService {
                 } catch (Exception e) { logger.warn("No languages for {}", repoName); }
                 
                 try {
-                    // 3. Fetch Contributors
                     String contribUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/contributors";
                     ResponseEntity<List> contribResponse = restTemplate.exchange(contribUrl, HttpMethod.GET, entity, List.class);
                     if (contribResponse.getBody() != null && !contribResponse.getBody().isEmpty()) {
@@ -592,7 +618,6 @@ public class StudentService {
 
             logger.info("Trimitere prompt Github avansat către Ollama pentru {}", githubLink);
             
-            // Folosim metoda normală de text, deoarece rezumatul este text descriptiv, nu JSON
             String llmSummary = ollamaService.generateResponse(prompt);
             
             String cleanSummary = llmSummary.trim();
@@ -606,57 +631,6 @@ public class StudentService {
         } catch (Exception e) {
             logger.error("Eroare la procesarea linkului de GitHub.", e);
             student.getGithubProjects().put(githubLink, "Eroare la generarea rezumatului avansat.");
-        }
-    }
-
-    public void extractAndSaveSkills(Student student, MultipartFile file) {
-        try {
-            String fileContent = new String(file.getBytes(), StandardCharsets.UTF_8);
-            String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
-
-            String prompt = "Extract the skills from the following text.\n" +
-                    "Return ONLY a JSON array of strings containing the skills. Example: [\"Java\", \"Spring\", \"Teamwork\"]\n" +
-                    "Do NOT return any other text, markdown blocks, or explanations.\n" +
-                    "Text:\n\"\"\"\n" + contentToSend + "\n\"\"\"";
-
-            logger.info("Sending prompt to Ollama for skill extraction:\n{}", prompt);
-            String jsonResponse = ollamaService.generateJsonResponse(prompt);
-            logger.info("Ollama raw response for skill extraction:\n{}", jsonResponse);
-
-            if (jsonResponse == null || jsonResponse.trim().isEmpty() || jsonResponse.trim().equals("{}")) {
-                logger.warn("Ollama returned an empty or invalid response.");
-                return;
-            }
-
-            List<String> extractedSkills = new ArrayList<>();
-            Matcher matcher = Pattern.compile("\"([^\"]+)\"").matcher(jsonResponse);
-            while (matcher.find()) {
-                String potentialSkill = matcher.group(1).trim();
-                // Exclude common JSON keys that the LLM might hallucinate
-                if (!potentialSkill.isEmpty() && !potentialSkill.equalsIgnoreCase("skills") && !potentialSkill.equalsIgnoreCase("skill")) {
-                    extractedSkills.add(potentialSkill);
-                }
-            }
-
-            logger.info("Extracted skills: {}", extractedSkills);
-
-            if (!extractedSkills.isEmpty()) {
-                if (student.getSkills() == null) {
-                    student.setSkills(new ArrayList<>());
-                }
-
-                for (String skill : extractedSkills) {
-                    // Adăugăm skill-ul doar dacă nu există deja (case-insensitive)
-                    if (student.getSkills().stream().noneMatch(s -> s.equalsIgnoreCase(skill))) {
-                        student.getSkills().add(skill);
-                    }
-                }
-            } else {
-                 logger.warn("No skills could be parsed from the JSON response.");
-            }
-
-        } catch (Exception e) {
-            logger.error("Error extracting skills from file", e);
         }
     }
     
@@ -673,7 +647,6 @@ public class StudentService {
         ObjectMapper mapper = new ObjectMapper();
         
         try {
-            // Trim to handle potential markdown wrappers
             String cleanJson = jsonResponse.trim();
             if (cleanJson.startsWith("```json")) {
                 cleanJson = cleanJson.substring(7);
