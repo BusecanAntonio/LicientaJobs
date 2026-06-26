@@ -108,8 +108,6 @@ public class StudentService {
         return false;
     }
 
-    // ... restul metodelor ...
-    
     public void extractAndSaveSkills(Student student, MultipartFile pdfFile) {
         try {
             String pdfFileName = storageService.store(pdfFile, student.getId());
@@ -122,50 +120,60 @@ public class StudentService {
             logger.info("Converted PDF {} to TXT {}", pdfFileName, txtFileName);
 
             String fileContent = Files.readString(txtPath, StandardCharsets.UTF_8);
-            String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
+            String contentToSend = fileContent.length() > 4000 ? fileContent.substring(0, 4000) : fileContent;
 
-            String prompt = "Extract the skills from the following text.\n" +
-                    "Return ONLY a JSON array of strings containing the skills. Example: [\"Java\", \"Spring\", \"Teamwork\"]\n" +
-                    "Do NOT return any other text, markdown blocks, or explanations.\n" +
+            String prompt = "From the following CV text, extract only the specific technologies, programming languages, and tools. " +
+                    "IGNORE categories and titles like 'Limbaje:', 'Baze de date:', 'Frameworks:', 'Instrumente:', 'Technologies', etc. " +
+                    "Your response must be ONLY a single line of comma-separated values. " +
+                    "EXAMPLE: Java, Python, Memgraph, Spring Boot, Docker\n\n" +
                     "Text:\n\"\"\"\n" + contentToSend + "\n\"\"\"";
 
-            logger.info("Sending prompt to Ollama for skill extraction from TXT file.");
-            String jsonResponse = ollamaService.generateJsonResponse(prompt);
-            logger.info("Ollama raw response for skill extraction: {}", jsonResponse);
+            logger.info("Sending updated prompt to Ollama for skill extraction.");
+            String response = ollamaService.generateResponse(prompt);
+            logger.info("Ollama raw response for skill extraction: {}", response);
 
-            if (jsonResponse == null || jsonResponse.trim().isEmpty() || jsonResponse.trim().equals("{}")) {
+            if (response == null || response.trim().isEmpty()) {
                 logger.warn("Ollama returned an empty or invalid response.");
                 return;
             }
 
-            List<String> extractedSkills = new ArrayList<>();
-            Matcher matcher = Pattern.compile("\"([^\"]+)\"").matcher(jsonResponse);
-            while (matcher.find()) {
-                String potentialSkill = matcher.group(1).trim();
-                if (!potentialSkill.isEmpty() && !potentialSkill.equalsIgnoreCase("skills") && !potentialSkill.equalsIgnoreCase("skill")) {
-                    extractedSkills.add(potentialSkill);
-                }
-            }
+            // Robust parsing and cleaning
+            String cleanedResponse = response.replaceAll("(?i)here is the list of.*?:", "").trim();
+            
+            List<String> extractedSkills = Arrays.stream(cleanedResponse.split(","))
+                    .map(skill -> skill.replaceAll("[\"\\[\\]*]", "").trim())
+                    .filter(skill -> !skill.isEmpty() && !skill.equals("."))
+                    .collect(Collectors.toList());
 
-            logger.info("Extracted skills: {}", extractedSkills);
+            // Safety filter (blacklist)
+            Set<String> categoryBlacklist = Set.of("limbaje", "baze de date", "frameworks", "instrumente", "technologies", "tools", "databases", "languages", "skills");
+            List<String> finalSkills = extractedSkills.stream()
+                    .filter(skill -> !categoryBlacklist.contains(skill.toLowerCase()))
+                    .collect(Collectors.toList());
 
-            if (!extractedSkills.isEmpty()) {
+            logger.info("Final filtered skills: {}", finalSkills);
+
+            if (!finalSkills.isEmpty()) {
                 if (student.getSkills() == null) {
                     student.setSkills(new ArrayList<>());
                 }
-                for (String skill : extractedSkills) {
+                for (String skill : finalSkills) {
                     if (student.getSkills().stream().noneMatch(s -> s.equalsIgnoreCase(skill))) {
                         student.getSkills().add(skill);
                     }
                 }
             } else {
-                 logger.warn("No skills could be parsed from the JSON response.");
+                 logger.warn("No valid skills could be parsed and filtered from the response.");
             }
 
         } catch (Exception e) {
             logger.error("Error in extractAndSaveSkills process", e);
         }
     }
+    
+    // =========================================================
+    // RESTUL METODELOR (copy-paste de la versiunea anterioară)
+    // =========================================================
     
     private void synchronizeDbToJson() {
         logger.info("Synchronizing all data from Memgraph to JSON file.");
