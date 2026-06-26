@@ -50,7 +50,7 @@
         .card-header { background-color: #0d6efd; color: white; font-weight: bold; border-radius: 0 !important; }
         .schedule-table { width: 100%; font-size: 0.85em; margin-bottom: 0; }
         .schedule-table td { padding: 2px 5px; border: none; }
-        .admin-controls { display: none; }
+        .admin-controls { display: none; } /* Hidden by default, shown by JS */
 
         /* Stil Offcanvas (Slider Dreapta) */
         .offcanvas { border-radius: 20px 0 0 20px; border: none; box-shadow: -5px 0 25px rgba(0,0,0,0.1); width: 450px !important; }
@@ -86,6 +86,11 @@
                 </li>
             </ul>
             <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3">
+                    <button id="admin-toggle" class="btn btn-secondary btn-sm px-4 rounded-pill">
+                        <i class="bi bi-shield-lock me-1"></i> Admin Mode: OFF
+                    </button>
+                </li>
                 <li class="nav-item me-3">
                     <span class="navbar-text text-white">
                         Salut, <strong th:text="${session.loggedInUser}">User</strong>!
@@ -312,7 +317,16 @@
                                 </form>
                             </td>
                             <td class="admin-controls text-center">
-                                <!-- Butoanele de admin -->
+                                <form th:action="@{/admin/applications/{studentId}/{applicationId}/accept(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-success" title="Acceptă Aplicația" onclick="return confirm('Ești sigur că vrei să accepți această aplicație?');">
+                                        <i class="bi bi-check-lg"></i> Acceptă
+                                    </button>
+                                </form>
+                                <form th:action="@{/admin/applications/{studentId}/{applicationId}/reject(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline; margin-left: 5px;">
+                                    <button type="submit" class="btn btn-sm btn-danger" title="Respinge Aplicația" onclick="return confirm('Ești sigur că vrei să respingi această aplicație?');">
+                                        <i class="bi bi-x-lg"></i> Respinge
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         <!-- ... restul ... -->
