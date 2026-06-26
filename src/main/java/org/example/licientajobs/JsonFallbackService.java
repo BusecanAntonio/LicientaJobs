@@ -18,10 +18,9 @@ import java.util.List;
 public class JsonFallbackService {
 
     private static final Logger logger = LoggerFactory.getLogger(JsonFallbackService.class);
-    // Renamed to reflect its purpose as a comprehensive fallback for all data
-    private final File allDataFallbackFile = new File("FallbackData.json");
+    // Point to the correct file
+    private final File fallbackFile = new File("Jobs.json"); 
     private final File usersFallbackFile = new File("usersRe.json");
-    // Keeping studentsFallbackFile for now, but consider consolidating if all student data is in FallbackData.json
     private final File studentsFallbackFile = new File("src/main/resources/Students.json");
     private final ObjectMapper objectMapper;
 
@@ -33,15 +32,9 @@ public class JsonFallbackService {
 
     @PostConstruct
     public void init() {
-        logger.info("JsonFallbackService initialized. Using allDataFallbackFile: {}", allDataFallbackFile.getAbsolutePath());
-        if (!allDataFallbackFile.exists()) {
-            try {
-                logger.warn("All data fallback file not found at: {}. Creating an empty one.", allDataFallbackFile.getAbsolutePath());
-                allDataFallbackFile.createNewFile();
-                writeFallbackData(new FallbackData()); // Write an empty FallbackData object
-            } catch (IOException e) {
-                logger.error("Error creating all data fallback file", e);
-            }
+        logger.info("JsonFallbackService initialized. Using file: {}", fallbackFile.getAbsolutePath());
+        if (!fallbackFile.exists()) {
+            logger.warn("Fallback data file not found at: {}. The application may not have initial data.", fallbackFile.getAbsolutePath());
         }
         if (!usersFallbackFile.exists()) {
             try {
@@ -53,28 +46,27 @@ public class JsonFallbackService {
         }
         if (!studentsFallbackFile.exists()) {
             logger.warn("Students fallback file not found at: {}.", studentsFallbackFile.getAbsolutePath());
-            // Consider creating an empty one or removing if allDataFallbackFile is the primary student backup
         }
     }
 
     public FallbackData readFallbackData() {
-        if (!allDataFallbackFile.exists()) {
+        if (!fallbackFile.exists()) {
             return new FallbackData();
         }
         try {
-            return objectMapper.readValue(allDataFallbackFile, FallbackData.class);
+            return objectMapper.readValue(fallbackFile, FallbackData.class);
         } catch (IOException e) {
-            logger.error("Error reading from all data fallback file: {}", allDataFallbackFile.getAbsolutePath(), e);
+            logger.error("Error reading from fallback file: {}", fallbackFile.getAbsolutePath(), e);
             return new FallbackData();
         }
     }
 
     public void writeFallbackData(FallbackData data) {
         try {
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(allDataFallbackFile, data);
-            logger.info("Successfully wrote data to all data fallback file: {}", allDataFallbackFile.getAbsolutePath());
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(fallbackFile, data);
+            logger.info("Successfully wrote data to fallback file: {}", fallbackFile.getAbsolutePath());
         } catch (IOException e) {
-            logger.error("Error writing to all data fallback file: {}", allDataFallbackFile.getAbsolutePath(), e);
+            logger.error("Error writing to fallback file: {}", fallbackFile.getAbsolutePath(), e);
         }
     }
     

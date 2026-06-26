@@ -209,14 +209,15 @@ public class HomeController {
                 existingStudent.setPrefersRemote(updatedStudent.isPrefersRemote());
                 existingStudent.setPreferredLocations(updatedStudent.getPreferredLocations());
                 
-                // Actualizare interese (taxonomie)
-                String userInterests = allParams.entrySet().stream()
-                        .filter(e -> e.getKey().equals("applicationAnswers[UserInterests]"))
-                        .map(Map.Entry::getValue)
-                        .findFirst()
-                        .orElse("");
-                        
-                existingStudent.getApplicationAnswers().put("UserInterests", userInterests);
+                // Correctly update applicationAnswers
+                Map<String, String> applicationAnswers = new HashMap<>();
+                for (Map.Entry<String, String> entry : allParams.entrySet()) {
+                    if (entry.getKey().startsWith("applicationAnswers[")) {
+                        String questionText = entry.getKey().replace("applicationAnswers[", "").replace("]", "");
+                        applicationAnswers.put(questionText, entry.getValue());
+                    }
+                }
+                existingStudent.setApplicationAnswers(applicationAnswers);
                 
                 studentService.saveStudent(existingStudent, loggedInUser);
             }
