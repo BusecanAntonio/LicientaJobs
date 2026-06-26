@@ -75,6 +75,12 @@
             <version>2.0.24</version>
         </dependency>
 
+        <!-- Spring Boot Mail Sender -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!-- DevTools for hot reload (optional) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

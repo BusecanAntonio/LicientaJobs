@@ -4,6 +4,8 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
+import java.time.LocalDateTime;
+
 @Node
 public class User {
 
@@ -15,6 +17,10 @@ public class User {
     private String password;
     private String fullName;
     private String email;
+
+    // Fields for password reset
+    private String resetCode;
+    private LocalDateTime resetCodeExpiry;
 
     public User() {}
 
@@ -56,5 +62,22 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // Getters and setters for password reset fields
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
+    }
+
+    public LocalDateTime getResetCodeExpiry() {
+        return resetCodeExpiry;
+    }
+
+    public void setResetCodeExpiry(LocalDateTime resetCodeExpiry) {
+        this.resetCodeExpiry = resetCodeExpiry;
     }
 }

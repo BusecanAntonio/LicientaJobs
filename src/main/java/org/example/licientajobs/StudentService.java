@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,9 +48,10 @@ public class StudentService {
     private final SimpMessagingTemplate messagingTemplate;
     private final OllamaService ollamaService;
     private final PasswordEncoder passwordEncoder;
-    private final PdfService pdfService; // Adăugat PdfService
+    private final PdfService pdfService;
+    private final EmailService emailService;
 
-    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService, PasswordEncoder passwordEncoder, PdfService pdfService) {
+    public StudentService(StudentRepository studentRepository, UserRepository userRepository, JsonFallbackService jsonFallbackService, StorageService storageService, SimpMessagingTemplate messagingTemplate, OllamaService ollamaService, PasswordEncoder passwordEncoder, PdfService pdfService, EmailService emailService) {
         this.studentRepository = studentRepository;
         this.userRepository = userRepository;
         this.jsonFallbackService = jsonFallbackService;
@@ -56,30 +59,71 @@ public class StudentService {
         this.messagingTemplate = messagingTemplate;
         this.ollamaService = ollamaService;
         this.passwordEncoder = passwordEncoder;
-        this.pdfService = pdfService; // Inițializat PdfService
+        this.pdfService = pdfService;
+        this.emailService = emailService;
     }
 
-    // ... restul metodelor rămân neschimbate ...
+    public boolean generateAndSendResetCode(String username, String email) {
+        Optional<User> userOpt = userRepository.findByUsername(username).stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .findFirst();
 
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            String code = String.format("%06d", new Random().nextInt(999999));
+            user.setResetCode(code);
+            user.setResetCodeExpiry(LocalDateTime.now().plusMinutes(15));
+            userRepository.save(user);
+            emailService.sendPasswordResetCode(email, code);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean resetPassword(String username, String code, String newPassword) {
+        Optional<User> userOpt = userRepository.findByUsername(username).stream().findFirst();
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (user.getResetCode() != null && user.getResetCode().equals(code) && user.getResetCodeExpiry().isAfter(LocalDateTime.now())) {
+                user.setPassword(passwordEncoder.encode(newPassword));
+                user.setResetCode(null);
+                user.setResetCodeExpiry(null);
+                userRepository.save(user);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean changePassword(String username, String oldPassword, String newPassword) {
+        Optional<User> userOpt = userRepository.findByUsername(username).stream().findFirst();
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (passwordEncoder.matches(oldPassword, user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(newPassword));
+                userRepository.save(user);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // ... restul metodelor ...
+    
     public void extractAndSaveSkills(Student student, MultipartFile pdfFile) {
         try {
-            // 1. Salvează fișierul PDF pe disc folosind StorageService
             String pdfFileName = storageService.store(pdfFile, student.getId());
             Path pdfPath = storageService.load(student.getId(), pdfFileName);
 
-            // 2. Creează calea pentru fișierul TXT
             String txtFileName = pdfFileName.replace(".pdf", ".txt");
             Path txtPath = storageService.load(student.getId(), txtFileName);
 
-            // 3. Convertește PDF-ul în TXT folosind PdfService
             pdfService.convertPdfToTxt(pdfPath, txtPath);
             logger.info("Converted PDF {} to TXT {}", pdfFileName, txtFileName);
 
-            // 4. Citește conținutul din fișierul TXT nou creat
             String fileContent = Files.readString(txtPath, StandardCharsets.UTF_8);
             String contentToSend = fileContent.length() > 3000 ? fileContent.substring(0, 3000) : fileContent;
 
-            // 5. Trimite conținutul TXT la Ollama pentru extragerea competențelor
             String prompt = "Extract the skills from the following text.\n" +
                     "Return ONLY a JSON array of strings containing the skills. Example: [\"Java\", \"Spring\", \"Teamwork\"]\n" +
                     "Do NOT return any other text, markdown blocks, or explanations.\n" +
@@ -122,10 +166,6 @@ public class StudentService {
             logger.error("Error in extractAndSaveSkills process", e);
         }
     }
-    
-    // =========================================================
-    // RESTUL METODELOR (copy-paste de la versiunea anterioară)
-    // =========================================================
     
     private void synchronizeDbToJson() {
         logger.info("Synchronizing all data from Memgraph to JSON file.");
@@ -477,53 +517,16 @@ public class StudentService {
         user.setUsername(username);
         user.setFullName(fullName);
         user.setEmail(email);
-        user.setPassword(password);
-
-        List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
-        fallbackUsers.removeIf(u -> u.getUsername().equals(username));
-        user.setId(System.currentTimeMillis());
-        fallbackUsers.add(user);
-        jsonFallbackService.writeUsersFallbackData(fallbackUsers);
-        logger.info("User {} saved to JSON fallback with unencrypted password.", username);
-
         user.setPassword(passwordEncoder.encode(password));
-        try {
-            userRepository.save(user);
-            logger.info("User {} saved to Memgraph with encrypted password.", username);
-        } catch (DataAccessException e) {
-            logger.warn("Memgraph connection failed. User {} saved to JSON fallback only.", username, e);
-        }
+        userRepository.save(user);
     }
 
     public boolean authenticateUser(String username, String password) {
-        try {
-            List<User> users = userRepository.findByUsername(username);
-            if(!users.isEmpty()) {
-                User user = users.get(0);
-                if (passwordEncoder.matches(password, user.getPassword())) {
-                    return true;
-                } else {
-                    if (!user.getPassword().startsWith("$2a$") && !user.getPassword().startsWith("$2b$") && !user.getPassword().startsWith("$2y$")) {
-                        if (password.equals(user.getPassword())) {
-                            user.setPassword(passwordEncoder.encode(password));
-                            userRepository.save(user);
-                            logger.info("User {} password re-encrypted and saved to Memgraph.", username);
-                            return true;
-                        }
-                    }
-                }
-            }
-        } catch (DataAccessException e) {
-            logger.warn("Memgraph connection failed. Authenticating from JSON fallback.", e);
+        Optional<User> userOpt = userRepository.findByUsername(username).stream().findFirst();
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            return passwordEncoder.matches(password, user.getPassword());
         }
-        
-        List<User> fallbackUsers = jsonFallbackService.readUsersFallbackData();
-        for (User user : fallbackUsers) {
-            if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
-                return true;
-            }
-        }
-        
         return false;
     }
     

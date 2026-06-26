@@ -112,6 +112,17 @@
         </a>
     </div>
 
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+        <div>
+            <h2>Student Dashboard</h2>
+            <p class="text-muted">Welcome, <strong th:text="${username}">User</strong>!</p>
+        </div>
+        <div>
+            <a th:href="@{/change-password}" class="btn btn-outline-secondary btn-sm">Change Password</a>
+            <a th:href="@{/logout}" class="btn btn-danger btn-sm">Logout</a>
+        </div>
+    </div>
+
     <div th:if="${#lists.isEmpty(students)}" class="alert alert-info text-center">
         Nu există studenți adăugați de tine. <a th:href="@{/students/add}" class="alert-link">Adaugă unul acum!</a>
     </div>

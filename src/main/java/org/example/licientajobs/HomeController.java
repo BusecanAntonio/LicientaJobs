@@ -34,6 +34,30 @@ public class HomeController {
         this.escoImportService = escoImportService;
     }
 
+    @GetMapping("/change-password")
+    public String showChangePasswordForm(HttpSession session) {
+        if (session.getAttribute("loggedInUser") == null) {
+            return "redirect:/login";
+        }
+        return "change-password";
+    }
+
+    @PostMapping("/change-password")
+    public String changePassword(@RequestParam String oldPassword, @RequestParam String newPassword, HttpSession session, RedirectAttributes redirectAttributes) {
+        String username = (String) session.getAttribute("loggedInUser");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        boolean success = studentService.changePassword(username, oldPassword, newPassword);
+        if (success) {
+            redirectAttributes.addFlashAttribute("success", "Password changed successfully.");
+            return "redirect:/students";
+        } else {
+            redirectAttributes.addFlashAttribute("error", "Incorrect old password.");
+            return "redirect:/change-password";
+        }
+    }
+
     @GetMapping("/")
     public String home(HttpSession session) {
         if (session.getAttribute("loggedInUser") != null) {
