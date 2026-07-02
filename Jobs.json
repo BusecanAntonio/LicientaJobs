@@ -11,7 +11,7 @@
     "country" : "France",
     "latitude" : 48.8520,
     "longitude" : 2.4200,
-    "requiredSkills" : ["C++", "OOP", "Game Development", "Data Structures", "Problem Solving"],
+    "requiredSkills" : ["Programming in C++", "Object oriented programming", "Game development", "Use of data structures", "Software problem solving"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -31,12 +31,12 @@
     "country" : "USA",
     "latitude" : 37.5250,
     "longitude" : -122.2530,
-    "requiredSkills" : ["Manual Testing", "Bug Reporting", "JIRA", "Test Cases", "Attention to Detail"],
+    "requiredSkills" : ["Manual software testing", "Bug reporting", "Defect tracking (JIRA)", "Test case creation", "Attention to detail"],
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
       "endTime" : "22:00",
-      "shift" : "După-amiaza"
+      "shift" : "Dupa-amiaza"
     },
     "applicationDate" : null
   }, {
@@ -51,7 +51,7 @@
     "country" : "USA",
     "latitude" : 40.7240,
     "longitude" : -73.9980,
-    "requiredSkills" : ["Blender", "Maya", "3D Modeling", "Texturing", "ZBrush"],
+    "requiredSkills" : ["3D modeling (Blender/Maya)", "3D asset creation", "Texture mapping", "Digital sculpting (ZBrush)"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -71,15 +71,15 @@
     "country" : "Poland",
     "latitude" : 52.2690,
     "longitude" : 21.0260,
-    "requiredSkills" : ["Unreal Engine", "Level Design", "Scripting", "Blueprints", "Game Design"],
+    "requiredSkills" : ["Unreal Engine mastery", "Level design", "Visual scripting (Blueprints)", "Game environment design", "Game design principles"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
-  }, {
+  },{
     "id" : 2817,
     "jobTitle" : "Game Designer",
     "company" : "Nintendo",
@@ -91,12 +91,12 @@
     "country" : "Japan",
     "latitude" : 34.9700,
     "longitude" : 135.7560,
-    "requiredSkills" : ["Game Design", "Prototyping", "Game Mechanics", "Creativity"],
+    "requiredSkills" : ["Game design", "Rapid prototyping", "Gameplay mechanics design", "Creative conceptualization"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -111,7 +111,7 @@
     "country" : "USA",
     "latitude" : 37.4220,
     "longitude" : -122.0840,
-    "requiredSkills" : ["Java", "Spring Boot", "Microservices", "Distributed Systems", "SQL", "Cloud"],
+    "requiredSkills" : ["Java programming", "Spring Boot framework", "Microservices architecture", "Distributed systems", "SQL databases", "Cloud computing"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -131,12 +131,12 @@
     "country" : "USA",
     "latitude" : 37.4850,
     "longitude" : -122.1480,
-    "requiredSkills" : ["JavaScript", "React", "HTML", "CSS", "TypeScript", "Redux"],
+    "requiredSkills" : ["Web programming (JavaScript)", "Frontend frameworks (React)", "HTML5 & CSS3", "TypeScript", "State management (Redux)"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "12:30 - 13:30",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -151,7 +151,7 @@
     "country" : "USA",
     "latitude" : 47.6150,
     "longitude" : -122.3390,
-    "requiredSkills" : ["Java", "Spring Boot", "Microservices", "System Design", "AWS", "Leadership"],
+    "requiredSkills" : ["Server-side programming (Java)", "Spring Boot framework", "Microservices architecture", "Software architecture", "Cloud infrastructure (AWS)", "Team leadership"],
     "workSchedule" : {
       "startTime" : "22:00",
       "breakTime" : "02:00 - 02:30",
@@ -171,7 +171,7 @@
     "country" : "USA",
     "latitude" : 47.6420,
     "longitude" : -122.1360,
-    "requiredSkills" : ["Azure", "Docker", "Kubernetes", "CI/CD", "Terraform", "PowerShell"],
+    "requiredSkills" : ["Cloud platform (Azure)", "Containerization (Docker)", "Kubernetes orchestration", "CI/CD pipelines", "Infrastructure as code (Terraform)", "PowerShell scripting"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -191,12 +191,12 @@
     "country" : "USA",
     "latitude" : 37.2590,
     "longitude" : -121.9630,
-    "requiredSkills" : ["Python", "Machine Learning", "Data Analysis", "SQL", "Pandas", "Statistics"],
+    "requiredSkills" : ["Data mining", "Machine learning", "Statistical analysis", "Database management", "Data visualization"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 14:30",
       "endTime" : "18:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -211,7 +211,7 @@
     "country" : "USA",
     "latitude" : 37.3340,
     "longitude" : -122.0080,
-    "requiredSkills" : ["Cybersecurity", "Networking", "SIEM", "Linux", "Security Concepts"],
+    "requiredSkills" : ["Information security", "Network security", "Security monitoring (SIEM)", "Linux administration", "Threat identification"],
     "workSchedule" : {
       "startTime" : "00:00",
       "breakTime" : "04:00 - 04:30",
@@ -231,7 +231,7 @@
     "country" : "Sweden",
     "latitude" : 59.3320,
     "longitude" : 18.0580,
-    "requiredSkills" : ["Figma", "UI Design", "UX Research", "Prototyping", "Mobile Design"],
+    "requiredSkills" : ["User interface design", "User research", "Prototyping", "Interaction design", "User experience"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -251,12 +251,12 @@
     "country" : "USA",
     "latitude" : 37.7760,
     "longitude" : -122.4170,
-    "requiredSkills" : ["Product Management", "Agile", "Leadership", "Market Research"],
+    "requiredSkills" : ["Product lifecycle", "Agile project management", "Team leadership", "Market research"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -271,12 +271,12 @@
     "country" : "USA",
     "latitude" : 37.7760,
     "longitude" : -122.3920,
-    "requiredSkills" : ["Swift", "iOS", "Xcode", "UIKit", "CoreData"],
+    "requiredSkills" : ["Mobile development", "iOS development", "Mobile SDKs", "Mobile UI", "Data persistence"],
     "workSchedule" : {
       "startTime" : "12:00",
       "breakTime" : "16:00 - 16:30",
       "endTime" : "20:00",
-      "shift" : "După-amiaza"
+      "shift" : "Dupa-amiaza"
     },
     "applicationDate" : null
   }, {
@@ -291,12 +291,12 @@
     "country" : "USA",
     "latitude" : 37.7680,
     "longitude" : -122.3870,
-    "requiredSkills" : ["Kotlin", "Android Studio", "Java", "Jetpack Compose", "MVVM"],
+    "requiredSkills" : ["Mobile development", "Android development", "Java (Android)", "Mobile UI", "App architecture"],
     "workSchedule" : {
       "startTime" : "12:00",
       "breakTime" : "16:00 - 16:30",
       "endTime" : "20:00",
-      "shift" : "După-amiaza"
+      "shift" : "Dupa-amiaza"
     },
     "applicationDate" : null
   }, {
@@ -311,12 +311,12 @@
     "country" : "USA",
     "latitude" : 41.1080,
     "longitude" : -73.7220,
-    "requiredSkills" : ["AWS", "Azure", "GCP", "Architecture", "System Design", "Kubernetes"],
+    "requiredSkills" : ["Cloud design", "Enterprise architecture", "Containerization", "System architecture", "Cloud strategy"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -331,7 +331,7 @@
     "country" : "USA",
     "latitude" : 37.3710,
     "longitude" : -121.9660,
-    "requiredSkills" : ["Python", "TensorFlow", "PyTorch", "Deep Learning", "C++", "CUDA"],
+    "requiredSkills" : ["Programming (Python)", "Machine learning frameworks", "Deep learning", "Programming (C++)", "GPU programming (CUDA)"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -351,12 +351,12 @@
     "country" : "USA",
     "latitude" : 37.3870,
     "longitude" : -121.9630,
-    "requiredSkills" : ["C", "C++", "Embedded Systems", "Microcontrollers", "Assembly"],
+    "requiredSkills" : ["Programming (C)", "Programming (C++)", "Embedded systems", "Microcontrollers", "Assembly language"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 12:30",
       "endTime" : "16:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -371,12 +371,12 @@
     "country" : "USA",
     "latitude" : 30.2670,
     "longitude" : -97.7430,
-    "requiredSkills" : ["Technical Writing", "Documentation", "English", "Markdown"],
+    "requiredSkills" : ["Technical writing", "Software documentation", "English language", "Markdown markup language"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -391,12 +391,12 @@
     "country" : "USA",
     "latitude" : 30.4850,
     "longitude" : -97.6620,
-    "requiredSkills" : ["IT Support", "Troubleshooting", "Customer Service", "Active Directory"],
+    "requiredSkills" : ["IT support", "Hardware troubleshooting", "Customer service", "Directory services (Active Directory)"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (24/7)"
+      "shift" : "In ture (24/7)"
     },
     "applicationDate" : null
   }, {
@@ -411,7 +411,7 @@
     "country" : "USA",
     "latitude" : 33.6570,
     "longitude" : -117.7660,
-    "requiredSkills" : ["Project Management", "Leadership", "Agile", "JIRA", "Game Production"],
+    "requiredSkills" : ["Project management", "Team leadership", "Agile project management", "Defect tracking (JIRA)", "Game production management"],
     "workSchedule" : {
       "startTime" : "11:00",
       "breakTime" : "15:00 - 16:00",
@@ -431,12 +431,12 @@
     "country" : "Canada",
     "latitude" : 53.5460,
     "longitude" : -113.4910,
-    "requiredSkills" : ["Creative Writing", "Game Narrative", "Storytelling", "Scripting"],
+    "requiredSkills" : ["Creative writing", "Game narrative design", "Storytelling", "Scripting"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
       "endTime" : "18:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -451,12 +451,12 @@
     "country" : "USA",
     "latitude" : 37.5640,
     "longitude" : -122.2850,
-    "requiredSkills" : ["Audio Design", "Pro Tools", "Sound Mixing", "Wwise", "FMOD"],
+    "requiredSkills" : ["Audio design", "Digital audio workstation (Pro Tools)", "Sound mixing", "Game audio engines (Wwise)", "Audio middleware (FMOD)"],
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
       "endTime" : "21:00",
-      "shift" : "După-amiaza"
+      "shift" : "Dupa-amiaza"
     },
     "applicationDate" : null
   }, {
@@ -471,7 +471,7 @@
     "country" : "USA",
     "latitude" : 37.8320,
     "longitude" : -122.2830,
-    "requiredSkills" : ["Animation", "Maya", "Storyboarding", "Character Animation"],
+    "requiredSkills" : ["3D animation", "3D software (Maya)", "Storyboarding", "Character animation"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -491,7 +491,7 @@
     "country" : "Japan",
     "latitude" : 35.6960,
     "longitude" : 139.7080,
-    "requiredSkills" : ["Concept Art", "Illustration", "Photoshop", "Digital Painting"],
+    "requiredSkills" : ["Concept art", "Illustration", "Digital imaging software (Photoshop)", "Digital painting"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -511,12 +511,12 @@
     "country" : "USA",
     "latitude" : 33.9200,
     "longitude" : -118.3270,
-    "requiredSkills" : ["Systems Engineering", "Aerospace", "MATLAB", "Simulink"],
+    "requiredSkills" : ["Systems engineering", "Aerospace engineering", "Scientific computing (MATLAB)", "Simulation software (Simulink)"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (24/7)"
+      "shift" : "In ture (24/7)"
     },
     "applicationDate" : null
   }, {
@@ -531,7 +531,7 @@
     "country" : "USA",
     "latitude" : 37.4080,
     "longitude" : -121.9530,
-    "requiredSkills" : ["Networking", "CCNA", "Security", "Routing", "Switching"],
+    "requiredSkills" : ["Computer networking", "Network certification (CCNA)", "Network security", "Network routing", "Network switching"],
     "workSchedule" : {
       "startTime" : "23:00",
       "breakTime" : "03:00 - 03:30",
@@ -551,12 +551,12 @@
     "country" : "USA",
     "latitude" : 30.2670,
     "longitude" : -97.7430,
-    "requiredSkills" : ["SQL", "Oracle DB", "Database Administration", "PL/SQL", "Performance Tuning"],
+    "requiredSkills" : ["SQL", "Oracle DB", "Database administration", "PL/SQL", "Database performance tuning"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (24/7)"
+      "shift" : "In ture (24/7)"
     },
     "applicationDate" : null
   }, {
@@ -571,12 +571,12 @@
     "country" : "UK",
     "latitude" : 51.5090,
     "longitude" : -0.1060,
-    "requiredSkills" : ["Business Analysis", "Communication", "Requirements Gathering", "SQL"],
+    "requiredSkills" : ["Business analysis", "Communication", "Requirements gathering", "SQL"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -591,12 +591,12 @@
     "country" : "USA",
     "latitude" : 33.7710,
     "longitude" : -84.3960,
-    "requiredSkills" : ["Marketing", "Strategy", "Digital Marketing", "Campaign Management"],
+    "requiredSkills" : ["Marketing", "Business strategy", "Digital marketing", "Campaign management"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -611,12 +611,12 @@
     "country" : "Romania",
     "latitude" : 44.4140,
     "longitude" : 26.1150,
-    "requiredSkills" : ["Human Resources", "Recruitment", "Communication", "Labor Law"],
+    "requiredSkills" : ["Human resources", "Recruitment", "Communication", "Labor law"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -631,7 +631,7 @@
     "country" : "USA",
     "latitude" : 37.6280,
     "longitude" : -122.4260,
-    "requiredSkills" : ["Video Editing", "Content Creation", "Gaming", "Streaming", "Audience Engagement"],
+    "requiredSkills" : ["Video editing", "Content creation", "Game playing", "Video streaming", "Audience engagement"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -651,12 +651,12 @@
     "country" : "UK",
     "latitude" : 51.5230,
     "longitude" : -0.0760,
-    "requiredSkills" : ["Esports", "Coaching", "Strategy", "Team Management"],
+    "requiredSkills" : ["Esports", "Coaching", "Competitive strategy", "Team management"],
     "workSchedule" : {
       "startTime" : "18:00",
       "breakTime" : "N/A",
       "endTime" : "22:00",
-      "shift" : "Flexibil (seara și weekend)"
+      "shift" : "Flexibil (seara si weekend)"
     },
     "applicationDate" : null
   }, {
@@ -671,12 +671,12 @@
     "country" : "USA",
     "latitude" : 37.7740,
     "longitude" : -122.4190,
-    "requiredSkills" : ["Community Management", "Communication", "Social Media", "Content Moderation"],
+    "requiredSkills" : ["Community management", "Communication", "Social media management", "Content moderation"],
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
       "endTime" : "22:00",
-      "shift" : "Flexibil (după-amiaza și seara)"
+      "shift" : "Flexibil (dupa-amiaza si seara)"
     },
     "applicationDate" : null
   }, {
@@ -691,7 +691,7 @@
     "country" : "USA",
     "latitude" : 37.4850,
     "longitude" : -122.1480,
-    "requiredSkills" : ["VR", "AR", "Unity", "C#", "3D Math", "Unreal Engine"],
+    "requiredSkills" : ["Virtual reality", "Augmented reality", "Game engines (Unity)", "Programming (C#)", "3D math", "Game engine software (Unreal Engine)"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -711,7 +711,7 @@
     "country" : "USA",
     "latitude" : 40.7040,
     "longitude" : -73.9290,
-    "requiredSkills" : ["Blockchain", "Solidity", "Ethereum", "Smart Contracts", "Web3.js"],
+    "requiredSkills" : ["Blockchain technology", "Solidity", "Ethereum", "Smart contracts", "Web3 JavaScript library"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -731,7 +731,7 @@
     "country" : "UK",
     "latitude" : 51.5330,
     "longitude" : -0.1260,
-    "requiredSkills" : ["AI", "Research", "Machine Learning", "Deep Learning", "Python"],
+    "requiredSkills" : ["Artificial intelligence", "Scientific research", "Machine learning", "Deep learning", "Programming (Python)"],
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -751,12 +751,12 @@
     "country" : "Lithuania",
     "latitude" : 54.6810,
     "longitude" : 25.2600,
-    "requiredSkills" : ["JavaScript", "Node.js", "React", "SQL", "Express.js", "HTML/CSS"],
+    "requiredSkills" : ["Web programming (JavaScript)", "Server-side development (Node.js)", "Frontend frameworks (React)", "SQL databases", "Backend frameworks (Express.js)", "HTML5 & CSS3"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -771,12 +771,12 @@
     "country" : "USA",
     "latitude" : 37.7770,
     "longitude" : -122.3910,
-    "requiredSkills" : ["SRE", "Linux", "Python", "Networking", "Kubernetes", "Monitoring"],
+    "requiredSkills" : ["Site reliability engineering", "Linux administration", "Programming (Python)", "Computer networking", "Container orchestration (Kubernetes)", "System monitoring"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (24/7)"
+      "shift" : "In ture (24/7)"
     },
     "applicationDate" : null
   }, {
@@ -791,7 +791,7 @@
     "country" : "Estonia",
     "latitude" : 59.4310,
     "longitude" : 24.7390,
-    "requiredSkills" : ["Growth Hacking", "Marketing", "Analytics", "SEO", "A/B Testing"],
+    "requiredSkills" : ["Growth hacking", "Marketing", "Data analytics", "Search engine optimization (SEO)", "A/B testing"],
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -811,12 +811,12 @@
     "country" : "USA",
     "latitude" : 40.7580,
     "longitude" : -73.9780,
-    "requiredSkills" : ["RPA", "Automation", "Testing", "UiPath", ".NET", "C#"],
+    "requiredSkills" : ["Robotic process automation", "Automation engineering", "Software testing", "Automation tools (UiPath)", ".NET framework", "Programming (C#)"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -831,12 +831,12 @@
     "country" : "USA",
     "latitude" : 38.8550,
     "longitude" : -94.7990,
-    "requiredSkills" : ["C", "Embedded Systems", "Hardware", "RTOS", "Microcontrollers"],
+    "requiredSkills" : ["Programming (C)", "Embedded systems", "Computer hardware", "Real-time operating systems", "Microcontrollers"],
     "workSchedule" : {
       "startTime" : "08:30",
       "breakTime" : "12:30 - 13:00",
       "endTime" : "16:30",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -851,12 +851,12 @@
     "country" : "UK",
     "latitude" : 51.5120,
     "longitude" : -0.0820,
-    "requiredSkills" : ["Architecture", "System Design", "Cloud", "Java", "Microservices"],
+    "requiredSkills" : ["Enterprise architecture", "System architecture", "Cloud computing", "Programming (Java)", "Microservices"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -871,12 +871,12 @@
     "country" : "Romania",
     "latitude" : 44.4440,
     "longitude" : 26.0350,
-    "requiredSkills" : ["Cybersecurity", "Ethical Hacking", "Networking", "Kali Linux", "Metasploit"],
+    "requiredSkills" : ["Information security", "Ethical hacking", "Computer networking", "Penetration testing software (Kali Linux)", "Exploitation frameworks (Metasploit)"],
     "workSchedule" : {
       "startTime" : "15:00",
       "breakTime" : "19:00 - 19:30",
       "endTime" : "23:00",
-      "shift" : "Flexibil (după-amiaza și seara)"
+      "shift" : "Flexibil (dupa-amiaza si seara)"
     },
     "applicationDate" : null
   }, {
@@ -891,12 +891,12 @@
     "country" : "Netherlands",
     "latitude" : 52.3140,
     "longitude" : 4.9500,
-    "requiredSkills" : ["Agile", "Scrum", "Leadership", "JIRA", "Facilitation"],
+    "requiredSkills" : ["Agile development", "Scrum methodology", "Team leadership", "Defect tracking (JIRA)", "Group facilitation"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -911,12 +911,12 @@
     "country" : "Germany",
     "latitude" : 52.5070,
     "longitude" : 13.4430,
-    "requiredSkills" : ["Data Engineering", "SQL", "Python", "ETL", "Spark", "Airflow"],
+    "requiredSkills" : ["Data engineering", "SQL", "Programming (Python)", "Data extraction (ETL)", "Data analytics framework (Spark)", "Job scheduling system (Airflow)"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "18:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -931,12 +931,12 @@
     "country" : "USA",
     "latitude" : 37.4000,
     "longitude" : -121.9750,
-    "requiredSkills" : ["Cloud Security", "AWS", "Networking", "Security Automation"],
+    "requiredSkills" : ["Cloud security", "Cloud computing services (AWS)", "Computer networking", "Security automation"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (24/7)"
+      "shift" : "In ture (24/7)"
     },
     "applicationDate" : null
   }, {
@@ -951,7 +951,7 @@
     "country" : "USA",
     "latitude" : 41.2180,
     "longitude" : -73.8030,
-    "requiredSkills" : ["Quantum Computing", "Physics", "Research", "Qiskit"],
+    "requiredSkills" : ["Quantum computing", "Physics", "Scientific research", "Quantum computing software (Qiskit)"],
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -971,12 +971,12 @@
     "country" : "USA",
     "latitude" : 42.3960,
     "longitude" : -71.2520,
-    "requiredSkills" : ["Robotics", "C++", "ROS", "Engineering", "Control Systems"],
+    "requiredSkills" : ["Robotics", "Programming (C++)", "Robotics software framework (ROS)", "Engineering principles", "Control systems"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
       "endTime" : "16:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -991,12 +991,12 @@
     "country" : "Switzerland",
     "latitude" : 47.5580,
     "longitude" : 7.6060,
-    "requiredSkills" : ["Bioinformatics", "Data Analysis", "Python", "R", "Genomics"],
+    "requiredSkills" : ["Bioinformatics", "Data analysis", "Programming (Python)", "Statistical programming (R)", "Genomics"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -1011,12 +1011,12 @@
     "country" : "Japan",
     "latitude" : 35.6580,
     "longitude" : 139.7950,
-    "requiredSkills" : ["IT Administration", "Networking", "Windows Server", "Active Directory"],
+    "requiredSkills" : ["IT systems administration", "Computer networking", "Windows Server system", "Directory services (Active Directory)"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (24/7)"
+      "shift" : "In ture (24/7)"
     },
     "applicationDate" : null
   }, {
@@ -1031,12 +1031,12 @@
     "country" : "Brazil",
     "latitude" : -22.7050,
     "longitude" : -46.9740,
-    "requiredSkills" : ["Customer Support", "Troubleshooting", "Helpdesk", "Ticketing Systems"],
+    "requiredSkills" : ["Customer support", "Hardware troubleshooting", "Helpdesk operations", "Use of ticketing systems"],
     "workSchedule" : {
       "startTime" : "07:00",
       "breakTime" : "Variabil",
       "endTime" : "23:00",
-      "shift" : "În ture (dimineața, după-amiaza)"
+      "shift" : "In ture (dimineata, dupa-amiaza)"
     },
     "applicationDate" : null
   }, {
@@ -1051,12 +1051,12 @@
     "country" : "Austria",
     "latitude" : 48.2360,
     "longitude" : 16.4170,
-    "requiredSkills" : ["Civil Engineering", "Construction Management", "AutoCAD", "Site Supervision"],
+    "requiredSkills" : ["Civil engineering", "Construction management", "Computer-aided design (AutoCAD)", "Site supervision"],
     "workSchedule" : {
       "startTime" : "07:00",
       "breakTime" : "12:00 - 13:00",
       "endTime" : "16:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -1071,12 +1071,12 @@
     "country" : "Austria",
     "latitude" : 48.1670,
     "longitude" : 16.3860,
-    "requiredSkills" : ["Project Management", "Leadership", "Construction", "Budgeting"],
+    "requiredSkills" : ["Project management", "Team leadership", "Construction methods", "Budgeting"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
       "endTime" : "17:00",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -1091,7 +1091,7 @@
     "country" : "Romania",
     "latitude" : 44.4370,
     "longitude" : 26.0960,
-    "requiredSkills" : ["Architecture", "Design", "AutoCAD", "Revit", "3D Modeling"],
+    "requiredSkills" : ["Architectural design", "Building design", "Computer-aided design (AutoCAD)", "BIM software (Revit)", "3D modeling"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -1111,12 +1111,12 @@
     "country" : "Germany",
     "latitude" : 48.1400,
     "longitude" : 11.5760,
-    "requiredSkills" : ["Electrical Engineering", "AutoCAD Electrical", "EPLAN", "Circuit Design"],
+    "requiredSkills" : ["Electrical engineering", "AutoCAD Electrical software", "Electrical engineering software (EPLAN)", "Circuit design"],
     "workSchedule" : {
       "startTime" : "08:00",
-      "breakTime" : "12:30 - 13:00",
+      "breakTime" : "12:30 - 13:30",
       "endTime" : "16:30",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -1131,12 +1131,12 @@
     "country" : "Italy",
     "latitude" : 41.9160,
     "longitude" : 12.4990,
-    "requiredSkills" : ["Electromechanics", "Maintenance", "Repair", "Troubleshooting"],
+    "requiredSkills" : ["Electromechanics", "Equipment maintenance", "Equipment repair", "Hardware troubleshooting"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
       "endTime" : "Variabil",
-      "shift" : "În ture (zi, noapte)"
+      "shift" : "In ture (zi, noapte)"
     },
     "applicationDate" : null
   }, {
@@ -1151,12 +1151,12 @@
     "country" : "Germany",
     "latitude" : 52.3940,
     "longitude" : 9.7280,
-    "requiredSkills" : ["Automation", "PLC Programming", "Engineering", "Siemens TIA Portal"],
+    "requiredSkills" : ["Industrial automation", "PLC programming", "Engineering principles", "Automation software (Siemens TIA Portal)"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
       "endTime" : "16:30",
-      "shift" : "Dimineața"
+      "shift" : "Dimineata"
     },
     "applicationDate" : null
   }, {
@@ -1169,12 +1169,11 @@
     "country": "Romania",
     "latitude": 44.4396,
     "longitude": 26.0963,
-    "requiredSkills": ["Java", "Spring", "OOP", "SQL", "Git"],
+    "requiredSkills": ["Programming (Java)", "Software framework (Spring)", "Object-oriented programming", "SQL", "Version control software (Git)"],
     "seniority": "Junior",
     "isRemote": false,
     "location": "Bucharest"
-  },
-  {
+  }, {
     "id": 3002,
     "jobTitle": "Cybersecurity Internship",
     "company": "Bitdefender",
@@ -1184,12 +1183,11 @@
     "country": "Romania",
     "latitude": 44.4479,
     "longitude": 26.0943,
-    "requiredSkills": ["Networking", "Security Concepts", "Linux", "Python", "Scripting"],
+    "requiredSkills": ["Computer networking", "Information security concepts", "Linux systems", "Programming (Python)", "Scripting"],
     "seniority": "Internship",
     "isRemote": true,
     "location": "Remote"
-  },
-  {
+  }, {
     "id": 3003,
     "jobTitle": "Data Science Intern",
     "company": "Booking.com",
@@ -1199,12 +1197,11 @@
     "country": "Netherlands",
     "latitude": 52.3676,
     "longitude": 4.9041,
-    "requiredSkills": ["Python", "R", "SQL", "Statistics", "Machine Learning", "Data Visualization"],
+    "requiredSkills": ["Programming (Python)", "Statistical programming (R)", "SQL", "Statistical analysis", "Machine learning", "Data visualization"],
     "seniority": "Internship",
     "isRemote": false,
     "location": "Amsterdam"
-  },
-  {
+  }, {
     "id": 3004,
     "jobTitle": "Cloud Engineer",
     "company": "Amazon Web Services",
@@ -1214,12 +1211,11 @@
     "country": "Ireland",
     "latitude": 53.3498,
     "longitude": -6.2603,
-    "requiredSkills": ["AWS", "Linux", "Terraform", "Kubernetes", "Docker", "CI/CD"],
+    "requiredSkills": ["Cloud computing services (AWS)", "Linux administration", "Infrastructure as code (Terraform)", "Container orchestration (Kubernetes)", "Containerization (Docker)", "CI/CD pipelines"],
     "seniority": "Mid",
     "isRemote": false,
     "location": "Dublin"
-  },
-  {
+  }, {
     "id": 3005,
     "jobTitle": "Senior Frontend Developer",
     "company": "Zalando",
@@ -1229,12 +1225,11 @@
     "country": "Germany",
     "latitude": 52.5200,
     "longitude": 13.4050,
-    "requiredSkills": ["React", "TypeScript", "GraphQL", "Performance Optimization", "Webpack"],
+    "requiredSkills": ["Frontend frameworks (React)", "TypeScript", "Query languages (GraphQL)", "Web performance optimization", "Build automation tools (Webpack)"],
     "seniority": "Senior",
     "isRemote": true,
     "location": "Berlin"
-  },
-  {
+  }, {
     "id": 3006,
     "jobTitle": "DevOps Specialist",
     "company": "Endava",
@@ -1244,85 +1239,85 @@
     "country": "Romania",
     "latitude": 46.7712,
     "longitude": 23.6236,
-    "requiredSkills": ["CI/CD", "Jenkins", "Ansible", "Azure", "Scripting", "Groovy"],
+    "requiredSkills": ["CI/CD pipelines", "Automation servers (Jenkins)", "Configuration management (Ansible)", "Cloud computing (Azure)", "Scripting", "Programming (Groovy)"],
     "seniority": "Mid",
     "isRemote": false,
     "location": "Cluj-Napoca"
   },
-  {
-    "id": 3007,
-    "jobTitle": "AI Engineer",
-    "company": "Wayve",
-    "description": "Developing the next generation of autonomous driving technology.",
-    "licentaGrade": "9.8",
-    "status": "AVAILABLE",
-    "country": "UK",
-    "latitude": 51.5074,
-    "longitude": -0.1278,
-    "requiredSkills": ["Python", "PyTorch", "Computer Vision", "Deep Learning", "C++"],
-    "seniority": "Mid",
-    "isRemote": false,
-    "location": "London"
-  },
-  {
-    "id": 3008,
-    "jobTitle": "Junior Python Developer",
-    "company": "Revolut",
-    "description": "Help build the financial super-app of the future.",
-    "licentaGrade": "8.7",
-    "status": "AVAILABLE",
-    "country": "Lithuania",
-    "latitude": 54.6872,
-    "longitude": 25.2797,
-    "requiredSkills": ["Python", "Django", "Flask", "PostgreSQL", "REST APIs"],
-    "seniority": "Junior",
-    "isRemote": true,
-    "location": "Vilnius"
-  },
-  {
-    "id": 3009,
-    "jobTitle": "Lead Game Developer",
-    "company": "Amber",
-    "description": "Lead a team of talented developers on exciting new game projects.",
-    "licentaGrade": "9.5",
-    "status": "AVAILABLE",
-    "country": "Romania",
-    "latitude": 44.4268,
-    "longitude": 26.1025,
-    "requiredSkills": ["C++", "Unreal Engine", "Leadership", "Agile", "Project Management", "System Design"],
-    "seniority": "Lead",
-    "isRemote": false,
-    "location": "Bucharest"
-  },
-  {
-    "id": 3010,
-    "jobTitle": "Security Operations Center (SOC) Analyst",
-    "company": "SecureWorks",
-    "description": "Monitor, detect, and respond to cybersecurity threats in real-time.",
-    "licentaGrade": "8.9",
-    "status": "AVAILABLE",
-    "country": "Romania",
-    "latitude": 44.4323,
-    "longitude": 26.0933,
-    "requiredSkills": ["SIEM", "Intrusion Detection", "Incident Response", "Wireshark", "Network Security"],
-    "seniority": "Junior",
-    "isRemote": false,
-    "location": "Bucharest"
-  },
-  {
-    "id": 3011,
-    "jobTitle": "Business Intelligence Analyst",
-    "company": "eMAG",
-    "description": "Create reports and dashboards to support business decisions, using Java for data processing scripts and Excel for reporting.",
-    "licentaGrade": "8.6",
-    "status": "AVAILABLE",
-    "country": "Romania",
-    "latitude": 44.4352,
-    "longitude": 26.1024,
-    "requiredSkills": ["Java", "Excel", "JavaScript", "SQL", "Tableau"],
-    "seniority": "Junior",
-    "isRemote": false,
-    "location": "Bucharest"
-  }
-]
+    {
+      "id": 3007,
+      "jobTitle": "AI Engineer",
+      "company": "Wayve",
+      "description": "Developing the next generation of autonomous driving technology.",
+      "licentaGrade": "9.8",
+      "status": "AVAILABLE",
+      "country": "UK",
+      "latitude": 51.5074,
+      "longitude": -0.1278,
+      "requiredSkills": ["Programming (Python)", "Machine learning frameworks (PyTorch)", "Computer vision", "Deep learning", "Programming (C++)"],
+      "seniority": "Mid",
+      "isRemote": false,
+      "location": "London"
+    },
+    {
+      "id": 3008,
+      "jobTitle": "Junior Python Developer",
+      "company": "Revolut",
+      "description": "Help build the financial super-app of the future.",
+      "licentaGrade": "8.7",
+      "status": "AVAILABLE",
+      "country": "Lithuania",
+      "latitude": 54.6872,
+      "longitude": 25.2797,
+      "requiredSkills": ["Programming (Python)", "Web frameworks (Django)", "Microframeworks (Flask)", "SQL databases (PostgreSQL)", "API design (REST APIs)"],
+      "seniority": "Junior",
+      "isRemote": true,
+      "location": "Vilnius"
+    },
+    {
+      "id": 3009,
+      "jobTitle": "Lead Game Developer",
+      "company": "Amber",
+      "description": "Lead a team of talented developers on exciting new game projects.",
+      "licentaGrade": "9.5",
+      "status": "AVAILABLE",
+      "country": "Romania",
+      "latitude": 44.4268,
+      "longitude": 26.1025,
+      "requiredSkills": ["Programming (C++)", "Game engine software (Unreal Engine)", "Team leadership", "Agile project management", "Project management", "System design architecture"],
+      "seniority": "Lead",
+      "isRemote": false,
+      "location": "Bucharest"
+    },
+    {
+      "id": 3010,
+      "jobTitle": "Security Operations Center (SOC) Analyst",
+      "company": "SecureWorks",
+      "description": "Monitor, detect, and respond to cybersecurity threats in real-time.",
+      "licentaGrade": "8.9",
+      "status": "AVAILABLE",
+      "country": "Romania",
+      "latitude": 44.4323,
+      "longitude": 26.0933,
+      "requiredSkills": ["Security monitoring (SIEM)", "Intrusion detection systems", "Incident management", "Network analysis software (Wireshark)", "Network security"],
+      "seniority": "Junior",
+      "isRemote": false,
+      "location": "Bucharest"
+    },
+    {
+      "id": 3011,
+      "jobTitle": "Business Intelligence Analyst",
+      "company": "eMAG",
+      "description": "Create reports and dashboards to support business decisions, using Java for data processing scripts and Excel for reporting.",
+      "licentaGrade": "8.6",
+      "status": "AVAILABLE",
+      "country": "Romania",
+      "latitude": 44.4352,
+      "longitude": 26.1024,
+      "requiredSkills": ["Programming (Java)", "Spreadsheet software (Excel)", "Web programming (JavaScript)", "SQL databases", "Data visualization software (Tableau)"],
+      "seniority": "Junior",
+      "isRemote": false,
+      "location": "Bucharest"
+    }
+  ]
 }
