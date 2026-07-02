@@ -24,11 +24,11 @@ public class DataSynchronizer implements CommandLineRunner {
     private final JobApplicationRepository jobApplicationRepository;
     private final EscoImportService escoImportService;
     private final Neo4jClient neo4jClient;
-    
+
     @Value("classpath:ESCO/cor_esco_mapping.csv")
     private Resource corMappingFile;
 
-    public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository, 
+    public DataSynchronizer(JsonFallbackService jsonFallbackService, StudentRepository studentRepository,
                             JobApplicationRepository jobApplicationRepository, EscoImportService escoImportService,
                             Neo4jClient neo4jClient) {
         this.jsonFallbackService = jsonFallbackService;
@@ -46,7 +46,7 @@ public class DataSynchronizer implements CommandLineRunner {
 
             Long occupationsCount = neo4jClient.query("MATCH (o:ESCOOccupation) RETURN count(o) as count")
                     .fetchAs(Long.class).mappedBy((ts, r) -> r.get("count").asLong()).one().orElse(0L);
-            
+
             if (occupationsCount == 0) {
                 logger.info("Nu s-au găsit Ocupații ESCO. Se începe importul automat (AȘTEAPTĂ CÂTEVA MINUTE SĂ SE TERMINE!)...");
                 escoImportService.importEscoData();
@@ -68,7 +68,7 @@ public class DataSynchronizer implements CommandLineRunner {
             if (fallbackStudents == null || fallbackStudents.isEmpty()) {
                 fallbackStudents = jsonFallbackService.readStudentsFallbackData();
             }
-            
+
             List<JobApplication> fallbackJobs = fallbackData.getAvailableJobs();
 
             if ((fallbackStudents == null || fallbackStudents.isEmpty()) && (fallbackJobs == null || fallbackJobs.isEmpty())) {
@@ -130,14 +130,14 @@ public class DataSynchronizer implements CommandLineRunner {
                     }
                 }
             }
-            
+
             // 3. GENERARE RELAȚII ÎNTRE JOBURI ȘI OCUPAȚII / SKILL-URI
             generateAdvancedRelationships();
-            
+
             // 4. PRINTARE RELAȚII DIRECT ÎN CONSOLA INTELLIJ
             logger.info("==================================================");
             logger.info("VERIFICARE MEMGRAPH: IATĂ CE RELAȚII EXISTĂ ÎN BAZA DE DATE:");
-            
+
             neo4jClient.query(
                 "MATCH (n)-[r]->(m) " +
                 "RETURN coalesce(n.name, n.jobTitle, n.preferredLabel, labels(n)[0], 'Nod') AS source, " +
@@ -147,7 +147,7 @@ public class DataSynchronizer implements CommandLineRunner {
             ).fetch().all().forEach(row -> {
                 logger.info("({})  ---[{}]--->  ({})", row.get("source"), row.get("relation"), row.get("target"));
             });
-            
+
             Long relCount = neo4jClient.query("MATCH ()-[r]->() RETURN count(r) as count")
                     .fetchAs(Long.class).mappedBy((ts, r) -> r.get("count").asLong()).one().orElse(0L);
             logger.info("...și multe altele! (Total relații în DB: {})", relCount);
@@ -175,7 +175,7 @@ public class DataSynchronizer implements CommandLineRunner {
                 "WITH j, s " +
                 "MERGE (j)-[:REQUIRES_SKILL]->(s)"
             ).run();
-            
+
             logger.info("Regenerăm relațiile de tip HAS_SKILL...");
             neo4jClient.query(
                 "MATCH (st:Student) " +
@@ -186,13 +186,13 @@ public class DataSynchronizer implements CommandLineRunner {
                 "WITH st, s " +
                 "MERGE (st)-[:HAS_SKILL]->(s)"
             ).run();
-            
+
             logger.info("Regenerăm relațiile de tip RELATED_TO_OCCUPATION...");
             neo4jClient.query(
                 "MATCH (j:JobApplication) " +
                 "MATCH (o:ESCOOccupation) " +
                 "WHERE toLower(j.jobTitle) CONTAINS toLower(o.preferredLabel) OR toLower(o.preferredLabel) CONTAINS toLower(j.jobTitle) " +
-                "WITH j, o " + 
+                "WITH j, o " +
                 "MERGE (j)-[:RELATED_TO_OCCUPATION]->(o)"
             ).run();
 
@@ -210,7 +210,7 @@ public class DataSynchronizer implements CommandLineRunner {
             logger.error("Eroare la generarea relațiilor avansate: ", e);
         }
     }
-    
+
     private void importCorAndMapToEsco(Resource file) {
         if (!file.exists()) {
             logger.warn("Fișierul COR {} nu a fost găsit.", file.getFilename());
@@ -220,10 +220,10 @@ public class DataSynchronizer implements CommandLineRunner {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"))) {
             String headerLine = reader.readLine();
             if (headerLine == null) return;
-            
+
             List<Map<String, Object>> batch = new ArrayList<>();
             String line;
-            
+
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",", 3);
                 if (values.length >= 3) {
@@ -234,7 +234,7 @@ public class DataSynchronizer implements CommandLineRunner {
                     ));
                 }
             }
-            
+
             if (!batch.isEmpty()) {
                 String cypher = "UNWIND $batch AS row " +
                                 "MERGE (c:COROccupation {code: row.corCode}) " +
@@ -244,14 +244,14 @@ public class DataSynchronizer implements CommandLineRunner {
                                 "WHERE toLower(e.preferredLabel) CONTAINS toLower(row.escoLabel) " +
                                 "WITH c, e WHERE e IS NOT NULL " +
                                 "MERGE (c)-[:EQUIVALENT_TO]->(e)";
-                
+
                 neo4jClient.query(cypher)
                         .bind(batch).to("batch")
                         .run();
-                        
+
                 logger.info("Import automat COR și mapare ESCO finalizate cu succes pentru {} înregistrări.", batch.size());
             }
-            
+
         } catch (Exception e) {
              logger.error("Eroare la auto-importul COR: ", e);
         }

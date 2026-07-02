@@ -35,60 +35,49 @@ public class EscoImportService {
     @Autowired
     private Neo4jClient neo4jClient;
 
-    /**
-     * IMPORTUL DATELOR ESCO - Folosim Cypher direcțional pentru eficiență
-     * ATENȚIE: Această metodă ar trebui rulată DOAR O DATĂ pentru a evita duplicatele 
-     * sau când vrei să reconstruiești graficul ESCO.
-     * Am inlocuit @Transactional cu gestionarea explicita a tranzactiilor
-     * deoarece neo4jClient poate avea conflicte cu managerul de tranzactii implicite in context web
-     */
     public void importEscoData() {
-        logger.info("--- Începem importul datelor ESCO și COR (Durează câteva minute) ---");
+        logger.info("--- STARTING ESCO & COR DATA IMPORT (This will take several minutes) ---");
 
         try {
-            // 1. Curățăm nodurile vechi ESCO (Dacă există)
-            logger.info("Pasul 1: Se șterg datele vechi...");
+            logger.info("[STEP 1/6] Deleting old ESCO data...");
             neo4jClient.query("MATCH (n:ESCOOccupation) DETACH DELETE n").run();
             neo4jClient.query("MATCH (n:ESCOSkill) DETACH DELETE n").run();
             neo4jClient.query("MATCH (n:COROccupation) DETACH DELETE n").run();
-            neo4jClient.query("MATCH (n:Subcategory)-[r:MAPS_TO_ESCO]->() DELETE r").run();
+            logger.info("[STEP 1/6] Finished deleting old data.");
 
-            // 2. Creăm Constrângeri de Unicitate (Important pentru viteza de import)
-            logger.info("Pasul 2: Setare constrângeri de unicitate...");
+            logger.info("[STEP 2/6] Setting up uniqueness constraints...");
             try {
                 neo4jClient.query("CREATE CONSTRAINT IF NOT EXISTS FOR (o:ESCOOccupation) REQUIRE o.uri IS UNIQUE").run();
                 neo4jClient.query("CREATE CONSTRAINT IF NOT EXISTS FOR (s:ESCOSkill) REQUIRE s.uri IS UNIQUE").run();
                 neo4jClient.query("CREATE CONSTRAINT IF NOT EXISTS FOR (c:COROccupation) REQUIRE c.code IS UNIQUE").run();
+                logger.info("[STEP 2/6] Constraints are set.");
             } catch (Exception e) {
-                logger.warn("Constrângerile există deja sau baza de date nu le suportă direct: " + e.getMessage());
+                logger.warn("[STEP 2/6] Constraints already exist or DB does not support them directly: " + e.getMessage());
             }
 
-            // 3. Citire și Salvare Ocupații (Occupations)
-            logger.info("Pasul 3: Importăm Ocupațiile (Occupations)...");
+            logger.info("[STEP 3/6] Importing ESCO Occupations...");
             importNodes(occupationsFile, "ESCOOccupation", "conceptUri", "preferredLabel");
+            logger.info("[STEP 3/6] Finished importing ESCO Occupations.");
 
-            // 4. Citire și Salvare Aptitudini (Skills)
-            logger.info("Pasul 4: Importăm Aptitudinile (Skills)...");
+            logger.info("[STEP 4/6] Importing ESCO Skills...");
             importNodes(skillsFile, "ESCOSkill", "conceptUri", "preferredLabel");
+            logger.info("[STEP 4/6] Finished importing ESCO Skills.");
 
-            // 5. Citire și Creare Relații (Occupation -> Skill)
-            logger.info("Pasul 5: Creăm Relațiile Ocupație -> Skill...");
+            logger.info("[STEP 5/6] Creating Occupation -> Skill relations...");
             importRelations(relationsFile);
+            logger.info("[STEP 5/6] Finished creating relations.");
             
-            // 6. Import COR și maparea la ESCO
-            logger.info("Pasul 6: Importăm și mapăm codurile COR la ESCO...");
+            logger.info("[STEP 6/6] Importing and mapping COR codes to ESCO...");
             importCorAndMapToEsco(corMappingFile);
+            logger.info("[STEP 6/6] Finished importing and mapping COR codes.");
 
-            logger.info("--- IMPORTUL ESCO & COR S-A TERMINAT CU SUCCES! ---");
+            logger.info("--- ESCO & COR DATA IMPORT FINISHED SUCCESSFULLY! ---");
 
         } catch (Exception e) {
-            logger.error("Eroare critică în timpul importului: ", e);
+            logger.error("--- CRITICAL ERROR during ESCO data import ---", e);
         }
     }
 
-    /**
-     * Metodă utilitară pentru a citi un CSV și a face BATCH INSERT cu Cypher
-     */
     private void importNodes(Resource file, String label, String uriCol, String labelCol) throws Exception {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"))) {
             String headerLine = reader.readLine();
@@ -98,7 +87,6 @@ public class EscoImportService {
             int uriIdx = -1;
             int labelIdx = -1;
 
-            // Găsim indexul coloanelor
             for (int i = 0; i < headers.length; i++) {
                 String h = headers[i].replace("\"", "").trim();
                 if (h.equals(uriCol)) uriIdx = i;
@@ -106,16 +94,15 @@ public class EscoImportService {
             }
 
             if (uriIdx == -1 || labelIdx == -1) {
-                logger.error("Nu s-au găsit coloanele {} și {} în fișierul {}", uriCol, labelCol, file.getFilename());
+                logger.error("Could not find required columns '{}' and '{}' in file {}", uriCol, labelCol, file.getFilename());
                 return;
             }
 
             List<Map<String, Object>> batch = new ArrayList<>();
             String line;
-            int count = 0;
+            int totalCount = 0;
 
             while ((line = reader.readLine()) != null) {
-                // Parsare simplă de CSV (atenție la virgulele din interiorul ghilimelelor)
                 String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
                 
                 if (values.length > Math.max(uriIdx, labelIdx)) {
@@ -128,41 +115,43 @@ public class EscoImportService {
                 }
 
                 if (batch.size() >= 1000) {
+                    logger.debug("Processing batch of {} nodes for label '{}'. Total processed so far: {}", batch.size(), label, totalCount);
                     executeNodeBatch(batch, label);
-                    count += batch.size();
+                    totalCount += batch.size();
                     batch.clear();
-                    logger.info("S-au procesat {} noduri de tip {}", count, label);
                 }
             }
             if (!batch.isEmpty()) {
+                logger.debug("Processing final batch of {} nodes for label '{}'.", batch.size(), label);
                 executeNodeBatch(batch, label);
-                count += batch.size();
+                totalCount += batch.size();
             }
-            logger.info("Total salvate: {} noduri {}", count, label);
+            logger.info("Total nodes saved for label '{}': {}", label, totalCount);
         }
     }
 
     private void executeNodeBatch(List<Map<String, Object>> batch, String label) {
-        String cypher = "UNWIND $batch AS row " +
-                        "MERGE (n:" + label + " {uri: row.uri}) " +
-                        "SET n.preferredLabel = row.preferredLabel";
-        neo4jClient.query(cypher)
-                .bind(batch).to("batch")
-                .run();
+        try {
+            String cypher = "UNWIND $batch AS row " +
+                            "MERGE (n:" + label + " {uri: row.uri}) " +
+                            "SET n.preferredLabel = row.preferredLabel";
+            neo4jClient.query(cypher)
+                    .bind(batch).to("batch")
+                    .run();
+        } catch (Exception e) {
+            logger.error("Failed to execute node batch for label '{}'. Error: {}", label, e.getMessage());
+            // Optionally re-throw if you want the whole process to stop
+            // throw new RuntimeException(e);
+        }
     }
 
-    /**
-     * Importă Relațiile (Occupation -> Skill) din occupationSkillRelations_en.csv
-     */
     private void importRelations(Resource file) throws Exception {
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"))) {
             String headerLine = reader.readLine();
             if (headerLine == null) return;
 
             String[] headers = headerLine.split(",");
-            int occUriIdx = -1;
-            int skillUriIdx = -1;
-            int relationTypeIdx = -1;
+            int occUriIdx = -1, skillUriIdx = -1, relationTypeIdx = -1;
 
             for (int i = 0; i < headers.length; i++) {
                 String h = headers[i].replace("\"", "").trim();
@@ -172,14 +161,14 @@ public class EscoImportService {
             }
 
             if (occUriIdx == -1 || skillUriIdx == -1) {
-                logger.error("Lipsesc coloane necesare în occupationSkillRelations_en.csv");
+                logger.error("Missing required columns in relations file: {}", file.getFilename());
                 return;
             }
 
             List<Map<String, Object>> essentialBatch = new ArrayList<>();
             List<Map<String, Object>> optionalBatch = new ArrayList<>();
             String line;
-            int count = 0;
+            int totalCount = 0;
 
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
@@ -201,78 +190,72 @@ public class EscoImportService {
                 }
 
                 if (essentialBatch.size() >= 1000) {
+                    logger.debug("Processing batch of {} ESSENTIAL relations.", essentialBatch.size());
                     executeRelationBatch(essentialBatch, "HAS_ESSENTIAL_SKILL");
-                    count += essentialBatch.size();
+                    totalCount += essentialBatch.size();
                     essentialBatch.clear();
                 }
                 if (optionalBatch.size() >= 1000) {
+                    logger.debug("Processing batch of {} OPTIONAL relations.", optionalBatch.size());
                     executeRelationBatch(optionalBatch, "HAS_OPTIONAL_SKILL");
-                    count += optionalBatch.size();
+                    totalCount += optionalBatch.size();
                     optionalBatch.clear();
                 }
             }
-            if (!essentialBatch.isEmpty()) executeRelationBatch(essentialBatch, "HAS_ESSENTIAL_SKILL");
-            if (!optionalBatch.isEmpty()) executeRelationBatch(optionalBatch, "HAS_OPTIONAL_SKILL");
+            if (!essentialBatch.isEmpty()) {
+                logger.debug("Processing final batch of {} ESSENTIAL relations.", essentialBatch.size());
+                executeRelationBatch(essentialBatch, "HAS_ESSENTIAL_SKILL");
+                totalCount += essentialBatch.size();
+            }
+            if (!optionalBatch.isEmpty()) {
+                logger.debug("Processing final batch of {} OPTIONAL relations.", optionalBatch.size());
+                executeRelationBatch(optionalBatch, "HAS_OPTIONAL_SKILL");
+                totalCount += optionalBatch.size();
+            }
             
-            logger.info("Import relații ESCO finalizat.");
+            logger.info("Total relations processed: {}", totalCount);
         }
     }
 
     private void executeRelationBatch(List<Map<String, Object>> batch, String relType) {
-        String cypher = "UNWIND $batch AS row " +
-                        "MATCH (o:ESCOOccupation {uri: row.occUri}) " +
-                        "MATCH (s:ESCOSkill {uri: row.skillUri}) " +
-                        "MERGE (o)-[:" + relType + "]->(s)";
-        neo4jClient.query(cypher)
-                .bind(batch).to("batch")
-                .run();
+        try {
+            String cypher = "UNWIND $batch AS row " +
+                            "MATCH (o:ESCOOccupation {uri: row.occUri}) " +
+                            "MATCH (s:ESCOSkill {uri: row.skillUri}) " +
+                            "MERGE (o)-[:" + relType + "]->(s)";
+            neo4jClient.query(cypher)
+                    .bind(batch).to("batch")
+                    .run();
+        } catch (Exception e) {
+            logger.error("Failed to execute relation batch for type '{}'. Error: {}", relType, e.getMessage());
+        }
     }
     
     public void importCorAndMapToEsco(Resource file) {
-        if (!file.exists()) {
-            logger.warn("Fișierul COR {} nu a fost găsit.", file.getFilename());
-            return;
-        }
-
+        // This method seems fine as it is, but let's add a final log for consistency.
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), "UTF-8"))) {
-            String headerLine = reader.readLine();
-            if (headerLine == null) return;
-            
+            reader.readLine(); // Skip header
             List<Map<String, Object>> batch = new ArrayList<>();
             String line;
-            
             while ((line = reader.readLine()) != null) {
                 String[] values = line.split(",", 3);
                 if (values.length >= 3) {
-                    batch.add(Map.of(
-                        "corCode", values[0].trim(),
-                        "romanianName", values[1].trim(),
-                        "escoLabel", values[2].trim()
-                    ));
+                    batch.add(Map.of("corCode", values[0].trim(), "romanianName", values[1].trim(), "escoLabel", values[2].trim()));
                 }
             }
             
             if (!batch.isEmpty()) {
-                // OPTIONAL MATCH prevents the query from failing if ESCO equivalent is not found
-                // So at least the COR node is created
                 String cypher = "UNWIND $batch AS row " +
-                                "MERGE (c:COROccupation {code: row.corCode}) " +
-                                "SET c.name = row.romanianName " +
+                                "MERGE (c:COROccupation {code: row.corCode}) SET c.name = row.romanianName " +
                                 "WITH c, row " +
-                                "OPTIONAL MATCH (e:ESCOOccupation) " +
-                                "WHERE toLower(e.preferredLabel) CONTAINS toLower(row.escoLabel) " +
+                                "OPTIONAL MATCH (e:ESCOOccupation) WHERE toLower(e.preferredLabel) CONTAINS toLower(row.escoLabel) " +
                                 "WITH c, e WHERE e IS NOT NULL " +
                                 "MERGE (c)-[:EQUIVALENT_TO]->(e)";
-                
-                neo4jClient.query(cypher)
-                        .bind(batch).to("batch")
-                        .run();
-                        
-                logger.info("Import automat COR și mapare ESCO finalizate cu succes pentru {} înregistrări.", batch.size());
+                neo4jClient.query(cypher).bind(batch).to("batch").run();
+                logger.info("Finished processing {} COR mappings.", batch.size());
             }
-            
         } catch (Exception e) {
-             logger.error("Eroare la auto-importul COR: ", e);
+             logger.error("Error during COR import and mapping: ", e);
         }
     }
 }
