@@ -11,7 +11,7 @@
     "country" : "France",
     "latitude" : 48.8520,
     "longitude" : 2.4200,
-    "requiredSkills" : ["C++", "C#", "Game Design"],
+    "requiredSkills" : ["C++", "OOP", "Game Development", "Data Structures", "Problem Solving"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -31,7 +31,7 @@
     "country" : "USA",
     "latitude" : 37.5250,
     "longitude" : -122.2530,
-    "requiredSkills" : ["Testing", "Quality Assurance", "JIRA"],
+    "requiredSkills" : ["Manual Testing", "Bug Reporting", "JIRA", "Test Cases", "Attention to Detail"],
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -51,7 +51,7 @@
     "country" : "USA",
     "latitude" : 40.7240,
     "longitude" : -73.9980,
-    "requiredSkills" : ["Blender", "Maya", "3D Modeling"],
+    "requiredSkills" : ["Blender", "Maya", "3D Modeling", "Texturing", "ZBrush"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -71,7 +71,7 @@
     "country" : "Poland",
     "latitude" : 52.2690,
     "longitude" : 21.0260,
-    "requiredSkills" : ["Level Design", "Unreal Engine"],
+    "requiredSkills" : ["Unreal Engine", "Level Design", "Scripting", "Blueprints", "Game Design"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -91,7 +91,7 @@
     "country" : "Japan",
     "latitude" : 34.9700,
     "longitude" : 135.7560,
-    "requiredSkills" : ["Game Design", "Creativity"],
+    "requiredSkills" : ["Game Design", "Prototyping", "Game Mechanics", "Creativity"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -111,7 +111,7 @@
     "country" : "USA",
     "latitude" : 37.4220,
     "longitude" : -122.0840,
-    "requiredSkills" : ["Java", "Python", "Algorithms"],
+    "requiredSkills" : ["Java", "Spring Boot", "Microservices", "Distributed Systems", "SQL", "Cloud"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -131,7 +131,7 @@
     "country" : "USA",
     "latitude" : 37.4850,
     "longitude" : -122.1480,
-    "requiredSkills" : ["JavaScript", "React", "CSS"],
+    "requiredSkills" : ["JavaScript", "React", "HTML", "CSS", "TypeScript", "Redux"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "12:30 - 13:30",
@@ -151,7 +151,7 @@
     "country" : "USA",
     "latitude" : 47.6150,
     "longitude" : -122.3390,
-    "requiredSkills" : ["Java", "Spring Boot", "Microservices"],
+    "requiredSkills" : ["Java", "Spring Boot", "Microservices", "System Design", "AWS", "Leadership"],
     "workSchedule" : {
       "startTime" : "22:00",
       "breakTime" : "02:00 - 02:30",
@@ -171,7 +171,7 @@
     "country" : "USA",
     "latitude" : 47.6420,
     "longitude" : -122.1360,
-    "requiredSkills" : ["Azure", "Docker", "CI/CD"],
+    "requiredSkills" : ["Azure", "Docker", "Kubernetes", "CI/CD", "Terraform", "PowerShell"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -191,7 +191,7 @@
     "country" : "USA",
     "latitude" : 37.2590,
     "longitude" : -121.9630,
-    "requiredSkills" : ["Python", "Machine Learning", "Data Analysis"],
+    "requiredSkills" : ["Python", "Machine Learning", "Data Analysis", "SQL", "Pandas", "Statistics"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 14:30",
@@ -211,7 +211,7 @@
     "country" : "USA",
     "latitude" : 37.3340,
     "longitude" : -122.0080,
-    "requiredSkills" : ["Security", "Networking", "Cryptography"],
+    "requiredSkills" : ["Cybersecurity", "Networking", "SIEM", "Linux", "Security Concepts"],
     "workSchedule" : {
       "startTime" : "00:00",
       "breakTime" : "04:00 - 04:30",
@@ -231,7 +231,7 @@
     "country" : "Sweden",
     "latitude" : 59.3320,
     "longitude" : 18.0580,
-    "requiredSkills" : ["Figma", "UI Design", "UX Research"],
+    "requiredSkills" : ["Figma", "UI Design", "UX Research", "Prototyping", "Mobile Design"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -251,7 +251,7 @@
     "country" : "USA",
     "latitude" : 37.7760,
     "longitude" : -122.4170,
-    "requiredSkills" : ["Product Management", "Agile", "Leadership"],
+    "requiredSkills" : ["Product Management", "Agile", "Leadership", "Market Research"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -271,7 +271,7 @@
     "country" : "USA",
     "latitude" : 37.7760,
     "longitude" : -122.3920,
-    "requiredSkills" : ["Swift", "iOS", "Xcode"],
+    "requiredSkills" : ["Swift", "iOS", "Xcode", "UIKit", "CoreData"],
     "workSchedule" : {
       "startTime" : "12:00",
       "breakTime" : "16:00 - 16:30",
@@ -291,7 +291,7 @@
     "country" : "USA",
     "latitude" : 37.7680,
     "longitude" : -122.3870,
-    "requiredSkills" : ["Kotlin", "Android Studio", "Java"],
+    "requiredSkills" : ["Kotlin", "Android Studio", "Java", "Jetpack Compose", "MVVM"],
     "workSchedule" : {
       "startTime" : "12:00",
       "breakTime" : "16:00 - 16:30",
@@ -311,7 +311,7 @@
     "country" : "USA",
     "latitude" : 41.1080,
     "longitude" : -73.7220,
-    "requiredSkills" : ["AWS", "Docker", "Kubernetes"],
+    "requiredSkills" : ["AWS", "Azure", "GCP", "Architecture", "System Design", "Kubernetes"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -331,7 +331,7 @@
     "country" : "USA",
     "latitude" : 37.3710,
     "longitude" : -121.9660,
-    "requiredSkills" : ["Python", "TensorFlow", "Deep Learning"],
+    "requiredSkills" : ["Python", "TensorFlow", "PyTorch", "Deep Learning", "C++", "CUDA"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -351,7 +351,7 @@
     "country" : "USA",
     "latitude" : 37.3870,
     "longitude" : -121.9630,
-    "requiredSkills" : ["C", "C++", "Embedded Systems"],
+    "requiredSkills" : ["C", "C++", "Embedded Systems", "Microcontrollers", "Assembly"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 12:30",
@@ -371,7 +371,7 @@
     "country" : "USA",
     "latitude" : 30.2670,
     "longitude" : -97.7430,
-    "requiredSkills" : ["Technical Writing", "Documentation", "English"],
+    "requiredSkills" : ["Technical Writing", "Documentation", "English", "Markdown"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -391,7 +391,7 @@
     "country" : "USA",
     "latitude" : 30.4850,
     "longitude" : -97.6620,
-    "requiredSkills" : ["IT Support", "Troubleshooting", "Customer Service"],
+    "requiredSkills" : ["IT Support", "Troubleshooting", "Customer Service", "Active Directory"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -411,7 +411,7 @@
     "country" : "USA",
     "latitude" : 33.6570,
     "longitude" : -117.7660,
-    "requiredSkills" : ["Project Management", "Leadership", "Agile"],
+    "requiredSkills" : ["Project Management", "Leadership", "Agile", "JIRA", "Game Production"],
     "workSchedule" : {
       "startTime" : "11:00",
       "breakTime" : "15:00 - 16:00",
@@ -431,7 +431,7 @@
     "country" : "Canada",
     "latitude" : 53.5460,
     "longitude" : -113.4910,
-    "requiredSkills" : ["Creative Writing", "Game Narrative"],
+    "requiredSkills" : ["Creative Writing", "Game Narrative", "Storytelling", "Scripting"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -451,7 +451,7 @@
     "country" : "USA",
     "latitude" : 37.5640,
     "longitude" : -122.2850,
-    "requiredSkills" : ["Audio Design", "Pro Tools", "Sound Mixing"],
+    "requiredSkills" : ["Audio Design", "Pro Tools", "Sound Mixing", "Wwise", "FMOD"],
     "workSchedule" : {
       "startTime" : "13:00",
       "breakTime" : "17:00 - 17:30",
@@ -471,7 +471,7 @@
     "country" : "USA",
     "latitude" : 37.8320,
     "longitude" : -122.2830,
-    "requiredSkills" : ["Animation", "Maya", "Storyboarding"],
+    "requiredSkills" : ["Animation", "Maya", "Storyboarding", "Character Animation"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -491,7 +491,7 @@
     "country" : "Japan",
     "latitude" : 35.6960,
     "longitude" : 139.7080,
-    "requiredSkills" : ["Concept Art", "Illustration", "Photoshop"],
+    "requiredSkills" : ["Concept Art", "Illustration", "Photoshop", "Digital Painting"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -511,7 +511,7 @@
     "country" : "USA",
     "latitude" : 33.9200,
     "longitude" : -118.3270,
-    "requiredSkills" : ["Systems Engineering", "Aerospace"],
+    "requiredSkills" : ["Systems Engineering", "Aerospace", "MATLAB", "Simulink"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -531,7 +531,7 @@
     "country" : "USA",
     "latitude" : 37.4080,
     "longitude" : -121.9530,
-    "requiredSkills" : ["Networking", "CCNA", "Security"],
+    "requiredSkills" : ["Networking", "CCNA", "Security", "Routing", "Switching"],
     "workSchedule" : {
       "startTime" : "23:00",
       "breakTime" : "03:00 - 03:30",
@@ -551,7 +551,7 @@
     "country" : "USA",
     "latitude" : 30.2670,
     "longitude" : -97.7430,
-    "requiredSkills" : ["SQL", "Oracle DB", "Database Administration"],
+    "requiredSkills" : ["SQL", "Oracle DB", "Database Administration", "PL/SQL", "Performance Tuning"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -571,7 +571,7 @@
     "country" : "UK",
     "latitude" : 51.5090,
     "longitude" : -0.1060,
-    "requiredSkills" : ["Business Analysis", "Communication"],
+    "requiredSkills" : ["Business Analysis", "Communication", "Requirements Gathering", "SQL"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -591,7 +591,7 @@
     "country" : "USA",
     "latitude" : 33.7710,
     "longitude" : -84.3960,
-    "requiredSkills" : ["Marketing", "Strategy", "Digital Marketing"],
+    "requiredSkills" : ["Marketing", "Strategy", "Digital Marketing", "Campaign Management"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -611,7 +611,7 @@
     "country" : "Romania",
     "latitude" : 44.4140,
     "longitude" : 26.1150,
-    "requiredSkills" : ["Human Resources", "Recruitment", "Communication"],
+    "requiredSkills" : ["Human Resources", "Recruitment", "Communication", "Labor Law"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -631,7 +631,7 @@
     "country" : "USA",
     "latitude" : 37.6280,
     "longitude" : -122.4260,
-    "requiredSkills" : ["Video Editing", "Content Creation", "Gaming"],
+    "requiredSkills" : ["Video Editing", "Content Creation", "Gaming", "Streaming", "Audience Engagement"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -651,7 +651,7 @@
     "country" : "UK",
     "latitude" : 51.5230,
     "longitude" : -0.0760,
-    "requiredSkills" : ["Esports", "Coaching", "Strategy"],
+    "requiredSkills" : ["Esports", "Coaching", "Strategy", "Team Management"],
     "workSchedule" : {
       "startTime" : "18:00",
       "breakTime" : "N/A",
@@ -671,7 +671,7 @@
     "country" : "USA",
     "latitude" : 37.7740,
     "longitude" : -122.4190,
-    "requiredSkills" : ["Community Management", "Communication"],
+    "requiredSkills" : ["Community Management", "Communication", "Social Media", "Content Moderation"],
     "workSchedule" : {
       "startTime" : "14:00",
       "breakTime" : "18:00 - 18:30",
@@ -691,7 +691,7 @@
     "country" : "USA",
     "latitude" : 37.4850,
     "longitude" : -122.1480,
-    "requiredSkills" : ["VR", "AR", "Unity", "C#"],
+    "requiredSkills" : ["VR", "AR", "Unity", "C#", "3D Math", "Unreal Engine"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "14:00 - 15:00",
@@ -711,7 +711,7 @@
     "country" : "USA",
     "latitude" : 40.7040,
     "longitude" : -73.9290,
-    "requiredSkills" : ["Blockchain", "Solidity", "Ethereum"],
+    "requiredSkills" : ["Blockchain", "Solidity", "Ethereum", "Smart Contracts", "Web3.js"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -731,7 +731,7 @@
     "country" : "UK",
     "latitude" : 51.5330,
     "longitude" : -0.1260,
-    "requiredSkills" : ["AI", "Research", "Machine Learning"],
+    "requiredSkills" : ["AI", "Research", "Machine Learning", "Deep Learning", "Python"],
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -751,7 +751,7 @@
     "country" : "Lithuania",
     "latitude" : 54.6810,
     "longitude" : 25.2600,
-    "requiredSkills" : ["JavaScript", "Node.js", "React", "SQL"],
+    "requiredSkills" : ["JavaScript", "Node.js", "React", "SQL", "Express.js", "HTML/CSS"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -771,7 +771,7 @@
     "country" : "USA",
     "latitude" : 37.7770,
     "longitude" : -122.3910,
-    "requiredSkills" : ["SRE", "Linux", "Python", "Networking"],
+    "requiredSkills" : ["SRE", "Linux", "Python", "Networking", "Kubernetes", "Monitoring"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -791,7 +791,7 @@
     "country" : "Estonia",
     "latitude" : 59.4310,
     "longitude" : 24.7390,
-    "requiredSkills" : ["Growth Hacking", "Marketing", "Analytics"],
+    "requiredSkills" : ["Growth Hacking", "Marketing", "Analytics", "SEO", "A/B Testing"],
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -811,7 +811,7 @@
     "country" : "USA",
     "latitude" : 40.7580,
     "longitude" : -73.9780,
-    "requiredSkills" : ["RPA", "Automation", "Testing"],
+    "requiredSkills" : ["RPA", "Automation", "Testing", "UiPath", ".NET", "C#"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -831,7 +831,7 @@
     "country" : "USA",
     "latitude" : 38.8550,
     "longitude" : -94.7990,
-    "requiredSkills" : ["C", "Embedded Systems", "Hardware"],
+    "requiredSkills" : ["C", "Embedded Systems", "Hardware", "RTOS", "Microcontrollers"],
     "workSchedule" : {
       "startTime" : "08:30",
       "breakTime" : "12:30 - 13:00",
@@ -851,7 +851,7 @@
     "country" : "UK",
     "latitude" : 51.5120,
     "longitude" : -0.0820,
-    "requiredSkills" : ["Architecture", "System Design", "Cloud"],
+    "requiredSkills" : ["Architecture", "System Design", "Cloud", "Java", "Microservices"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -871,7 +871,7 @@
     "country" : "Romania",
     "latitude" : 44.4440,
     "longitude" : 26.0350,
-    "requiredSkills" : ["Cybersecurity", "Ethical Hacking", "Networking"],
+    "requiredSkills" : ["Cybersecurity", "Ethical Hacking", "Networking", "Kali Linux", "Metasploit"],
     "workSchedule" : {
       "startTime" : "15:00",
       "breakTime" : "19:00 - 19:30",
@@ -891,7 +891,7 @@
     "country" : "Netherlands",
     "latitude" : 52.3140,
     "longitude" : 4.9500,
-    "requiredSkills" : ["Agile", "Scrum", "Leadership"],
+    "requiredSkills" : ["Agile", "Scrum", "Leadership", "JIRA", "Facilitation"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -911,7 +911,7 @@
     "country" : "Germany",
     "latitude" : 52.5070,
     "longitude" : 13.4430,
-    "requiredSkills" : ["Data Engineering", "SQL", "Python", "ETL"],
+    "requiredSkills" : ["Data Engineering", "SQL", "Python", "ETL", "Spark", "Airflow"],
     "workSchedule" : {
       "startTime" : "10:00",
       "breakTime" : "13:00 - 14:00",
@@ -931,7 +931,7 @@
     "country" : "USA",
     "latitude" : 37.4000,
     "longitude" : -121.9750,
-    "requiredSkills" : ["Cloud Security", "AWS", "Networking"],
+    "requiredSkills" : ["Cloud Security", "AWS", "Networking", "Security Automation"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -951,7 +951,7 @@
     "country" : "USA",
     "latitude" : 41.2180,
     "longitude" : -73.8030,
-    "requiredSkills" : ["Quantum Computing", "Physics", "Research"],
+    "requiredSkills" : ["Quantum Computing", "Physics", "Research", "Qiskit"],
     "workSchedule" : {
       "startTime" : "N/A",
       "breakTime" : "N/A",
@@ -971,7 +971,7 @@
     "country" : "USA",
     "latitude" : 42.3960,
     "longitude" : -71.2520,
-    "requiredSkills" : ["Robotics", "C++", "ROS", "Engineering"],
+    "requiredSkills" : ["Robotics", "C++", "ROS", "Engineering", "Control Systems"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -991,7 +991,7 @@
     "country" : "Switzerland",
     "latitude" : 47.5580,
     "longitude" : 7.6060,
-    "requiredSkills" : ["Bioinformatics", "Data Analysis", "Python"],
+    "requiredSkills" : ["Bioinformatics", "Data Analysis", "Python", "R", "Genomics"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -1011,7 +1011,7 @@
     "country" : "Japan",
     "latitude" : 35.6580,
     "longitude" : 139.7950,
-    "requiredSkills" : ["IT Administration", "Networking", "Windows Server"],
+    "requiredSkills" : ["IT Administration", "Networking", "Windows Server", "Active Directory"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -1031,7 +1031,7 @@
     "country" : "Brazil",
     "latitude" : -22.7050,
     "longitude" : -46.9740,
-    "requiredSkills" : ["Customer Support", "Troubleshooting"],
+    "requiredSkills" : ["Customer Support", "Troubleshooting", "Helpdesk", "Ticketing Systems"],
     "workSchedule" : {
       "startTime" : "07:00",
       "breakTime" : "Variabil",
@@ -1051,7 +1051,7 @@
     "country" : "Austria",
     "latitude" : 48.2360,
     "longitude" : 16.4170,
-    "requiredSkills" : ["Civil Engineering", "Construction Management"],
+    "requiredSkills" : ["Civil Engineering", "Construction Management", "AutoCAD", "Site Supervision"],
     "workSchedule" : {
       "startTime" : "07:00",
       "breakTime" : "12:00 - 13:00",
@@ -1071,7 +1071,7 @@
     "country" : "Austria",
     "latitude" : 48.1670,
     "longitude" : 16.3860,
-    "requiredSkills" : ["Project Management", "Leadership", "Construction"],
+    "requiredSkills" : ["Project Management", "Leadership", "Construction", "Budgeting"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:00 - 13:00",
@@ -1091,7 +1091,7 @@
     "country" : "Romania",
     "latitude" : 44.4370,
     "longitude" : 26.0960,
-    "requiredSkills" : ["Architecture", "Design", "AutoCAD"],
+    "requiredSkills" : ["Architecture", "Design", "AutoCAD", "Revit", "3D Modeling"],
     "workSchedule" : {
       "startTime" : "09:00",
       "breakTime" : "13:00 - 14:00",
@@ -1111,7 +1111,7 @@
     "country" : "Germany",
     "latitude" : 48.1400,
     "longitude" : 11.5760,
-    "requiredSkills" : ["Electrical Engineering", "AutoCAD Electrical"],
+    "requiredSkills" : ["Electrical Engineering", "AutoCAD Electrical", "EPLAN", "Circuit Design"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -1131,7 +1131,7 @@
     "country" : "Italy",
     "latitude" : 41.9160,
     "longitude" : 12.4990,
-    "requiredSkills" : ["Electromechanics", "Maintenance", "Repair"],
+    "requiredSkills" : ["Electromechanics", "Maintenance", "Repair", "Troubleshooting"],
     "workSchedule" : {
       "startTime" : "Variabil",
       "breakTime" : "Variabil",
@@ -1151,7 +1151,7 @@
     "country" : "Germany",
     "latitude" : 52.3940,
     "longitude" : 9.7280,
-    "requiredSkills" : ["Automation", "PLC Programming", "Engineering"],
+    "requiredSkills" : ["Automation", "PLC Programming", "Engineering", "Siemens TIA Portal"],
     "workSchedule" : {
       "startTime" : "08:00",
       "breakTime" : "12:30 - 13:00",
@@ -1169,7 +1169,7 @@
     "country": "Romania",
     "latitude": 44.4396,
     "longitude": 26.0963,
-    "requiredSkills": ["Java", "Spring", "OOP", "SQL"],
+    "requiredSkills": ["Java", "Spring", "OOP", "SQL", "Git"],
     "seniority": "Junior",
     "isRemote": false,
     "location": "Bucharest"
@@ -1184,7 +1184,7 @@
     "country": "Romania",
     "latitude": 44.4479,
     "longitude": 26.0943,
-    "requiredSkills": ["Networking", "Security Concepts", "Linux", "Python"],
+    "requiredSkills": ["Networking", "Security Concepts", "Linux", "Python", "Scripting"],
     "seniority": "Internship",
     "isRemote": true,
     "location": "Remote"
@@ -1199,7 +1199,7 @@
     "country": "Netherlands",
     "latitude": 52.3676,
     "longitude": 4.9041,
-    "requiredSkills": ["Python", "R", "SQL", "Statistics", "Machine Learning"],
+    "requiredSkills": ["Python", "R", "SQL", "Statistics", "Machine Learning", "Data Visualization"],
     "seniority": "Internship",
     "isRemote": false,
     "location": "Amsterdam"
@@ -1214,7 +1214,7 @@
     "country": "Ireland",
     "latitude": 53.3498,
     "longitude": -6.2603,
-    "requiredSkills": ["AWS", "Linux", "Terraform", "Kubernetes", "Docker"],
+    "requiredSkills": ["AWS", "Linux", "Terraform", "Kubernetes", "Docker", "CI/CD"],
     "seniority": "Mid",
     "isRemote": false,
     "location": "Dublin"
@@ -1229,7 +1229,7 @@
     "country": "Germany",
     "latitude": 52.5200,
     "longitude": 13.4050,
-    "requiredSkills": ["React", "TypeScript", "GraphQL", "Performance Optimization"],
+    "requiredSkills": ["React", "TypeScript", "GraphQL", "Performance Optimization", "Webpack"],
     "seniority": "Senior",
     "isRemote": true,
     "location": "Berlin"
@@ -1244,7 +1244,7 @@
     "country": "Romania",
     "latitude": 46.7712,
     "longitude": 23.6236,
-    "requiredSkills": ["CI/CD", "Jenkins", "Ansible", "Azure", "Scripting"],
+    "requiredSkills": ["CI/CD", "Jenkins", "Ansible", "Azure", "Scripting", "Groovy"],
     "seniority": "Mid",
     "isRemote": false,
     "location": "Cluj-Napoca"
@@ -1259,7 +1259,7 @@
     "country": "UK",
     "latitude": 51.5074,
     "longitude": -0.1278,
-    "requiredSkills": ["Python", "PyTorch", "Computer Vision", "Deep Learning"],
+    "requiredSkills": ["Python", "PyTorch", "Computer Vision", "Deep Learning", "C++"],
     "seniority": "Mid",
     "isRemote": false,
     "location": "London"
@@ -1274,7 +1274,7 @@
     "country": "Lithuania",
     "latitude": 54.6872,
     "longitude": 25.2797,
-    "requiredSkills": ["Python", "Django", "Flask", "PostgreSQL"],
+    "requiredSkills": ["Python", "Django", "Flask", "PostgreSQL", "REST APIs"],
     "seniority": "Junior",
     "isRemote": true,
     "location": "Vilnius"
@@ -1289,7 +1289,7 @@
     "country": "Romania",
     "latitude": 44.4268,
     "longitude": 26.1025,
-    "requiredSkills": ["C++", "Unreal Engine", "Leadership", "Agile", "Project Management"],
+    "requiredSkills": ["C++", "Unreal Engine", "Leadership", "Agile", "Project Management", "System Design"],
     "seniority": "Lead",
     "isRemote": false,
     "location": "Bucharest"
@@ -1304,7 +1304,7 @@
     "country": "Romania",
     "latitude": 44.4323,
     "longitude": 26.0933,
-    "requiredSkills": ["SIEM", "Intrusion Detection", "Incident Response", "Wireshark"],
+    "requiredSkills": ["SIEM", "Intrusion Detection", "Incident Response", "Wireshark", "Network Security"],
     "seniority": "Junior",
     "isRemote": false,
     "location": "Bucharest"
@@ -1319,7 +1319,7 @@
     "country": "Romania",
     "latitude": 44.4352,
     "longitude": 26.1024,
-    "requiredSkills": ["Java", "Excel", "JavaScript"],
+    "requiredSkills": ["Java", "Excel", "JavaScript", "SQL", "Tableau"],
     "seniority": "Junior",
     "isRemote": false,
     "location": "Bucharest"
