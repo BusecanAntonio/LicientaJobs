@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+    Fragment: studentCard(student)
+    Conține cardul vizual al unui student: sidebar-ul cu iconițe (docs, edit, profil, aplicații),
+    header-ul cu nume/major, skill-urile extrase (+ modalul de editare skill-uri),
+    proiectele GitHub și tabelul de aplicații la joburi.
+
+    Este apelat din list-students.html astfel:
+    <div th:replace="~{student-card :: studentCard(${student})}"></div>
+-->
+<div th:fragment="studentCard(student)" class="card">
+
+    <div class="card-sidebar">
+        <div class="upload-trigger" data-bs-toggle="offcanvas" th:data-bs-target="'#docs' + ${student.id}" title="Încarcă Documente și Linkuri">
+            <i class="bi bi-file-earmark-plus"></i>
+            <div style="font-size: 0.6rem; font-weight: bold;">DOCS & GITHUB</div>
+        </div>
+
+        <div class="edit-trigger" data-bs-toggle="modal" th:data-bs-target="'#editStudentModal' + ${student.id}" title="Vizualizare / Editare Date">
+            <i class="bi bi-person-gear"></i>
+            <div style="font-size: 0.6rem; font-weight: bold;">EDIT</div>
+        </div>
+
+        <div class="graph-trigger" data-bs-toggle="modal" th:attr="data-bs-target='#graphModal' + ${student.id}" title="Vezi Profil & Grafic">
+            <i class="bi bi-person-vcard"></i>
+            <div style="font-size: 0.6rem; font-weight: bold;">PROFIL</div>
+        </div>
+
+        <div class="edit-trigger" data-bs-toggle="modal" th:data-bs-target="'#appsModal' + ${student.id}" title="Vezi Aplicații Joburi" style="color: #198754;">
+            <i class="bi bi-briefcase-fill"></i>
+            <div style="font-size: 0.6rem; font-weight: bold;">APLICAȚII</div>
+        </div>
+    </div>
+
+    <div class="card-content">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span th:text="${student.name}">Nume Student</span>
+            <span class="badge bg-light text-dark" th:text="${student.major}">Major</span>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-1 text-muted small">Email de contact:</p>
+                    <p class="fw-bold" th:text="${student.email}"></p>
+                </div>
+                <!-- REZULTATUL QUIZ-ULUI -->
+                <div class="col-md-6 text-end">
+                     <span th:if="${student.quizResult != null}" class="badge bg-success fs-6">
+                         <i class="bi bi-award me-1"></i>Domeniu Recomandat: <span th:text="${student.quizResult}"></span>
+                     </span>
+                </div>
+            </div>
+
+            <!-- BUTONUL PENTRU QUIZ -->
+            <a th:href="@{/quiz(studentId=${student.id})}" class="btn btn-info btn-sm mb-4 text-white">
+                <i class="bi bi-patch-question me-1"></i> Completează Quiz pentru Recomandări IT
+            </a>
+
+            <!-- Afișarea skill-urilor extrase -->
+            <div class="mb-4">
+                <div class="d-flex align-items-center mb-2">
+                    <h6 class="fw-bold text-muted mb-0 me-3"><i class="bi bi-stars me-1"></i>Skill-uri Extrase (AI):</h6>
+                    <button type="button" class="btn btn-sm btn-outline-primary py-0" data-bs-toggle="modal" th:data-bs-target="'#editSkillsModal' + ${student.id}">
+                        <i class="bi bi-pencil-square"></i> Editează Skill-uri
+                    </button>
+                </div>
+                <div th:if="${student.skills != null and !student.skills.isEmpty()}">
+                    <span th:each="skill : ${student.skills}" class="badge bg-primary me-1 mb-1" th:text="${skill}">Skill</span>
+                </div>
+                <div th:if="${student.skills == null or student.skills.isEmpty()}">
+                    <span class="text-muted small">Niciun skill adăugat. Poți adăuga manual prin butonul de editare.</span>
+                </div>
+            </div>
+
+            <!-- Modal dedicat editării Skill-urilor -->
+            <div class="modal fade" th:id="'editSkillsModal' + ${student.id}" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title fw-bold">
+                                <i class="bi bi-stars me-2"></i>Editează Skill-uri: <span th:text="${student.name}"></span>
+                            </h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form th:action="@{/students/edit-skills/{id}(id=${student.id})}" method="post">
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Skill-uri (separate prin virgulă)</label>
+                                    <textarea class="form-control" name="skills" rows="4"
+                                              th:text="${student.skills != null ? #strings.listJoin(student.skills, ', ') : ''}"></textarea>
+                                    <div class="form-text">Adaugă sau șterge skill-uri, separându-le prin virgulă.</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer bg-light d-flex justify-content-between">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                                <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Salvează Skill-urile</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Afișarea GitHub Projects -->
+            <div th:if="${student.githubProjects != null and !student.githubProjects.isEmpty()}" class="mb-4">
+                <h6 class="fw-bold text-muted mb-2"><i class="bi bi-github me-1"></i>Proiecte GitHub:</h6>
+                <div class="list-group">
+                    <div th:each="entry : ${student.githubProjects}" class="list-group-item list-group-item-action">
+                        <div class="d-flex w-100 justify-content-between align-items-center">
+                            <a th:href="${entry.key}" target="_blank" class="fw-bold text-decoration-none"><i class="bi bi-link-45deg"></i> <span th:text="${entry.key}"></span></a>
+                            <form th:action="@{/students/{id}/github/delete(id=${student.id})}" method="post" onsubmit="return confirm('Ștergi acest proiect?');">
+                                <input type="hidden" name="githubLink" th:value="${entry.key}">
+                                <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            </form>
+                        </div>
+                        <p class="mb-0 small text-muted mt-2"><i class="bi bi-robot"></i> <strong>AI Summary:</strong> <span th:text="${entry.value}"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <h5 class="fw-bold mb-3"><i class="bi bi-file-earmark-text me-2"></i>Aplicații Joburi</h5>
+                <table class="table table-hover align-middle border">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Companie</th>
+                        <th>Job</th>
+                        <th>Status</th>
+                        <th>Orar</th>
+                        <th class="admin-controls text-center">Acțiuni Admin</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="app : ${student.jobApplications}"
+                        th:if="${!app.hidden or (param.showHidden != null and param.showHidden[0] == 'true')}"
+                        th:classappend="${app.status == 'ACCEPTED' ? 'table-success' : (app.status == 'REJECTED' ? 'table-danger' : '')} + ${app.hidden ? ' opacity-50' : ''}">
+
+                        <td th:text="${app.company}" class="fw-bold"></td>
+                        <td th:text="${app.jobTitle}"></td>
+                        <td>
+                            <span th:if="${app.status == 'ACCEPTED'}" class="badge bg-success fs-6"><i class="bi bi-check-circle-fill me-1"></i> Acceptat</span>
+                            <span th:if="${app.status == 'REJECTED'}" class="badge bg-danger fs-6"><i class="bi bi-x-circle-fill me-1"></i> Respins</span>
+                            <span th:if="${app.status == 'PENDING'}" class="badge bg-warning text-dark fs-6"><i class="bi bi-hourglass-split me-1"></i> În așteptare</span>
+                        </td>
+                        <td>
+                            <!-- Butonul de Vizualizare -->
+                            <button type="button" class="btn btn-sm btn-outline-info view-app-btn"
+                                    title="Vizualizează Detalii"
+                                    th:attr="data-bs-target='#viewApplicationModal'"
+                                    th:data-title="${app.jobTitle}"
+                                    th:data-company="${app.company}"
+                                    th:data-description="${app.description}"
+                                    th:data-required-skills="${#strings.listJoin(app.requiredSkills, ',')}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+
+                            <!-- Butonul de Ascundere/Afisare -->
+                            <form th:action="@{/students/{studentId}/applications/{applicationId}/toggle-visibility(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-outline-secondary" th:title="${app.hidden ? 'Arată' : 'Ascunde'}">
+                                    <i th:if="${app.hidden}" class="bi bi-eye-fill"></i>
+                                    <i th:unless="${app.hidden}" class="bi bi-eye-slash-fill"></i>
+                                </button>
+                            </form>
+
+                            <!-- Butonul de Ștergere -->
+                            <form th:action="@{/students/{studentId}/applications/{applicationId}/delete(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline;" onsubmit="return confirm('Ești sigur că vrei să ștergi definitiv această aplicație?');">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Șterge Definitiv">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                        <td class="admin-controls text-center">
+                            <form th:action="@{/admin/applications/{studentId}/{applicationId}/accept(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-success" title="Acceptă Aplicația" onclick="return confirm('Ești sigur că vrei să accepți această aplicație?');">
+                                    <i class="bi bi-check-lg"></i> Acceptă
+                                </button>
+                            </form>
+                            <form th:action="@{/admin/applications/{studentId}/{applicationId}/reject(studentId=${student.id}, applicationId=${app.id})}" method="post" style="display:inline; margin-left: 5px;">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Respinge Aplicația" onclick="return confirm('Ești sigur că vrei să respingi această aplicație?');">
+                                    <i class="bi bi-x-lg"></i> Respinge
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <tr th:if="${#lists.isEmpty(student.jobApplications)}">
+                        <td colspan="5" class="text-center text-muted py-3">Nicio aplicare deocamdată.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-3">
+                <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">
+                    <i class="bi bi-plus-circle me-1"></i> Aplică la un job nou
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

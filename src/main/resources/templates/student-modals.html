@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!--
+    Fragment: studentModals(student)
+    Conține: offcanvas-ul de upload documente/GitHub, modalul de editare date personale
+    și modalul cu profilul + graficul vis.js al studentului (+ scriptul care îl inițializează).
+
+    Este apelat din list-students.html astfel:
+    <div th:replace="~{student-modals :: studentModals(${student})}"></div>
+-->
+<th:block th:fragment="studentModals(student)">
+
+    <!-- Offcanvas: Upload documente & GitHub -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" th:id="'docs' + ${student.id}">
+        <div class="offcanvas-header bg-dark text-white">
+            <h5 class="offcanvas-title fw-bold"><i class="bi bi-folder2-open me-2"></i>Portofoliu: <span th:text="${student.name}"></span></h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
+        </div>
+        <div class="offcanvas-body">
+
+            <!-- Secțiune Github -->
+            <h6 class="fw-bold mb-2"><i class="bi bi-github"></i> Adaugă Proiect GitHub</h6>
+            <p class="text-muted small mb-3">Introduceți link-ul repository-ului. Inteligența artificială va citi fișierul README și va genera automat un scurt rezumat al aplicației!</p>
+            <form th:action="@{/students/{id}/github/add(id=${student.id})}" method="post" class="mb-4">
+                <div class="upload-section">
+                    <div class="input-group">
+                        <input type="url" name="githubLink" class="form-control" placeholder="https://github.com/user/repo" required>
+                        <button class="btn btn-dark" type="submit">Adaugă</button>
+                    </div>
+                </div>
+            </form>
+
+            <hr>
+
+            <!-- Secțiune Fisiere -->
+            <h6 class="fw-bold mb-2 mt-4"><i class="bi bi-cloud-arrow-up"></i> Încărcare Documente</h6>
+            <p class="text-muted small mb-3">Încarcă CV-ul sau o scrisoare de recomandare. Inteligența artificială va analiza fișierul și îți va extrage automat skill-urile!</p>
+            <form th:action="@{/students/{id}/upload(id=${student.id})}" method="post" enctype="multipart/form-data">
+                <div class="upload-section">
+                    <label class="form-label fw-bold"><i class="bi bi-file-pdf me-1"></i> Tip Document</label>
+                    <select name="type" class="form-select mb-3">
+                        <option value="CV">Curriculum Vitae (CV)</option>
+                        <option value="DIPLOMA">Diplomă de Studii</option>
+                        <option value="RECOMMENDATION">Scrisoare de Recomandare</option>
+                    </select>
+
+                    <label class="form-label fw-bold">Selectează fișierul</label>
+                    <input type="file" name="file" class="form-control mb-3" required>
+
+                    <button type="submit" class="btn btn-primary w-100 fw-bold">Încarcă Document</button>
+                </div>
+            </form>
+
+            <hr>
+            <h6 class="fw-bold mb-3 small">Fișiere deja încărcate:</h6>
+            <ul class="list-group list-group-flush">
+                <li th:each="doc : ${student.documents}" class="list-group-item d-flex justify-content-between align-items-center px-0">
+    <span>
+        <i class="bi bi-check-circle-fill text-success me-2"></i>
+        <span th:text="${doc}">nume_fisier.pdf</span>
+    </span>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                th:onclick="viewDocument([[${student.id}]], [[${doc}]])"
+                                title="Vizualizează Documentul">
+                            <i class="bi bi-eye"></i>
+                        </button>
+
+                        <form th:action="@{/students/{id}/documents/delete(id=${student.id})}" method="post"
+                              style="display:inline;" onsubmit="return confirm('Sigur vrei să ștergi acest fișier?');">
+                            <input type="hidden" name="filename" th:value="${doc}">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+
+                        <a th:href="@{/students/{id}/documents/{filename}(id=${student.id}, filename=${doc})}"
+                           download
+                           class="btn btn-sm btn-outline-success ms-1"
+                           title="Descarcă Documentul">
+                            <i class="bi bi-download"></i>
+                        </a>
+                    </div>
+                </li>
+                <li th:if="${#lists.isEmpty(student.documents)}" class="text-center py-3 text-muted small">
+                    Niciun document încărcat încă.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal: Vizualizare / Editare Date Personale -->
+    <div class="modal fade" th:id="'editStudentModal' + ${student.id}" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold" id="editStudentModalLabel">
+                        <i class="bi bi-person-lines-fill me-2"></i>Date Personale: <span th:text="${student.name}"></span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form th:action="@{/students/edit/{id}(id=${student.id})}" method="post">
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Nume Complet</label>
+                                <input type="text" class="form-control" name="name" th:value="${student.name}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control" name="email" th:value="${student.email}" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Număr de Telefon</label>
+                                <input type="text" class="form-control" name="phoneNumber" th:value="${student.phoneNumber}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Specializare (Major)</label>
+                                <input type="text" class="form-control" name="major" th:value="${student.major}">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Adresă</label>
+                                <input type="text" class="form-control" name="address" th:value="${student.address}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">An Începere Studii</label>
+                                <input type="number" class="form-control" name="startYear" th:value="${student.startYear}">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">An Finalizare Studii</label>
+                                <input type="number" class="form-control" name="endYear" th:value="${student.endYear}">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">Data Nașterii</label>
+                                <input type="date" class="form-control" name="dateOfBirth" th:value="${student.dateOfBirth}">
+                            </div>
+
+                            <!-- Nivel de Senioritate și Remote -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold">Nivel Senioritate</label>
+                                <select class="form-select" name="preferredSeniority">
+                                    <option value="">Nespecificat</option>
+                                    <option value="Internship" th:selected="${student.preferredSeniority == 'Internship'}">Internship</option>
+                                    <option value="Junior" th:selected="${student.preferredSeniority == 'Junior'}">Junior</option>
+                                    <option value="Mid" th:selected="${student.preferredSeniority == 'Mid'}">Mid</option>
+                                    <option value="Senior" th:selected="${student.preferredSeniority == 'Senior'}">Senior</option>
+                                    <option value="Lead" th:selected="${student.preferredSeniority == 'Lead'}">Lead</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" name="prefersRemote" value="true" th:id="'remote_' + ${student.id}" th:checked="${student.prefersRemote}">
+                                    <input type="hidden" value="on" name="_prefersRemote"> <!-- Spring boot checkbox trick -->
+                                    <label class="form-check-label fw-bold" th:for="'remote_' + ${student.id}">
+                                        Preferă Remote
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Țări de interes -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Țări de Interes (UE)</label>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="preferredLocations" value="Germany" th:id="'loc_de_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Germany')}">
+                                        <label class="form-check-label" th:for="'loc_de_' + ${student.id}">Germany</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="preferredLocations" value="Netherlands" th:id="'loc_nl_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Netherlands')}">
+                                        <label class="form-check-label" th:for="'loc_nl_' + ${student.id}">Netherlands</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="preferredLocations" value="Ireland" th:id="'loc_ie_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Ireland')}">
+                                        <label class="form-check-label" th:for="'loc_ie_' + ${student.id}">Ireland</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="preferredLocations" value="Romania" th:id="'loc_ro_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Romania')}">
+                                        <label class="form-check-label" th:for="'loc_ro_' + ${student.id}">Romania</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="preferredLocations" value="Poland" th:id="'loc_pl_' + ${student.id}" th:checked="${student.preferredLocations != null and #lists.contains(student.preferredLocations, 'Poland')}">
+                                        <label class="form-check-label" th:for="'loc_pl_' + ${student.id}">Poland</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Interese Taxonomie IT (UserInterests) -->
+                            <div class="col-12">
+                                <label class="form-label fw-bold">Interese Carieră (Domenii)</label>
+                                <p class="small text-muted mb-1">Selectează rapid domeniile principale de interes (se vor suprascrie interesele specifice anterioare).</p>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Software Engineering" th:id="'int_sw_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Software Engineering')}">
+                                        <label class="form-check-label" th:for="'int_sw_' + ${student.id}">Software Eng.</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="AI / Machine Learning" th:id="'int_ai_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'AI / Machine Learning')}">
+                                        <label class="form-check-label" th:for="'int_ai_' + ${student.id}">AI / ML</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Data & Analytics" th:id="'int_da_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Data & Analytics')}">
+                                        <label class="form-check-label" th:for="'int_da_' + ${student.id}">Data</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Cloud / DevOps / Infra" th:id="'int_cl_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Cloud / DevOps')}">
+                                        <label class="form-check-label" th:for="'int_cl_' + ${student.id}">DevOps</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Cybersecurity" th:id="'int_cy_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Cybersecurity')}">
+                                        <label class="form-check-label" th:for="'int_cy_' + ${student.id}">Cybersecurity</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Embedded / Hardware" th:id="'int_hw_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'Embedded / Hardware')}">
+                                        <label class="form-check-label" th:for="'int_hw_' + ${student.id}">Hardware</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="applicationAnswers[UserInterests]" value="Product / UX / Design" th:id="'int_ux_' + ${student.id}" th:checked="${student.applicationAnswers['UserInterests'] != null and #strings.contains(student.applicationAnswers['UserInterests'], 'UX')}">
+                                        <label class="form-check-label" th:for="'int_ux_' + ${student.id}">UX/Design</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light d-flex justify-content-between">
+                        <button type="button" class="btn secondary" data-bs-dismiss="modal">Închide</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Salvează Modificările</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Profil & Grafic Joburi (vis.js) -->
+    <div class="modal fade" th:id="'graphModal' + ${student.id}" tabindex="-1" aria-labelledby="graphModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" style="max-width: 95%;">
+            <div class="modal-content">
+                <div class="modal-header bg-info text-white">
+                    <h5 class="modal-title fw-bold" id="graphModalLabel">
+                        <i class="bi bi-person-badge me-2"></i>Profil & Rețea Joburi: <span th:text="${student.name}"></span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div class="row g-0">
+
+                        <!-- Partea Stângă: Graficul -->
+                        <div class="col-md-8 border-end">
+                            <div class="bg-light p-2 border-bottom">
+                                <small class="text-muted"><i class="bi bi-info-circle me-1"></i>Trage de noduri pentru rearanjare. Scroll pentru zoom.</small>
+                            </div>
+                            <div th:id="'jobNetwork' + ${student.id}" style="width: 100%; height: 650px; background-color: #ffffff;"></div>
+                        </div>
+
+                        <!-- Partea Dreaptă: Datele Profilului -->
+                        <div class="col-md-4 p-4" style="height: 650px; overflow-y: auto;">
+
+                            <!-- Header Profil -->
+                            <div class="text-center mb-4">
+                                <img th:src="@{/images/default-avatar.png}" alt="Avatar" class="rounded-circle mb-2 shadow-sm" style="width: 100px; height: 100px; object-fit: cover;" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=' + ${student.name} + '&background=random';">
+                                <h4 class="fw-bold mb-0" th:text="${student.name}">Nume Student</h4>
+                                <span class="badge bg-primary mt-1" th:text="${student.major}">Specializare</span>
+                            </div>
+
+                            <!-- Date Contact -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-person-lines-fill me-2"></i>Contact & Info</h6>
+                                <p class="mb-1 small"><i class="bi bi-envelope me-2 text-muted"></i><strong th:text="${student.email}"></strong></p>
+                                <p class="mb-1 small" th:if="${student.phoneNumber}"><i class="bi bi-telephone me-2 text-muted"></i><span th:text="${student.phoneNumber}"></span></p>
+                                <p class="mb-1 small" th:if="${student.address}"><i class="bi bi-geo-alt me-2 text-muted"></i><span th:text="${student.address}"></span></p>
+                                <p class="mb-1 small text-muted"><i class="bi bi-calendar-event me-2"></i>Studii: <span th:text="${student.startYear}"></span> - <span th:text="${student.endYear}"></span></p>
+                            </div>
+
+                            <!-- Interese Carieră -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-briefcase me-2"></i>Preferințe Carieră</h6>
+                                <div class="mb-2">
+                                    <span class="badge bg-secondary me-1" th:if="${student.preferredSeniority}" th:text="'Nivel: ' + ${student.preferredSeniority}"></span>
+                                    <span class="badge bg-success me-1" th:if="${student.prefersRemote}">Remote OK</span>
+                                    <span class="badge bg-info text-dark me-1" th:if="${student.quizResult}" th:text="'Recomandare: ' + ${student.quizResult}"></span>
+                                </div>
+                                <div th:if="${student.preferredLocations != null and !student.preferredLocations.isEmpty()}">
+                                    <small class="text-muted d-block mb-1">Locații preferate:</small>
+                                    <span th:each="loc : ${student.preferredLocations}" class="badge border border-secondary text-secondary me-1 mb-1" th:text="${loc}"></span>
+                                </div>
+                                <div th:if="${student.applicationAnswers['UserInterests'] != null and !student.applicationAnswers['UserInterests'].isEmpty()}" class="mt-2">
+                                    <small class="text-muted d-block mb-1">Domenii de interes:</small>
+                                    <span th:each="interest : ${#strings.arraySplit(student.applicationAnswers['UserInterests'], ',')}" class="badge bg-light text-dark border me-1 mb-1" th:text="${interest}"></span>
+                                </div>
+                            </div>
+
+                            <!-- Skill-uri -->
+                            <div class="mb-4">
+                                <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-stars me-2"></i>Skill-uri</h6>
+                                <div th:if="${student.skills != null and !student.skills.isEmpty()}">
+                                    <span th:each="skill : ${student.skills}" class="badge bg-primary me-1 mb-1" th:text="${skill}"></span>
+                                </div>
+                                <p th:if="${student.skills == null or student.skills.isEmpty()}" class="small text-muted mb-0">Niciun skill definit.</p>
+                            </div>
+
+                            <!-- Statistici Aplicații -->
+                            <div>
+                                <h6 class="fw-bold border-bottom pb-2"><i class="bi bi-bar-chart-fill me-2"></i>Status Aplicații</h6>
+                                <div class="row text-center g-2">
+                                    <div class="col-4">
+                                        <div class="p-2 bg-light rounded border">
+                                            <div class="fs-4 fw-bold text-dark" th:text="${#lists.size(student.jobApplications)}">0</div>
+                                            <div style="font-size: 0.7rem;" class="text-uppercase text-muted">Total</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="p-2 bg-success bg-opacity-10 rounded border border-success">
+                                            <div class="fs-4 fw-bold text-success" th:text="${#lists.size(student.jobApplications.?[status == 'ACCEPTED'])}">0</div>
+                                            <div style="font-size: 0.7rem;" class="text-uppercase text-success">Acceptat</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <div class="p-2 bg-danger bg-opacity-10 rounded border border-danger">
+                                            <div class="fs-4 fw-bold text-danger" th:text="${#lists.size(student.jobApplications.?[status == 'REJECTED'])}">0</div>
+                                            <div style="font-size: 0.7rem;" class="text-uppercase text-danger">Respins</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> <!-- End Partea Dreaptă -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script: inițializare grafic vis.js pentru acest student -->
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        (function() {
+            var jobData = /*[[${student.jobApplications}]]*/ [];
+            var studentId = /*[[${student.id}]]*/ '';
+            var studentName = /*[[${student.name}]]*/ 'Student';
+            var studentSkills = /*[[${student.skills}]]*/ [];
+            var studentInterestsStr = /*[[${student.applicationAnswers['UserInterests']}]]*/ '';
+
+            document.addEventListener('DOMContentLoaded', (event) => {
+                var graphModal = document.getElementById('graphModal' + studentId);
+                if (!graphModal) return;
+                var network = null;
+
+                graphModal.addEventListener('shown.bs.modal', function () {
+                    var container = document.getElementById('jobNetwork' + studentId);
+
+                    // 1. Nodul Central (Studentul)
+                    var nodesArray = [
+                        { id: 'student', label: studentName + '\n(Student)', shape: 'circle', color: { background: '#0d6efd', border: '#0a58ca' }, font: {color: 'white', size: 18, bold: true} }
+                    ];
+                    var edgesArray = [];
+
+                    var addedCompanies = new Set();
+                    var addedSkills = new Set();
+                    var addedInterests = new Set();
+
+                    // 2. Noduri pentru Interesele Studentului
+                    if (studentInterestsStr && studentInterestsStr.trim() !== '') {
+                        var interests = studentInterestsStr.split(',').map(s => s.trim()).filter(s => s !== '');
+                        interests.forEach((interest, index) => {
+                            var interestId = 'interest_' + index;
+                            nodesArray.push({
+                                id: interestId,
+                                label: interest,
+                                shape: 'diamond',
+                                color: { background: '#e0cffc', border: '#6f42c1' }, // Mov
+                                font: { color: 'black' },
+                                shadow: true
+                            });
+                            edgesArray.push({
+                                from: 'student',
+                                to: interestId,
+                                color: { color: '#6f42c1' },
+                                width: 1,
+                                dashes: true,
+                                label: 'este interesat de'
+                            });
+                        });
+                    }
+
+                    // 3. Noduri pentru Joburi, Companii și Skill-uri
+                    if (jobData && jobData.length > 0) {
+                        jobData.forEach((app, index) => {
+                            var jobId = 'job_' + index;
+                            var companyId = 'comp_' + (app.company ? app.company.replace(/[^a-zA-Z0-9]/g, '_') : 'unknown');
+
+                            // Culoare status job
+                            var statusColor = '#6c757d'; // default (gri)
+                            if (app.status === 'ACCEPTED') statusColor = '#198754';
+                            else if (app.status === 'PENDING') statusColor = '#ffc107';
+                            else if (app.status === 'REJECTED') statusColor = '#dc3545';
+
+                            var jobLabel = (app.jobTitle || 'Job') + '\n[' + (app.status || 'N/A') + ']';
+                            if(app.seniority) jobLabel += '\n' + app.seniority;
+
+                            // Adaugă nod Job
+                            nodesArray.push({
+                                id: jobId,
+                                label: jobLabel,
+                                shape: 'box',
+                                color: { background: statusColor, border: '#212529' },
+                                font: { color: (app.status === 'PENDING' ? 'black' : 'white') },
+                                shadow: true
+                            });
+
+                            // Adaugă nod Companie
+                            if (!addedCompanies.has(companyId)) {
+                                nodesArray.push({
+                                    id: companyId,
+                                    label: app.company || 'Companie Necunoscută',
+                                    shape: 'hexagon',
+                                    color: { background: '#f8f9fa', border: '#ced4da' },
+                                    font: { color: 'black', bold: true },
+                                    shadow: true
+                                });
+                                addedCompanies.add(companyId);
+                            }
+
+                            // Link Student -> Job
+                            edgesArray.push({
+                                from: 'student',
+                                to: jobId,
+                                color: { color: statusColor },
+                                width: 2,
+                                arrows: 'to',
+                                label: 'a aplicat'
+                            });
+
+                            // Link Job -> Companie
+                            edgesArray.push({
+                                from: jobId,
+                                to: companyId,
+                                color: { color: '#adb5bd' },
+                                dashes: true,
+                                arrows: 'to',
+                                label: 'la'
+                            });
+
+                            // Procesare Skill-uri cerute de Job
+                            if (app.requiredSkills && app.requiredSkills.length > 0) {
+                                app.requiredSkills.forEach(skill => {
+                                    var skillId = 'skill_' + skill.replace(/[^a-zA-Z0-9]/g, '_');
+
+                                    // Verificăm dacă studentul are acest skill (case-insensitive)
+                                    var hasSkill = false;
+                                    if (studentSkills && studentSkills.length > 0) {
+                                        hasSkill = studentSkills.some(s => s.toLowerCase() === skill.toLowerCase());
+                                    }
+
+                                    if (!addedSkills.has(skillId)) {
+                                        nodesArray.push({
+                                            id: skillId,
+                                            label: skill,
+                                            shape: 'ellipse',
+                                            // Verde dacă îl are, Roșu dacă nu îl are
+                                            color: { background: hasSkill ? '#d1e7dd' : '#f8d7da', border: hasSkill ? '#0f5132' : '#842029' },
+                                            font: { color: 'black' }
+                                        });
+                                        addedSkills.add(skillId);
+
+                                        // Dacă studentul are skill-ul, tragem o linie de la student la skill
+                                        if (hasSkill) {
+                                            edgesArray.push({
+                                                from: 'student',
+                                                to: skillId,
+                                                color: { color: '#0f5132' }, // Linie verde închis
+                                                width: 1,
+                                                label: 'deține'
+                                            });
+                                        }
+                                    }
+
+                                    // Link Job -> Skill (Jobul cere acest skill)
+                                    edgesArray.push({
+                                        from: jobId,
+                                        to: skillId,
+                                        color: { color: '#6c757d' },
+                                        dashes: true,
+                                        label: 'cere'
+                                    });
+                                });
+                            }
+                        });
+                    } else {
+                        nodesArray[0].label = studentName + "\n(Nu are aplicații)";
+                    }
+
+                    // Adăugăm în grafic și skill-urile pe care studentul le are, dar care NU au apărut în joburi
+                    if (studentSkills && studentSkills.length > 0) {
+                        studentSkills.forEach(skill => {
+                            var skillId = 'skill_' + skill.replace(/[^a-zA-Z0-9]/g, '_');
+                            if (!addedSkills.has(skillId)) {
+                                nodesArray.push({
+                                    id: skillId,
+                                    label: skill,
+                                    shape: 'ellipse',
+                                    color: { background: '#d1e7dd', border: '#0f5132' }, // Verde
+                                    font: { color: 'black' }
+                                });
+                                addedSkills.add(skillId);
+
+                                edgesArray.push({
+                                    from: 'student',
+                                    to: skillId,
+                                    color: { color: '#0f5132' },
+                                    width: 1,
+                                    label: 'deține'
+                                });
+                            }
+                        });
+                    }
+
+                    var data = {
+                        nodes: new vis.DataSet(nodesArray),
+                        edges: new vis.DataSet(edgesArray)
+                    };
+
+                    var options = {
+                        physics: {
+                            stabilization: false,
+                            barnesHut: {
+                                gravitationalConstant: -2000,
+                                centralGravity: 0.3,
+                                springLength: 150,
+                                springConstant: 0.04,
+                                damping: 0.09,
+                                avoidOverlap: 0.1
+                            }
+                        },
+                        edges: {
+                            smooth: { type: 'continuous' },
+                            font: { align: 'middle', size: 10 }
+                        },
+                        interaction: {
+                            dragNodes: true,
+                            dragView: true,
+                            zoomView: true,
+                            hover: true
+                        }
+                    };
+
+                    if (network !== null) {
+                        network.destroy();
+                    }
+                    network = new vis.Network(container, data, options);
+
+                    // Centrare automată pe grafic
+                    network.once('stabilizationIterationsDone', function() {
+                        network.fit();
+                    });
+                });
+            });
+        })();
+        /*]]>*/
+    </script>
+
+</th:block>
+
+</body>
+</html>
