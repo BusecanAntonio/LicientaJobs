@@ -1,4 +1,6 @@
-/* General Styles */
+/* ==========================================================================
+   General Styles
+   ========================================================================== */
 body {
     background-color: #f8f9fa;
 }
@@ -7,14 +9,31 @@ body {
     margin-top: 30px;
 }
 
-/* list-students.html Styles */
+#notification-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #198754;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    z-index: 2000;
+    display: none;
+    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+/* ==========================================================================
+   List Students Dashboard Components (Cards & Sidebar)
+   ========================================================================== */
 .card {
     margin-bottom: 25px;
     border-radius: 15px;
     border: none;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     display: flex;
-    flex-direction: row;
+    flex-direction: row; /* Aliniere orizontală pentru sidebar */
     overflow: hidden;
 }
 
@@ -33,21 +52,8 @@ body {
     background-color: #e8eaed;
 }
 
-.upload-trigger, .edit-trigger, .graph-trigger {
-    color: #5f6368;
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: color 0.2s;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.upload-trigger:hover, .edit-trigger:hover, .graph-trigger:hover {
-    color: #0d6efd;
-}
-
 .card-content {
-    flex: 1;
+    flex: 1; /* Restul conținutului ocupă spațiul rămas */
 }
 
 .card-header {
@@ -57,6 +63,27 @@ body {
     border-radius: 0 !important;
 }
 
+/* Sidebar Triggers (Icons) */
+.upload-trigger,
+.edit-trigger,
+.graph-trigger {
+    color: #5f6368;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.upload-trigger:hover,
+.edit-trigger:hover,
+.graph-trigger:hover {
+    color: #0d6efd;
+}
+
+/* ==========================================================================
+   Tables & Controls
+   ========================================================================== */
 .schedule-table {
     width: 100%;
     font-size: 0.85em;
@@ -69,9 +96,12 @@ body {
 }
 
 .admin-controls {
-    display: none;
+    display: none; /* Hidden by default, toggled by JS */
 }
 
+/* ==========================================================================
+   Modals & Offcanvas Components
+   ========================================================================== */
 .offcanvas {
     border-radius: 20px 0 0 20px;
     border: none;
@@ -86,22 +116,9 @@ body {
     margin-bottom: 15px;
 }
 
-#notification-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #198754;
-    color: white;
-    text-align: center;
-    padding: 12px;
-    z-index: 2000;
-    display: none;
-    font-weight: bold;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-}
-
-/* apply-job.html Styles */
+/* ==========================================================================
+   Apply Job Layout Styles
+   ========================================================================== */
 .match-score {
     font-size: 1.2rem;
     font-weight: bold;
@@ -109,10 +126,11 @@ body {
     border-radius: 5px;
 }
 
-.score-high { background-color: #d4edda; color: #155724; }
+.score-high   { background-color: #d4edda; color: #155724; }
 .score-medium { background-color: #fff3cd; color: #856404; }
-.score-low { background-color: #f8d7da; color: #721c24; }
+.score-low    { background-color: #f8d7da; color: #721c24; }
 
+/* Global Async Loaders */
 .loader {
     border: 4px solid #f3f3f3;
     border-top: 4px solid #3498db;
