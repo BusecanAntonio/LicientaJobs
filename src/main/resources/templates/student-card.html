@@ -33,6 +33,15 @@
             <i class="bi bi-briefcase-fill"></i>
             <div style="font-size: 0.6rem; font-weight: bold;">APLICAȚII</div>
         </div>
+
+        <div class="edit-trigger"
+             th:onclick="'location.href=\'' + @{/students/{id}/apply(id=${student.id})} + '\''"
+             title="Aplică la un job nou"
+             style="color: #0d6efd; cursor: pointer;">
+            <i class="bi bi-plus-circle-fill"></i>
+            <div style="font-size: 0.6rem; font-weight: bold;">APLICĂ</div>
+        </div>
+
     </div>
 
     <div class="card-content">
@@ -119,11 +128,6 @@
                     </div>
                 </div>
             </div>
-
-            <div class="mt-3">
-                <a th:href="@{/students/{id}/apply(id=${student.id})}" class="btn btn-primary apply-button">
-                    <i class="bi bi-plus-circle me-1"></i> Aplică la un job nou
-                </a>
             </div>
         </div>
     </div>
