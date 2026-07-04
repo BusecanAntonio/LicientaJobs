@@ -233,6 +233,74 @@
         </div>
     </div>
 
+
+    <!-- === MODAL APLICAȚII (cu controale admin) === -->
+    <div class="modal fade" th:id="'appsModal' + ${student.id}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-briefcase-fill me-2"></i>
+                        Aplicații Joburi - <span th:text="${student.name}"></span>
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                            <tr>
+                                <th>Companie</th>
+                                <th>Job Title</th>
+                                <th>Status</th>
+                                <th class="admin-controls text-center" style="display: none;">Acțiuni Admin</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="app : ${student.jobApplications}">
+                                <td class="fw-bold" th:text="${app.company}"></td>
+                                <td th:text="${app.jobTitle}"></td>
+                                <td>
+                                    <span th:if="${app.status == 'ACCEPTED'}" class="badge bg-success">Acceptat</span>
+                                    <span th:if="${app.status == 'REJECTED'}" class="badge bg-danger">Respins</span>
+                                    <span th:if="${app.status == 'PENDING'}" class="badge bg-warning text-dark">În așteptare</span>
+                                </td>
+                                <td class="admin-controls text-center" style="display: none;">
+                                    <form th:action="@{/admin/applications/{studentId}/{applicationId}/accept(studentId=${student.id}, applicationId=${app.id})}"
+                                          method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-success"
+                                                onclick="return confirm('Accepți această aplicație?')">
+                                            <i class="bi bi-check-lg"></i> Acceptă
+                                        </button>
+                                    </form>
+                                    <form th:action="@{/admin/applications/{studentId}/{applicationId}/reject(studentId=${student.id}, applicationId=${app.id})}"
+                                          method="post" style="display:inline; margin-left: 8px;">
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Respingi această aplicație?')">
+                                            <i class="bi bi-x-lg"></i> Respinge
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                            <tr th:if="${#lists.isEmpty(student.jobApplications)}">
+                                <td colspan="4" class="text-center text-muted py-4">
+                                    Nu există aplicații pentru acest student.
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Închide</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: Profil & Grafic Joburi (vis.js) -->
     <div class="modal fade" th:id="'graphModal' + ${student.id}" tabindex="-1" aria-labelledby="graphModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" style="max-width: 95%;">
