@@ -126,9 +126,10 @@ body {
     border-radius: 5px;
 }
 
-.score-high   { background-color: #d4edda; color: #155724; }
-.score-medium { background-color: #fff3cd; color: #856404; }
-.score-low    { background-color: #f8d7da; color: #721c24; }
+.score-best { background-color: #c8e6c9; color: #1b5e20; } /* Verde mai intens */
+.score-good { background-color: #d4edda; color: #155724; }
+.score-weak { background-color: #fff3cd; color: #856404; }
+.score-none { background-color: #f8d7da; color: #721c24; }
 
 /* Global Async Loaders */
 .loader {

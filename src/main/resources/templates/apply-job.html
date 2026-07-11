@@ -112,15 +112,18 @@
             <tbody>
             <tr th:each="job, iterStat : ${availableJobs}" class="job-row">
                 <td class="text-center align-middle">
-                    <!-- Logica noua bazata pe scor, nu pe pozitie -->
-                    <div th:if="${job.matchScore >= 70}" class="match-score score-high">
-                        <i class="bi bi-star-fill text-warning"></i> Top Match
+                    <!-- NOUA LOGICĂ PENTRU AFIȘAREA SCORULUI -->
+                    <div th:if="${job.matchScore > 80}" class="match-score score-best">
+                        <i class="bi bi-star-fill text-warning"></i> Best Match
                     </div>
-                    <div th:if="${job.matchScore >= 45 and job.matchScore < 70}" class="match-score score-medium">
-                        Good Match
+                    <div th:if="${job.matchScore > 50 and job.matchScore <= 80}" class="match-score score-good">
+                        Potrivire Bună
                     </div>
-                    <div th:if="${job.matchScore < 45}" class="text-muted">
+                    <div th:if="${job.matchScore > 20 and job.matchScore <= 50}" class="match-score score-weak">
                         Potrivire Slabă
+                    </div>
+                    <div th:if="${job.matchScore <= 20}" class="match-score score-none">
+                        Nepotrivire
                     </div>
                 </td>
                 <td class="align-middle fw-bold job-company">
@@ -163,9 +166,15 @@
                 </td>
                 <td class="align-middle text-center">
                     <div class="d-flex flex-column align-items-center">
+                        <!-- NOUA LOGICĂ PENTRU BUTONUL DE APLICARE -->
                         <form th:action="@{/students/{id}/apply(id=${student.id})}" method="post" class="mb-2 w-100">
                             <input type="hidden" name="id" th:value="${job.id}" />
-                            <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-send"></i> Aplică Acum</button>
+                            <button type="submit"
+                                    class="btn btn-primary btn-sm w-100"
+                                    th:disabled="${job.matchScore <= 40}"
+                                    th:title="${job.matchScore <= 40 ? 'Potrivirea trebuie să fie de peste 40% pentru a aplica' : 'Aplică la acest job'}">
+                                <i class="bi bi-send"></i> Aplică Acum
+                            </button>
                         </form>
 
                         <button type="button" class="btn btn-info btn-sm w-100 mb-2 text-white font-weight-bold"
