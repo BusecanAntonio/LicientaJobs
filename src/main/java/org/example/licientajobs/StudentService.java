@@ -138,8 +138,19 @@ public class StudentService {
             }
 
             // Robust parsing and cleaning
-            String cleanedResponse = response.replaceAll("(?i)here is the list of.*?:", "").trim();
-            
+            String cleanedResponse = response.trim();
+
+            // Ollama uneori adaugă o propoziție introductivă (variabilă ca formulare)
+            // care se termină cu ':' înainte de lista efectivă de skill-uri.
+            // Luăm doar ce e după ultimul ':', indiferent ce scrie înainte.
+            int lastColon = cleanedResponse.lastIndexOf(':');
+            if (lastColon != -1 && lastColon < cleanedResponse.length() - 1) {
+                String afterColon = cleanedResponse.substring(lastColon + 1).trim();
+                if (!afterColon.isEmpty()) {
+                    cleanedResponse = afterColon;
+                }
+            }
+
             List<String> extractedSkills = Arrays.stream(cleanedResponse.split(","))
                     .map(skill -> skill.replaceAll("[\"\\[\\]*]", "").trim())
                     .filter(skill -> !skill.isEmpty() && !skill.equals("."))
@@ -163,7 +174,7 @@ public class StudentService {
                     }
                 }
             } else {
-                 logger.warn("No valid skills could be parsed and filtered from the response.");
+                logger.warn("No valid skills could be parsed and filtered from the response.");
             }
 
         } catch (Exception e) {
