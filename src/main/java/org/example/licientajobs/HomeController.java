@@ -1,4 +1,6 @@
 package org.example.licientajobs;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -21,17 +23,27 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+
+
 @Controller
 public class HomeController {
 
+    private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private final StudentService studentService;
     private final StorageService storageService;
     private final EscoImportService escoImportService;
+    private final PdfService pdfService;
 
-    public HomeController(StudentService studentService, StorageService storageService, EscoImportService escoImportService) {
+    public HomeController(StudentService studentService,
+                          StorageService storageService,
+                          EscoImportService escoImportService,
+                          PdfService pdfService) {
+
         this.studentService = studentService;
         this.storageService = storageService;
         this.escoImportService = escoImportService;
+        this.pdfService = pdfService;                    // ← ADĂUGAT
     }
 
     @GetMapping("/change-password")
@@ -253,9 +265,11 @@ public class HomeController {
 
     @PostMapping("/students/{id}/upload")
     public String handleFileUpload(@PathVariable Long id,
-                                   @RequestParam("type") String type,
+                                   @RequestParam(value = "type", required = false) String manualType,
+                                   @RequestParam(value = "detectionMode", defaultValue = "AUTO") String detectionMode,
                                    @RequestParam("file") MultipartFile file,
-                                   HttpSession session) {
+                                   HttpSession session,
+                                   RedirectAttributes redirectAttributes) {
 
         String loggedInUser = (String) session.getAttribute("loggedInUser");
         if (loggedInUser == null) return "redirect:/login";
@@ -263,26 +277,53 @@ public class HomeController {
         studentService.findStudentById(id).ifPresent(student -> {
             if (!file.isEmpty()) {
                 try {
-                    // Read the file content once
                     byte[] fileBytes = file.getBytes();
                     String originalFilename = file.getOriginalFilename();
 
-                    // 1. Store the file on disk
+                    // 1. Salvează fișierul pe disk
                     String fileName = storageService.store(fileBytes, id, originalFilename);
-                    
-                    // 2. Add document reference to student
+
+                    // === DETECTARE TIP DOCUMENT ===
+                    String finalType = "UNKNOWN";
+
+                    if ("AUTO".equals(detectionMode) && pdfService != null) {
+                        try {
+                            Path tempPath = Files.createTempFile("upload_", ".pdf");
+                            Files.write(tempPath, fileBytes);
+
+                            finalType = pdfService.detectDocumentType(tempPath);
+
+                            Files.deleteIfExists(tempPath); // curățare
+
+                            logger.info("Tip detectat automat pentru {}: {}", originalFilename, finalType);
+                        } catch (Exception e) {
+                            logger.warn("Detectarea automată a eșuat pentru {}", originalFilename, e);
+                        }
+                    }
+
+                    // Fallback la tipul manual dacă Auto nu a funcționat sau utilizatorul a ales Manual
+                    if (finalType.equals("UNKNOWN") && manualType != null && !manualType.isEmpty()) {
+                        finalType = manualType;
+                    }
+
+                    // 2. Adaugă documentul la student
                     if (student.getDocuments() == null) {
                         student.setDocuments(new ArrayList<>());
                     }
                     student.getDocuments().add(fileName);
-                    
-                    // 3. Extract skills from the content
+
+                    // 3. Extrage skill-uri (opțional: poți transmite și finalType)
                     studentService.extractAndSaveSkills(student, file);
-                    
-                    // 4. Save the updated student
+
+                    // 4. Salvează studentul
                     studentService.saveStudent(student, loggedInUser);
+
+                    redirectAttributes.addFlashAttribute("success",
+                            "Document încărcat cu succes! Tip detectat: <strong>" + finalType + "</strong>");
+
                 } catch (Exception e) {
                     e.printStackTrace();
+                    redirectAttributes.addFlashAttribute("error", "Eroare la încărcarea documentului.");
                 }
             }
         });
