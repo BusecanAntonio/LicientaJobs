@@ -263,6 +263,16 @@ public class HomeController {
         return "redirect:/students";
     }
 
+    private String getFileExtension(String filename) {
+        if (filename == null || filename.isEmpty()) return "";
+        int lastDot = filename.lastIndexOf('.');
+        if (lastDot > 0 && lastDot < filename.length() - 1) {
+            return filename.substring(lastDot + 1);
+        }
+        return "";
+    }
+
+
     @PostMapping("/students/{id}/upload")
     public String handleFileUpload(@PathVariable Long id,
                                    @RequestParam(value = "type", required = false) String manualType,
@@ -279,6 +289,7 @@ public class HomeController {
                 try {
                     byte[] fileBytes = file.getBytes();
                     String originalFilename = file.getOriginalFilename();
+                    String fileExtension = getFileExtension(originalFilename).toLowerCase();
 
                     // 1. Salvează fișierul pe disk
                     String fileName = storageService.store(fileBytes, id, originalFilename);
@@ -286,22 +297,28 @@ public class HomeController {
                     // === DETECTARE TIP DOCUMENT ===
                     String finalType = "UNKNOWN";
 
-                    if ("AUTO".equals(detectionMode) && pdfService != null) {
-                        try {
-                            Path tempPath = Files.createTempFile("upload_", ".pdf");
-                            Files.write(tempPath, fileBytes);
+                    Path tempPath = null;
+                    try {
+                        tempPath = Files.createTempFile("upload_", "." + fileExtension);
+                        Files.write(tempPath, fileBytes);
 
+                        if (fileExtension.equals("pdf") || fileExtension.equals("txt")) {
                             finalType = pdfService.detectDocumentType(tempPath);
-
-                            Files.deleteIfExists(tempPath); // curățare
-
-                            logger.info("Tip detectat automat pentru {}: {}", originalFilename, finalType);
-                        } catch (Exception e) {
-                            logger.warn("Detectarea automată a eșuat pentru {}", originalFilename, e);
+                            logger.info("Tip detectat automat ({}) pentru {}: {}",
+                                    fileExtension.toUpperCase(), originalFilename, finalType);
+                        }
+                        else {
+                            logger.warn("Tip fișier nesuportat: {}", fileExtension);
+                        }
+                    } catch (Exception e) {
+                        logger.warn("Detectarea automată a eșuat pentru {}", originalFilename, e);
+                    } finally {
+                        if (tempPath != null) {
+                            Files.deleteIfExists(tempPath);
                         }
                     }
 
-                    // Fallback la tipul manual dacă Auto nu a funcționat sau utilizatorul a ales Manual
+                    // Fallback la tipul manual
                     if (finalType.equals("UNKNOWN") && manualType != null && !manualType.isEmpty()) {
                         finalType = manualType;
                     }
@@ -312,7 +329,7 @@ public class HomeController {
                     }
                     student.getDocuments().add(fileName);
 
-                    // 3. Extrage skill-uri (opțional: poți transmite și finalType)
+                    // 3. Extrage skill-uri
                     studentService.extractAndSaveSkills(student, file);
 
                     // 4. Salvează studentul
@@ -322,7 +339,7 @@ public class HomeController {
                             "Document încărcat cu succes! Tip detectat: <strong>" + finalType + "</strong>");
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    logger.error("Eroare la încărcarea documentului", e);
                     redirectAttributes.addFlashAttribute("error", "Eroare la încărcarea documentului.");
                 }
             }

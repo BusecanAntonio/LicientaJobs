@@ -60,19 +60,43 @@ public class PdfService {
     /**
      * Convertește PDF în fișier TXT (dacă ai nevoie să salvezi textul)
      */
-    public void convertPdfToTxt(Path pdfPath, Path txtPath) throws IOException {
-        String text = extractTextFromPdf(pdfPath);
+    public void convertPdfToTxt(Path inputPath, Path txtPath) throws IOException {
+        String text = extractText(inputPath);   // înainte era: extractTextFromPdf(pdfPath)
         Files.writeString(txtPath, text);
-        logger.info("PDF convertit în TXT: {} → {} ({} caractere)",
-                pdfPath.getFileName(), txtPath.getFileName(), text.length());
+        logger.info("Fișier convertit în TXT: {} → {} ({} caractere)",
+                inputPath.getFileName(), txtPath.getFileName(), text.length());
+    }
+
+
+    /**
+     * Citește direct un fișier TXT
+     */
+    public String extractTextFromTxt(Path txtPath) throws IOException {
+        if (!Files.exists(txtPath)) {
+            throw new IOException("Fișierul TXT nu există: " + txtPath);
+        }
+        return Files.readString(txtPath).trim();
+    }
+
+    public String extractText(Path filePath) throws IOException {
+        String filename = filePath.getFileName().toString().toLowerCase();
+
+        if (filename.endsWith(".pdf")) {
+            return extractTextFromPdf(filePath);
+        } else if (filename.endsWith(".txt")) {
+            return extractTextFromTxt(filePath);
+        } else {
+            throw new IOException("Format de fișier nesuportat: " + filename +
+                    " (acceptate: .pdf, .txt)");
+        }
     }
 
     /**
      * Detectează automat tipul documentului folosind Ollama
      * Returnează: CV, DIPLOMA, RECOMMENDATION sau UNKNOWN
      */
-    public String detectDocumentType(Path pdfPath) throws IOException {
-        String text = extractTextFromPdf(pdfPath).toLowerCase();
+    public String detectDocumentType(Path filePath) throws IOException {
+        String text = extractText(filePath).toLowerCase();   // înainte: extractTextFromPdf(pdfPath)
 
         if (text.length() < 100) {
             return "UNKNOWN";
@@ -100,17 +124,17 @@ public class PdfService {
 
         // === 2. Dacă regulile simple nu sunt suficiente → folosim Ollama ===
         String prompt = """
-        Document Classification Task.
-        Return ONLY one word: CV, DIPLOMA, RECOMMENDATION or UNKNOWN.
+    Document Classification Task.
+    Return ONLY one word: CV, DIPLOMA, RECOMMENDATION or UNKNOWN.
 
-        Strong indicators:
-        - CV: Curriculum Vitae, Competențe, Proiecte, Experiență, Studii, Git, Java, Python
-        - DIPLOMA: Diplomă, Absolvire, Licență, Master, Universitatea, Anul
-        - RECOMMENDATION: Scrisoare de recomandare, Recomand, To Whom It May Concern
+    Strong indicators:
+    - CV: Curriculum Vitae, Competențe, Proiecte, Experiență, Studii, Git, Java, Python
+    - DIPLOMA: Diplomă, Absolvire, Licență, Master, Universitatea, Anul
+    - RECOMMENDATION: Scrisoare de recomandare, Recomand, To Whom It May Concern
 
-        Text:
-        %s
-        """.formatted(text.length() > 5000 ? text.substring(0, 5000) : text);
+    Text:
+    %s
+    """.formatted(text.length() > 5000 ? text.substring(0, 5000) : text);
 
         try {
             String response = ollamaService.generateResponse(prompt).trim().toUpperCase();
