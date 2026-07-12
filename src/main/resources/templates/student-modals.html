@@ -100,15 +100,6 @@
             </ul>
         </div>
     </div>
-</th:block>
-
-<script>
-    function updateDetectionMode(studentId) {
-        const select = document.getElementById('typeSelect' + studentId);
-        const modeInput = document.getElementById('detectionModeInput' + studentId);
-        modeInput.value = (select.value === 'AUTO') ? 'AUTO' : 'MANUAL';
-    }
-</script>
 
     <!-- Modal: Vizualizare / Editare Date Personale -->
     <div class="modal fade" th:id="'editStudentModal' + ${student.id}" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">
@@ -418,6 +409,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Script: detectare tip document la upload -->
+    <script>
+        function updateDetectionMode(studentId) {
+            var select = document.getElementById('typeSelect' + studentId);
+            var modeInput = document.getElementById('detectionModeInput' + studentId);
+            modeInput.value = (select.value === 'AUTO') ? 'AUTO' : 'MANUAL';
+        }
+    </script>
 
     <!-- Script: inițializare grafic vis.js pentru acest student -->
     <script th:inline="javascript">
