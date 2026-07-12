@@ -37,14 +37,20 @@
             <!-- Secțiune Fisiere -->
             <h6 class="fw-bold mb-2 mt-4"><i class="bi bi-cloud-arrow-up"></i> Încărcare Documente</h6>
             <p class="text-muted small mb-3">Încarcă CV-ul sau o scrisoare de recomandare. Inteligența artificială va analiza fișierul și îți va extrage automat skill-urile!</p>
-            <form th:action="@{/students/{id}/upload(id=${student.id})}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/students/{id}/upload(id=${student.id})}" method="post" enctype="multipart/form-data"
+                  th:id="'uploadForm' + ${student.id}">
                 <div class="upload-section">
                     <label class="form-label fw-bold"><i class="bi bi-file-pdf me-1"></i> Tip Document</label>
-                    <select name="type" class="form-select mb-3">
+                    <select name="type" class="form-select mb-3"
+                            th:id="'typeSelect' + ${student.id}"
+                            th:onchange="'updateDetectionMode(' + ${student.id} + ')'">
+                        <option value="AUTO" selected>Detectare automată (recomandat)</option>
                         <option value="CV">Curriculum Vitae (CV)</option>
                         <option value="DIPLOMA">Diplomă de Studii</option>
                         <option value="RECOMMENDATION">Scrisoare de Recomandare</option>
                     </select>
+                    <input type="hidden" name="detectionMode" value="AUTO"
+                           th:id="'detectionModeInput' + ${student.id}">
 
                     <label class="form-label fw-bold">Selectează fișierul</label>
                     <input type="file" name="file" class="form-control mb-3" required>
@@ -60,6 +66,10 @@
     <span>
         <i class="bi bi-check-circle-fill text-success me-2"></i>
         <span th:text="${doc}">nume_fisier.pdf</span>
+        <span class="badge bg-secondary ms-2"
+              th:text="${student.documentTypes != null and student.documentTypes.containsKey(doc)} ? ${student.documentTypes.get(doc)} : 'UNKNOWN'">
+            CV
+        </span>
     </span>
                     <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-primary"
@@ -90,6 +100,15 @@
             </ul>
         </div>
     </div>
+</th:block>
+
+<script>
+    function updateDetectionMode(studentId) {
+        const select = document.getElementById('typeSelect' + studentId);
+        const modeInput = document.getElementById('detectionModeInput' + studentId);
+        modeInput.value = (select.value === 'AUTO') ? 'AUTO' : 'MANUAL';
+    }
+</script>
 
     <!-- Modal: Vizualizare / Editare Date Personale -->
     <div class="modal fade" th:id="'editStudentModal' + ${student.id}" tabindex="-1" aria-labelledby="editStudentModalLabel" aria-hidden="true">

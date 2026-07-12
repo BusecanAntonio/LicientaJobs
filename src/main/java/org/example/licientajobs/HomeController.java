@@ -130,7 +130,7 @@ public class HomeController {
         if (loggedInUser == null) {
             return "Neautorizat. Loghează-te mai întâi.";
         }
-        
+
         try {
             escoImportService.importEscoData();
             return "Importul ESCO a fost pornit/finalizat cu succes! Verifică consola (log-urile) pentru detalii.";
@@ -169,7 +169,7 @@ public class HomeController {
         if (loggedInUser == null) {
             return "redirect:/login";
         }
-        
+
         student.setAddedBy(loggedInUser);
 
         for (Map.Entry<String, String> entry : allParams.entrySet()) {
@@ -178,7 +178,7 @@ public class HomeController {
                 student.getApplicationAnswers().put(questionText, entry.getValue());
             }
         }
-        
+
         if (!student.getApplicationAnswers().containsKey("UserInterests")) {
             student.getApplicationAnswers().put("UserInterests", "");
         }
@@ -215,12 +215,12 @@ public class HomeController {
                 existingStudent.setStartYear(updatedStudent.getStartYear());
                 existingStudent.setEndYear(updatedStudent.getEndYear());
                 existingStudent.setDateOfBirth(updatedStudent.getDateOfBirth());
-                
+
                 // Actualizare campuri noi preferinte
                 existingStudent.setPreferredSeniority(updatedStudent.getPreferredSeniority());
                 existingStudent.setPrefersRemote(updatedStudent.isPrefersRemote());
                 existingStudent.setPreferredLocations(updatedStudent.getPreferredLocations());
-                
+
                 // Correctly update applicationAnswers
                 Map<String, String> applicationAnswers = new HashMap<>();
                 for (Map.Entry<String, String> entry : allParams.entrySet()) {
@@ -230,7 +230,7 @@ public class HomeController {
                     }
                 }
                 existingStudent.setApplicationAnswers(applicationAnswers);
-                
+
                 studentService.saveStudent(existingStudent, loggedInUser);
             }
         });
@@ -295,32 +295,38 @@ public class HomeController {
                     String fileName = storageService.store(fileBytes, id, originalFilename);
 
                     // === DETECTARE TIP DOCUMENT ===
-                    String finalType = "UNKNOWN";
+                    String finalType;
 
-                    Path tempPath = null;
-                    try {
-                        tempPath = Files.createTempFile("upload_", "." + fileExtension);
-                        Files.write(tempPath, fileBytes);
-
-                        if (fileExtension.equals("pdf") || fileExtension.equals("txt")) {
-                            finalType = pdfService.detectDocumentType(tempPath);
-                            logger.info("Tip detectat automat ({}) pentru {}: {}",
-                                    fileExtension.toUpperCase(), originalFilename, finalType);
-                        }
-                        else {
-                            logger.warn("Tip fișier nesuportat: {}", fileExtension);
-                        }
-                    } catch (Exception e) {
-                        logger.warn("Detectarea automată a eșuat pentru {}", originalFilename, e);
-                    } finally {
-                        if (tempPath != null) {
-                            Files.deleteIfExists(tempPath);
-                        }
-                    }
-
-                    // Fallback la tipul manual
-                    if (finalType.equals("UNKNOWN") && manualType != null && !manualType.isEmpty()) {
+                    if ("MANUAL".equalsIgnoreCase(detectionMode) && manualType != null && !manualType.isEmpty()) {
+                        // Utilizatorul a ales explicit tipul — nu mai rulăm auto-detectarea
                         finalType = manualType;
+                        logger.info("Tip setat manual pentru {}: {}", originalFilename, finalType);
+                    } else {
+                        finalType = "UNKNOWN";
+                        Path tempPath = null;
+                        try {
+                            tempPath = Files.createTempFile("upload_", "." + fileExtension);
+                            Files.write(tempPath, fileBytes);
+
+                            if (fileExtension.equals("pdf") || fileExtension.equals("txt")) {
+                                finalType = pdfService.detectDocumentType(tempPath);
+                                logger.info("Tip detectat automat ({}) pentru {}: {}",
+                                        fileExtension.toUpperCase(), originalFilename, finalType);
+                            } else {
+                                logger.warn("Tip fișier nesuportat: {}", fileExtension);
+                            }
+                        } catch (Exception e) {
+                            logger.warn("Detectarea automată a eșuat pentru {}", originalFilename, e);
+                        } finally {
+                            if (tempPath != null) {
+                                Files.deleteIfExists(tempPath);
+                            }
+                        }
+
+                        // Fallback la tipul manual dacă auto-detectarea a eșuat
+                        if (finalType.equals("UNKNOWN") && manualType != null && !manualType.isEmpty()) {
+                            finalType = manualType;
+                        }
                     }
 
                     // 2. Adaugă documentul la student
@@ -328,6 +334,12 @@ public class HomeController {
                         student.setDocuments(new ArrayList<>());
                     }
                     student.getDocuments().add(fileName);
+
+                    // 2.1 Salvează tipul detectat/ales pentru acest fișier
+                    if (student.getDocumentTypes() == null) {
+                        student.setDocumentTypes(new HashMap<>());
+                    }
+                    student.getDocumentTypes().put(fileName, finalType);
 
                     // 3. Extrage skill-uri
                     studentService.extractAndSaveSkills(student, file);
@@ -347,7 +359,7 @@ public class HomeController {
 
         return "redirect:/students";
     }
-    
+
     @PostMapping("/students/{id}/github/add")
     public String addGithubProject(@PathVariable Long id, @RequestParam("githubLink") String githubLink, HttpSession session) {
         String loggedInUser = (String) session.getAttribute("loggedInUser");
@@ -372,16 +384,16 @@ public class HomeController {
             if (loggedInUser.equals(student.getAddedBy()) && student.getGithubProjects() != null) {
                 // 1. Facem o copie a proiectelor curente
                 Map<String, String> remainingProjects = new HashMap<>(student.getGithubProjects());
-                
+
                 // 2. Ștergem proiectul din copie
                 remainingProjects.remove(githubLink);
                 remainingProjects.keySet().removeIf(key -> key.trim().equalsIgnoreCase(githubLink.trim()));
-                
-                // 3. TRICK PENTRU SPRING DATA NEO4J: 
+
+                // 3. TRICK PENTRU SPRING DATA NEO4J:
                 // Goliți complet mapa originală și salvați pentru a forța ștergerea tuturor proprietăților @CompositeProperty din DB
                 student.setGithubProjects(new HashMap<>());
                 studentService.saveStudent(student, loggedInUser);
-                
+
                 // 4. Punem la loc doar proiectele rămase (dacă mai există) și salvăm din nou
                 if (!remainingProjects.isEmpty()) {
                     student.setGithubProjects(remainingProjects);
@@ -392,7 +404,7 @@ public class HomeController {
 
         return "redirect:/students";
     }
-    
+
     @GetMapping("/students/{id}/documents/{filename}")
     public ResponseEntity<Resource> serveFile(@PathVariable Long id, @PathVariable String filename) {
         try {
@@ -431,6 +443,12 @@ public class HomeController {
                     updatedDocs.remove(filename);
                     student.setDocuments(updatedDocs);
                 }
+
+                // Curățăm și tipul asociat fișierului șters
+                if (student.getDocumentTypes() != null) {
+                    student.getDocumentTypes().remove(filename);
+                }
+
                 studentService.saveStudent(student, loggedInUser);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -442,7 +460,7 @@ public class HomeController {
 
     // --- Job Applications ---
     @GetMapping("/students/{id}/apply")
-    public String showJobApplicationForm(@PathVariable Long id, 
+    public String showJobApplicationForm(@PathVariable Long id,
                                          @RequestParam(required = false) String searchQuery,
                                          HttpSession session, Model model) {
         String loggedInUser = (String) session.getAttribute("loggedInUser");
@@ -454,10 +472,10 @@ public class HomeController {
         if (studentOpt.isPresent() && loggedInUser.equals(studentOpt.get().getAddedBy())) {
             Student student = studentOpt.get();
             model.addAttribute("student", student);
-            
+
             Set<String> studentSkills = student.getSkills() != null
-                ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toSet())
-                : new HashSet<>();
+                    ? student.getSkills().stream().map(String::toLowerCase).collect(Collectors.toSet())
+                    : new HashSet<>();
             model.addAttribute("studentSkills", studentSkills);
 
             List<JobApplication> recommendedJobs;
@@ -475,7 +493,7 @@ public class HomeController {
                 recommendedJobs = studentService.getJobRecommendations(student, false, searchQuery);
                 model.addAttribute("searchQuery", searchQuery);
             }
-            
+
             model.addAttribute("availableJobs", recommendedJobs);
             model.addAttribute("useLlm", useLlm);
 
@@ -541,17 +559,17 @@ public class HomeController {
             @RequestParam Long jobId,
             @RequestParam String answer,
             HttpSession session) {
-        
+
         String loggedInUser = (String) session.getAttribute("loggedInUser");
         if (loggedInUser == null) {
             return ResponseEntity.status(401).body(Map.of("error", "Neautorizat"));
         }
-        
+
         Optional<JobApplication> jobOpt = studentService.findJobById(jobId);
         if (jobOpt.isEmpty()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Job not found"));
         }
-        
+
         Map<String, String> evaluation = studentService.evaluateInterviewAnswer(jobOpt.get(), answer);
         return ResponseEntity.ok(evaluation);
     }

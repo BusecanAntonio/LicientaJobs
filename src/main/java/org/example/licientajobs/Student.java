@@ -103,8 +103,14 @@ public class Student {
     public Map<String, String> getApplicationAnswers() { return applicationAnswers; }
     public void setApplicationAnswers(Map<String, String> applicationAnswers) { this.applicationAnswers = applicationAnswers; }
 
+    @CompositeProperty
+    private Map<String, String> documentTypes = new HashMap<>(); // filename -> tip detectat (CV/DIPLOMA/RECOMMENDATION/UNKNOWN)
+
     public Map<String, String> getGithubProjects() { return githubProjects; }
     public void setGithubProjects(Map<String, String> githubProjects) { this.githubProjects = githubProjects; }
+
+    public Map<String, String> getDocumentTypes() { return documentTypes; }
+    public void setDocumentTypes(Map<String, String> documentTypes) { this.documentTypes = documentTypes; }
 
     public String getAddedBy() { return addedBy; }
     public void setAddedBy(String addedBy) { this.addedBy = addedBy; }
